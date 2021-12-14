@@ -1,2 +1,2 @@
-# minishell
+# Minishell
 minilixo

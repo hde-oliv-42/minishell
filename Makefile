@@ -7,12 +7,17 @@ LFLAGS = -lreadline
 
 INCLUDE = include
 
-vpath %.c src
+vpath %.c src src/builtins
 
-SRC = main.c
+TEST_SRC = pwd.c
+SRC = main.c $(TEST_SRC)
+
+TEST_FILES = ./tests/buitins/pwd.test.c 
 
 OBJ_DIR = obj
-OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+
+OBJ =      $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+TEST_OBJ = $(addprefix $(OBJ_DIR)/, $(TEST_SRC:.c=.o))
 
 all: $(NAME)
 
@@ -36,3 +41,8 @@ fclean: clean
 
 re: fclean all
 
+test: $(OBJ_DIR) $(TEST_OBJ)
+	gcc $(TEST_OBJ) $(TEST_FILES) ./tests/munit/munit.c -o test $(LFLAGS)
+	./test
+
+.PHONY: test

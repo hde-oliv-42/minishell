@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "ft_printf.h"
 
 static size_t	ft_uintlen(unsigned int i);
 static char		*ft_uitoa(unsigned int n);

@@ -5,6 +5,8 @@
 #include <process/process.h>
 #include <parsing/parsing.h>
 #include <libft.h>
+#include <errno.h>
+#include <sys/wait.h>
 
 void	print_pipeline(t_program *program)
 {
@@ -83,11 +85,62 @@ char	*generate_prompt(void)
 	return ("minishell$ ");
 }
 
+char	**generate_argv(t_program *program)
+{
+	int		i;
+	int		size;
+	char	**array;
+	t_list	*params;
+
+	params = program->params;
+	size = ft_lstsize(program->params);
+	array = ft_calloc(size + 2, sizeof(char **));
+	if (array == NULL)
+		exit(2);
+	array[0] = program->name;
+	i = 1;
+	while (params)
+	{
+		array[i] = params->content;
+		params = params->next;
+		i++;
+	}
+	return (array);
+}
+
+void	print_array(char **array)
+{
+	while (*array)
+	{
+		printf(" %s\n", *array);
+		array++;
+	}
+}
+
 void	execute_pipeline(t_program *pipeline)
 {
+	char	**argv;
+	int		pid;
+
+	// print_pipeline(pipeline);
 	while (pipeline)
 	{
-		// TODO: connect and execute the programs in the pipeline
+		// print_array(argv);
+		pid = fork();
+		if (pid == 0)
+		{
+			argv = generate_argv(pipeline);
+			execve(pipeline->name, argv, NULL);
+			if (errno == ENOENT)
+				printf("minishell: command not found\n");
+			else
+				perror("minishell");
+			exit(errno);
+		}
+		else
+		{
+			wait(NULL);
+		}
 		pipeline = pipeline->next;
 	}
 }

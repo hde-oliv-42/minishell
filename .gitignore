@@ -6,3 +6,4 @@ test
 compile_commands.json
 .cache
 thoughts.txt
+.vscode

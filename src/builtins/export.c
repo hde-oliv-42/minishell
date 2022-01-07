@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 19:53:10 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/01/06 20:56:22 by hde-oliv         ###   ########.fr       */
+/*   Created: 2022/01/06 20:27:19 by hde-oliv          #+#    #+#             */
+/*   Updated: 2022/01/06 20:53:13 by hde-oliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	env(t_ht *ms_env)
+int	export(t_ht *ms_env, char *str)
 {
-	int		i;
-	t_lst	*tmp;
+	char	**key_and_value;
+	int		rtn;
 
-	i = -1;
-	while (++i < ms_env->buckets)
-	{	
-		if (!(ms_env->table[i])->next)
-			continue ;
-		tmp = (ms_env->table[i])->next;
-		printf("%s=%s\n", tmp->key, tmp->data);
-		while (tmp->next != NULL)
-		{
-			tmp = tmp->next;
-			printf("%s=%s\n", tmp->key, tmp->data);
-		}
+	if (!str)
+	{
+		env(ms_env);
+		return (0);
 	}
+	key_and_value = ft_split(str, '=');
+	rtn = ht_insert(ms_env, key_and_value[0], key_and_value[1]);
+	ft_dfree(key_and_value, 2);
+	return (rtn);
 }

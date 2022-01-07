@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2021/12/14 19:49:41 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/01/06 20:23:59 by hde-oliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	cd(char *path)
 {
-	if (chdir(path));
+	if (chdir(path))
 		return (0);
 	return (1);
 }

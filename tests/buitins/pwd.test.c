@@ -59,7 +59,7 @@ MunitResult test_changing_dir(const MunitParameter params[], void *user_data_or_
 }
 
 MunitTest tests[] = {
-	{ "/test starting pwd", test_default_pwd, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+	{ "/test initial cwd", test_default_pwd, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 	{ "/test changing directory", test_changing_dir, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 	FINISH
 };

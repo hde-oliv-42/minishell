@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <fcntl.h>
+# include "tokenizer/tokenizer.h"
 # include <stdio.h>
 
 typedef struct s_program	t_program;
@@ -57,6 +58,7 @@ char		*parse_string(char *line, int *cursor);
 void		parse_redirection(t_program *program, char *line, int *cursor);
 t_program	*parse_program(char *line, int *cursor);
 t_program	*parse_pipeline(char *line, int *cursor);
+t_program	*parse(t_token **tokens);
 
 void		destroy_redirection(void *content);
 void		destroy_program(t_program *program);

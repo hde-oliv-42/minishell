@@ -13,20 +13,22 @@ LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 
 vpath %.c src src/builtins src/process src/parsing src/tokenizer
 
-TEST_SRC = pwd.c 				\
-		   process.c			\
-		   pipeline.c			\
-		   destroy.c			\
-		   utils.c				\
-		   redirection.c		\
-		   string.c				\
-		   tokenize.c			\
-		   checkers.c			\
-		   checkers2.c			\
-		   getters.c			\
-		   validator.c			\
-		   validator2.c			\
-		   destroy_tokens.c		\
+TEST_SRC = pwd.c 					\
+		   process.c				\
+		   parse.c					\
+		   pipeline.c				\
+		   destroy.c				\
+		   redirection.c			\
+		   string.c					\
+		   tokenize.c				\
+		   tokenize_word.c			\
+		   character_checkers.c		\
+		   character_checkers2.c	\
+		   token_checkers.c			\
+		   getters.c				\
+		   validator.c				\
+		   validator2.c				\
+		   destroy_tokens.c			\
 
 SRC = main.c $(TEST_SRC)
 

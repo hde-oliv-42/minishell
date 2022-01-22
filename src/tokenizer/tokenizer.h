@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 07:57:41 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/16 13:24:11 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/01/22 18:00:40 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_token		t_token;
 /* functions in tokenize.c */
 
 t_token	**tokenize(char *line);
+t_token	*new_token(t_type type, char *value);
 void	destroy_token(void *content);
 
 /* functions in checkers*.c */
@@ -67,5 +68,15 @@ t_token	*get_parenthesis(char *line, int *cursor);
 int		validate_tokens(t_token **tokens);
 int		validate_last(t_token *token);
 int		unexpected_token(char *token);
+int		validate_after_word(t_token *next);
+int		validate_last(t_token *token);
+int		validate_first(t_token *token);
+int		count_parenthesis(t_token **tokens);
+
+/* functions in token_checkers*/
+int		is_redirection_tk(t_type type);
+int		is_connector_tk(t_type type);
+int		is_word_tk(t_type type);
+int		is_parenthesis_tk(t_type type);
 
 #endif

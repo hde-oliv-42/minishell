@@ -11,7 +11,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g $(INCLUDE)
 LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 
-vpath %.c src src/builtins src/process src/parsing
+vpath %.c src src/builtins src/process src/parsing src/tokenizer
 
 TEST_SRC = pwd.c 				\
 		   process.c			\
@@ -19,7 +19,14 @@ TEST_SRC = pwd.c 				\
 		   destroy.c			\
 		   utils.c				\
 		   redirection.c		\
-		   string.c
+		   string.c				\
+		   tokenize.c			\
+		   checkers.c			\
+		   checkers2.c			\
+		   getters.c			\
+		   validator.c			\
+		   validator2.c			\
+		   destroy_tokens.c		\
 
 SRC = main.c $(TEST_SRC)
 

@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <stdlib.h>
 
 #include <process/process.h>
 #include <parsing/parsing.h>
+#include <tokenizer/tokenizer.h>
 #include <libft.h>
 #include <errno.h>
 #include <sys/wait.h>
@@ -145,12 +147,45 @@ void	execute_pipeline(t_program *pipeline)
 	}
 }
 
+void	print_tokens(t_token **tokens)
+{
+	int		i;
+	int		open_parenthesis = 0;
+	char	*type;
+	char	*token_str[TK_MAX] = {
+		[TK_WORD] = "WORD",
+		[TK_OPEN_PARENTHESIS] = "OPEN PARENTHESIS",
+		[TK_CLOSE_PARENTHESIS] = "CLOSE PARENTHESIS",
+		[TK_REDIRECT_IN_FILE] = "REDIRECT IN",
+		[TK_REDIRECT_IN_HEREDOC] = "HEREDOC",
+		[TK_REDIRECT_OUT_APPEND] = "REDIRECT APPEND",
+		[TK_REDIRECT_OUT_TRUNC] = "REDIRECT TRUNCATE",
+		[TK_AND] = "AND",
+		[TK_OR] = "OR",
+		[TK_PIPE] = "PIPE",
+	};
+
+	i = 0;
+	while (tokens[i])
+	{
+		type = token_str[tokens[i]->type];
+		int indent = 0;
+		while (indent++ < open_parenthesis)
+			printf("   ");
+		printf("[%s] %s\n", type, tokens[i]->value);
+		if (tokens[i]->type == TK_OPEN_PARENTHESIS)
+			open_parenthesis++;
+		else if (tokens[i]->type == TK_CLOSE_PARENTHESIS)
+			open_parenthesis--;
+		i++;
+	}
+}
+
 int	main(void)
 {
-	char		*line;
-	t_program	*pipeline;
-	int			cursor;
-	char		*prompt;
+	char	*line;
+	char	*prompt;
+	t_token	**tokens;
 
 	while (1)
 	{
@@ -158,14 +193,15 @@ int	main(void)
 		line = readline(prompt);
 		if (line == NULL)
 			return (quit_minishell());
-		if (!is_valid(line))
+		add_history(line);
+		tokens = tokenize(line);
+		if (tokens == NULL)
+		{
+			free(line);
 			continue ;
-		cursor = 0;
-		pipeline = parse_pipeline(line, &cursor);
-		if (pipeline == NULL)
-			continue ;
-		print_pipeline(pipeline);
-		destroy_pipeline(pipeline);
+		}
+		print_tokens(tokens);
+		destroy_token_array(tokens);
 		free(line);
 	}
 }

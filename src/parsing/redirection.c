@@ -18,7 +18,6 @@ char	*get_filename(char *line, int *cursor)
 {
 	char	*filename;
 
-	skip_spaces(line, cursor);
 	filename = parse_string(line, cursor);
 	return (filename);
 }

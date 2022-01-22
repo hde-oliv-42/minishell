@@ -20,6 +20,7 @@
 typedef struct s_program	t_program;
 
 typedef enum e_next_relation {
+	NONE,
 	PIPE,
 	AND,
 	OR,
@@ -47,7 +48,6 @@ typedef struct s_redirection {
 }	t_redirection;
 
 int			is_wspace(char c);
-void		skip_spaces(char *line, int *cursor);
 int			is_connector(char c);
 int			is_redirection(char c);
 int			is_reserved_char(char c);

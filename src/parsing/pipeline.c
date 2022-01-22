@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "tokenizer/tokenizer.h"
 
 void	parse_param(t_program *program, char *line, int *cursor)
 {
@@ -24,7 +25,6 @@ t_program	*parse_program(char *line, int *cursor)
 {
 	t_program	*program;
 
-	skip_spaces(line, cursor);
 	if (line[*cursor] == '\0')
 		return (NULL);
 	program = ft_calloc(1, sizeof(t_program));
@@ -32,13 +32,14 @@ t_program	*parse_program(char *line, int *cursor)
 		exit(2);
 	while (!is_connector(line[*cursor]) && line[*cursor] != '\0')
 	{
-		if (is_redirection(line[*cursor]))
+		if (is_wspace(line[*cursor]))
+			(*cursor)++;
+		else if (is_redirection(line[*cursor]))
 			parse_redirection(program, line, cursor);
 		else if (program->name == NULL)
 			program->name = parse_string(line, cursor);
 		else
 			parse_param(program, line, cursor);
-		skip_spaces(line, cursor);
 	}
 	return (program);
 }

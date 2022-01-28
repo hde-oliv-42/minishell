@@ -1,14 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline.c                                         :+:      :+:    :+:   */
+/*   process.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 15:34:27 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/25 13:16:08 by psergio-         ###   ########.fr       */
+/*   Created: 2021/12/21 19:49:40 by psergio-          #+#    #+#             */
+/*   Updated: 2021/12/21 19:50:23 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-#include "tokenizer/tokenizer.h"
+#ifndef PROCESS_H
+# define PROCESS_H
+
+void	spawn(void);
+char	**make_cmd(char *line);
+
+#endif

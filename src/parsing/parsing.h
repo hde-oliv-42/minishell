@@ -54,20 +54,22 @@ typedef struct s_redirection {
 	char				*file_name;
 }	t_redirection;
 
-int			is_wspace(char c);
-int			is_connector(char c);
-int			is_redirection(char c);
-int			is_reserved_char(char c);
+int				is_wspace(char c);
+int				is_connector(char c);
+int				is_redirection(char c);
+int				is_reserved_char(char c);
 
-char		*parse_string(char *line, int *cursor);
+char			*parse_string(char *line, int *cursor);
 
-t_program	*parse_pipeline(char *line, int *cursor);
-t_program	*parse(t_token **tokens);
+t_program		*parse_pipeline(char *line, int *cursor);
+t_program		*parse(t_token **tokens);
 
-void		destroy_redirection(void *content);
-void		destroy_program(t_program *program);
-void		destroy_pipeline(t_program *program_list);
+void			destroy_redirection(void *content);
+void			destroy_program(t_program *program);
+void			destroy_pipeline(t_program *program_list);
+t_redirection	*parse_redirection(t_token **tokens, int *cursor);
+int				add_redirection(t_program *program, t_token **tokens, int *cursor);
 
-int			make_subshell(t_program *program, t_token **tokens, int *cursor);
+int				make_subshell(t_program *program, t_token **tokens, int *cursor);
 
 #endif

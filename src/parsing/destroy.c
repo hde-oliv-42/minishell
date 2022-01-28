@@ -21,6 +21,11 @@ void	destroy_redirection(void *content)
 	free(redirection);
 }
 
+void	do_nothing(void *content)
+{
+	(void)content;
+}
+
 void	destroy_program(t_program *program)
 {
 	free(program->name);

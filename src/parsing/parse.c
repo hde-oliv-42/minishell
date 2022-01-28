@@ -26,45 +26,6 @@ static int	is_end_of_program(t_token *token)
 	);
 }
 
-static t_redirection	*parse_redirection(t_token **tokens, int *cursor)
-{
-	t_redirection		*redirection;
-	t_redirection_type	type[TK_MAX];
-
-	redirection = malloc(sizeof(t_redirection));
-	if (redirection == NULL)
-		return (NULL);
-	type[TK_REDIRECT_IN_FILE] = RD_INFILE;
-	type[TK_REDIRECT_IN_HEREDOC] = RD_HERE_DOC;
-	type[TK_REDIRECT_OUT_APPEND] = RD_OUTFILE_APPEND;
-	type[TK_REDIRECT_OUT_TRUNC] = RD_OUTFILE_TRUNC;
-	redirection->type = type[tokens[*cursor]->type];
-	redirection->file_name = tokens[*cursor + 1]->value;
-	(*cursor) = *cursor + 2;
-	return (redirection);
-}
-
-static int	add_redirection(t_program *program, t_token **tokens, int *cursor)
-{
-	t_redirection	*redirection;
-	t_list			*new_element;
-	t_list			**list;
-
-	if (tokens[*cursor]->type == TK_REDIRECT_IN_FILE
-		|| tokens[*cursor]->type == TK_REDIRECT_IN_HEREDOC)
-		list = &program->input_list;
-	else
-		list = &program->output_list;
-	redirection = parse_redirection(tokens, cursor);
-	if (redirection == NULL)
-		return (0);
-	new_element = ft_lstnew(redirection);
-	if (new_element == NULL)
-		return (free(redirection), 0);
-	ft_lstadd_back(list, new_element);
-	return (1);
-}
-
 static int	handle_word(t_program *program, t_token **tokens, int *cursor)
 {
 	char	*word;
@@ -72,13 +33,13 @@ static int	handle_word(t_program *program, t_token **tokens, int *cursor)
 
 	word = tokens[*cursor]->value;
 	if (program->name == NULL)
-		program->name = word;
+		program->name = ft_strdup(word);
 	else
 	{
-		new_param = ft_lstnew(word);
+		new_param = ft_lstnew(ft_strdup(word));
 		if (new_param == NULL)
 			return (0);
-		ft_lstadd_back(&program->params, ft_lstnew(word));
+		ft_lstadd_back(&program->params, new_param);
 	}
 	(*cursor)++;
 	return (1);

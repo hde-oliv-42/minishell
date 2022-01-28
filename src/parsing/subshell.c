@@ -60,7 +60,7 @@ int	make_subshell(t_program *program, t_token **tokens, int *cursor)
 {
 	char	*param;
 
-	program->name = "subshell";
+	program->name = ft_strdup("subshell");
 	program->type = SUBSHELL;
 	param = get_param(tokens, cursor);
 	if (param == NULL)

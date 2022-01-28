@@ -1,39 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   destroy_tokens.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 15:42:00 by psergio-          #+#    #+#             */
-/*   Updated: 2021/12/28 18:19:55 by psergio-         ###   ########.fr       */
+/*   Created: 2022/01/14 07:23:04 by psergio-          #+#    #+#             */
+/*   Updated: 2022/01/14 07:23:13 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "tokenizer.h"
 
-int	is_wspace(char c)
+void	destroy_token(void *content)
 {
-	return (c == ' ' || c == '\t' || c == '\v');
+	t_token	*token;
+
+	token = content;
+	if (token->type == TK_WORD)
+		free(token->value);
+	free(token);
 }
 
-void	skip_spaces(char *line, int *cursor)
+void	keep_token(void *content)
 {
-	while (is_wspace(line[*cursor]))
-		(*cursor)++;
+	(void)content;
 }
 
-int	is_connector(char c)
+int	clear_tokens(t_list *tokens)
 {
-	return (!!ft_strchr("&|", c));
+	ft_lstclear(&tokens, destroy_token);
+	return (0);
 }
 
-int	is_redirection(char c)
+void	destroy_token_array(t_token **tokens)
 {
-	return (!!ft_strchr("><", c));
-}
+	t_token	**array;
 
-int	is_reserved_char(char c)
-{
-	return (is_redirection(c) || is_connector(c));
+	array = tokens;
+	while (*tokens)
+		destroy_token(*tokens++);
+	free(array);
 }

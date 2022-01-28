@@ -7,3 +7,5 @@ compile_commands.json
 .cache
 thoughts.txt
 .vscode
+test.sh
+outfile

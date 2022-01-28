@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 15:46:18 by psergio-          #+#    #+#             */
-/*   Updated: 2021/12/28 18:50:48 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/01/25 13:26:14 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,41 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-char	*get_filename(char *line, int *cursor)
+t_redirection	*parse_redirection(t_token **tokens, int *cursor)
 {
-	char	*filename;
+	t_redirection		*redirection;
+	t_redirection_type	type[TK_MAX];
 
-	skip_spaces(line, cursor);
-	filename = parse_string(line, cursor);
-	return (filename);
-}
-
-static void	parse_redirection_internal(t_list **list_to_append,
-		char *line, int *cursor, t_redirection_type type)
-{
-	char			*file_name;
-	t_redirection	*redirection;
-
-	(*cursor)++;
-	if (type == OUTFILE_APPEND || type == HERE_DOC)
-		(*cursor)++;
 	redirection = malloc(sizeof(t_redirection));
 	if (redirection == NULL)
-		return ;
-	file_name = get_filename(line, cursor);
-	if (file_name == NULL)
-		return ;
-	redirection->file_name = file_name;
-	redirection->type = type;
-	ft_lstadd_back(list_to_append, ft_lstnew(redirection));
+		return (NULL);
+	type[TK_REDIRECT_IN_FILE] = RD_INFILE;
+	type[TK_REDIRECT_IN_HEREDOC] = RD_HERE_DOC;
+	type[TK_REDIRECT_OUT_APPEND] = RD_OUTFILE_APPEND;
+	type[TK_REDIRECT_OUT_TRUNC] = RD_OUTFILE_TRUNC;
+	redirection->type = type[tokens[*cursor]->type];
+	redirection->file_name = ft_strdup(tokens[*cursor + 1]->value);
+	(*cursor) = *cursor + 2;
+	return (redirection);
 }
 
-void	parse_redirection(t_program *program, char *line, int *cursor)
+int	add_redirection(t_program *program, t_token **tokens, int *cursor)
 {
-	t_list	**list;
+	t_redirection	*redirection;
+	t_list			*new_element;
+	t_list			**list;
 
-	if (line[*cursor] == '<')
-	{
+	if (tokens[*cursor]->type == TK_REDIRECT_IN_FILE
+		|| tokens[*cursor]->type == TK_REDIRECT_IN_HEREDOC)
 		list = &program->input_list;
-		if (line[*cursor + 1] == '<')
-			parse_redirection_internal(list, line, cursor, HERE_DOC);
-		else
-			parse_redirection_internal(list, line, cursor, INFILE);
-	}
 	else
-	{
 		list = &program->output_list;
-		if (line[*cursor + 1] == '>')
-			parse_redirection_internal(list, line, cursor, OUTFILE_APPEND);
-		else
-			parse_redirection_internal(list, line, cursor, OUTFILE_TRUNC);
-	}
+	redirection = parse_redirection(tokens, cursor);
+	if (redirection == NULL)
+		return (0);
+	new_element = ft_lstnew(redirection);
+	if (new_element == NULL)
+		return (free(redirection), 0);
+	ft_lstadd_back(list, new_element);
+	return (1);
 }

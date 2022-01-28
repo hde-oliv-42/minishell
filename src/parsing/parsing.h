@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 15:34:49 by psergio-          #+#    #+#             */
-/*   Updated: 2021/12/30 17:05:53 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/01/25 13:01:53 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,26 @@
 
 # include "libft.h"
 # include <fcntl.h>
+# include "tokenizer/tokenizer.h"
 # include <stdio.h>
 
 typedef struct s_program	t_program;
 
 typedef enum e_next_relation {
+	NONE,
 	PIPE,
 	AND,
 	OR,
 }	t_next_relation;
 
+typedef enum e_program_type {
+	PROGRAM,
+	SUBSHELL,
+}	t_program_type;
+
 struct s_program {
 	char			*name;
+	t_program_type	type;
 	t_list			*params;
 	t_list			*input_list;
 	t_list			*output_list;
@@ -35,10 +43,10 @@ struct s_program {
 };
 
 typedef enum e_redirection_type {
-	INFILE = O_RDONLY,
-	HERE_DOC,
-	OUTFILE_TRUNC = O_TRUNC,
-	OUTFILE_APPEND = O_APPEND,
+	RD_INFILE = O_RDONLY,
+	RD_HERE_DOC,
+	RD_OUTFILE_TRUNC = O_TRUNC,
+	RD_OUTFILE_APPEND = O_APPEND,
 }	t_redirection_type;
 
 typedef struct s_redirection {
@@ -46,20 +54,22 @@ typedef struct s_redirection {
 	char				*file_name;
 }	t_redirection;
 
-int			is_wspace(char c);
-void		skip_spaces(char *line, int *cursor);
-int			is_connector(char c);
-int			is_redirection(char c);
-int			is_reserved_char(char c);
+int				is_wspace(char c);
+int				is_connector(char c);
+int				is_redirection(char c);
+int				is_reserved_char(char c);
 
-char		*parse_string(char *line, int *cursor);
+char			*parse_string(char *line, int *cursor);
 
-void		parse_redirection(t_program *program, char *line, int *cursor);
-t_program	*parse_program(char *line, int *cursor);
-t_program	*parse_pipeline(char *line, int *cursor);
+t_program		*parse_pipeline(char *line, int *cursor);
+t_program		*parse(t_token **tokens);
 
-void		destroy_redirection(void *content);
-void		destroy_program(t_program *program);
-void		destroy_pipeline(t_program *program_list);
+void			destroy_redirection(void *content);
+void			destroy_program(t_program *program);
+void			destroy_pipeline(t_program *program_list);
+t_redirection	*parse_redirection(t_token **tokens, int *cursor);
+int				add_redirection(t_program *program, t_token **tokens, int *cursor);
+
+int				make_subshell(t_program *program, t_token **tokens, int *cursor);
 
 #endif

@@ -36,7 +36,7 @@ OBJS    :=	$(SRC:.c=.o) $(PRINTF_SRC:.c=.o)
 
 NAME	:=	libft.a
 RLIB    :=	ranlib
-CC		:=	clang
+CC		:=	gcc
 LIB		:=	ar rcs
 
 CFLAGS	+=	-Wall -Wextra -Werror

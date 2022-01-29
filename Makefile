@@ -18,10 +18,8 @@ TEST_SRC = pwd.c 					\
 		   process.c				\
 		   parse.c					\
 		   subshell.c				\
-		   pipeline.c				\
 		   destroy.c				\
 		   redirection.c			\
-		   string.c					\
 		   tokenize.c				\
 		   tokenize_word.c			\
 		   character_checkers.c		\

@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft.h"
-# include "hash_table.h"
+# include <hash_table/hash_table.h>
 
 void	pwd(void);
 

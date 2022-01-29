@@ -19,9 +19,7 @@
 #define CYAN	"\001\x1b[36m\002"
 #define RESET	"\001\x1b[0m\002"
 
-
 char	*generate_prompt(void)
 {
 	return (BOLD BLUE "minishell$ " RESET);
 }
-

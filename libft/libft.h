@@ -666,4 +666,13 @@ int			hex_handler(char converter, va_list args);
  */
 int			percent_handler(void);
 
+void		*ft_memjoin(void *s1, size_t s1_size, void *s2, size_t s2_size);
+int			ft_min(int a, int b);
+size_t		ft_umin(size_t a, size_t b);
+char		*ft_stoa_base(size_t nbr, const char *base);
+char		*ft_itox(ssize_t nbr);
+char		*ft_strtoupper(char *str);
+char		*ft_uitoa(unsigned int nbr);
+char		*ft_stox(size_t nbr);
+
 #endif

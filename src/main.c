@@ -8,6 +8,7 @@
 #include <tokenizer/tokenizer.h>
 #include <prompt/prompt.h>
 #include <libft.h>
+#include <ft_printf/libftprintf.h>
 #include <errno.h>
 #include <sys/wait.h>
 #include <debug/debug.h>

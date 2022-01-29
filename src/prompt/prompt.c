@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf/libftprintf.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 #define BOLD	"\001\x1b[1m\002"
 #define RED		"\001\x1b[31m\002"
 #define GREEN 	"\001\x1b[32m\002"
@@ -21,5 +25,11 @@
 
 char	*generate_prompt(void)
 {
-	return (BOLD BLUE "minishell$ " RESET);
+	char	*cwd;
+	char	*prompt;
+
+	cwd = getcwd(NULL, 0);
+	ft_asprintf(&prompt, BOLD BLUE "%s" GREEN " >>> " RESET, cwd);
+	free(cwd);
+	return (prompt);
 }

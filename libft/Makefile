@@ -7,11 +7,32 @@ SRC		:=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 			ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 			ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 			ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
-			ft_lstmap.c ft_dfree.c ft_isspace.c ft_intlen.c ft_range.c \
-			ft_atoll.c get_next_line.c ft_printf.c ft_char.c ft_hex.c \
-			ft_int.c ft_tag.c 
+			ft_lstmap.c ft_isspace.c ft_intlen.c ft_range.c \
+			ft_atoll.c get_next_line.c ft_stox.c ft_uitoa.c ft_stoa_base.c \
+			ft_strtoupper.c ft_itox.c ft_memjoin.c
 
-OBJS    :=	$(SRC:.c=.o)
+PRINTF_SRC := ft_printf/core.c \
+	ft_printf/ft_asprintf.c \
+	ft_printf/ft_dprintf.c \
+	ft_printf/ft_printf.c \
+	ft_printf/ft_snprintf.c \
+	ft_printf/ft_sprintf.c \
+	ft_printf/handlers_binary.c \
+	ft_printf/handlers_char.c \
+	ft_printf/handlers_hex.c \
+	ft_printf/handlers_hex_upper.c \
+	ft_printf/handlers_intd.c \
+	ft_printf/handlers_inti.c \
+	ft_printf/handlers_intu.c \
+	ft_printf/handlers_percentage.c \
+	ft_printf/handlers_pointer.c \
+	ft_printf/handlers_string.c \
+	ft_printf/int_utils.c \
+	ft_printf/output.c \
+	ft_printf/parsers.c \
+	ft_printf/specifiers.c
+
+OBJS    :=	$(SRC:.c=.o) $(PRINTF_SRC:.c=.o)
 
 NAME	:=	libft.a
 RLIB    :=	ranlib
@@ -26,7 +47,7 @@ RM		:=	rm -rf
 all:		$(NAME)
 
 .c.o:
-			$(CC) $(CFLAGS) -c $< -o $@
+			$(CC) $(CFLAGS) -I. -c $< -o $@
 
 $(NAME):	$(OBJS)
 			$(LIB) $(NAME) $(OBJS)

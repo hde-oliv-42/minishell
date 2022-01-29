@@ -6,19 +6,16 @@
 #include <process/process.h>
 #include <parsing/parsing.h>
 #include <tokenizer/tokenizer.h>
+#include <prompt/prompt.h>
 #include <libft.h>
 #include <errno.h>
 #include <sys/wait.h>
 #include <debug/debug.h>
 
-char	*generate_prompt(void)
-{
-	return ("minishell$ ");
-}
-
 int	quit_minishell(void)
 {
 	// TODO: free stuff
+	rl_clear_history();
 	return (0);
 }
 
@@ -47,5 +44,4 @@ int	main(void)
 		destroy_pipeline(program);
 		destroy_token_array(tokens);
 	}
-	rl_clear_history();
 }

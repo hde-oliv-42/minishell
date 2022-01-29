@@ -46,6 +46,6 @@ int	main(void)
 		print_pipeline(program);
 		destroy_pipeline(program);
 		destroy_token_array(tokens);
-		rl_clear_history();
 	}
+	rl_clear_history();
 }

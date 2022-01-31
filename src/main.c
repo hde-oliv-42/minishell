@@ -31,6 +31,7 @@ int	main(void)
 	{
 		prompt = generate_prompt();
 		line = readline(prompt);
+		free(prompt);
 		if (line == NULL)
 			return (quit_minishell());
 		add_history(line);

@@ -17,6 +17,8 @@ vpath %.c src 						\
 	src/parsing 					\
 	src/tokenizer 					\
 	src/prompt 						\
+	src/signals 					\
+	src/execute 					\
 	src/debug
 
 TEST_SRC = pwd.c 					\
@@ -36,6 +38,8 @@ TEST_SRC = pwd.c 					\
 		   destroy_tokens.c			\
 		   print_things.c			\
 		   prompt.c					\
+		   signal_handlers.c		\
+		   execute.c				\
 
 SRC = main.c $(TEST_SRC)
 

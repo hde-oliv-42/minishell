@@ -6,6 +6,7 @@
 #include <process/process.h>
 #include <parsing/parsing.h>
 #include <tokenizer/tokenizer.h>
+#include <execute/execute.h>
 #include <prompt/prompt.h>
 #include <libft.h>
 #include <ft_printf/libftprintf.h>
@@ -17,16 +18,19 @@ int	quit_minishell(void)
 {
 	// TODO: free stuff
 	rl_clear_history();
-	return (0);
+	exit(0);
 }
 
-int	main(void)
+void	handle_interrupt(void);
+
+int	loop_prompt(void)
 {
 	char	*line;
 	char	*prompt;
 	t_token	**tokens;
 	t_program	*program;
 
+	handle_interrupt();
 	while (1)
 	{
 		prompt = generate_prompt();
@@ -42,8 +46,14 @@ int	main(void)
 		program = parse(tokens);
 		if (program == NULL)
 			continue ;
-		print_pipeline(program);
+		execute(program);
 		destroy_pipeline(program);
 		destroy_token_array(tokens);
 	}
+	return (0);
+}
+
+int	main(void)
+{
+	return (loop_prompt());
 }

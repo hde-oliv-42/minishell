@@ -57,6 +57,29 @@ char	**generate_argv_array(t_program *program)
 	return (argv);
 }
 
+int	is_builtin(char *name)
+{
+	if (!ft_strncmp(name, "cd", 2))
+		return (1);
+	else if (!ft_strncmp(name, "echo", 4))
+		return (1);
+	else if (!ft_strncmp(name, "env", 3))
+		return (1);
+	else if (!ft_strncmp(name, "export", 6))
+		return (1);
+	else if (!ft_strncmp(name, "pwd", 3))
+		return (1);
+	else if (!ft_strncmp(name, "unset", 5))
+		return (1);
+	return (0);
+}
+
+void	execute_builtin(t_program *program, char **ms_env)
+{
+	(void)program;
+	(void)ms_env;
+}
+
 void	execute_one_command(t_program *program, char **ms_env)
 {
 	char	*path;
@@ -71,8 +94,8 @@ void	execute_one_command(t_program *program, char **ms_env)
 		execute_pipeliner(program);
 	else if (program->next_relation == AND || program->next_relation == OR)
 		execute_conditionally(program);
-	// else if (is_builtin(program->name))
-	// execute_builtin(program->name, ms_env);
+	else if (is_builtin(program->name))
+		execute_builtin(program, ms_env);
 	else
 	{
 		path = it_exists(program->name, ms_env);

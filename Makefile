@@ -42,7 +42,6 @@ TEST_SRC = pwd.c 					\
 		   print_things.c			\
 		   prompt.c					\
 		   signal_handlers.c		\
-		   execute.c				\
 
 SRC = main.c $(TEST_SRC)
 

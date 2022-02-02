@@ -18,7 +18,7 @@ vpath %.c src 						\
 	src/tokenizer 					\
 	src/prompt 						\
 	src/signals 					\
-	src/execute 					\
+	src/execute						\
 	src/debug
 
 TEST_SRC = pwd.c 					\
@@ -36,6 +36,9 @@ TEST_SRC = pwd.c 					\
 		   validator.c				\
 		   validator2.c				\
 		   destroy_tokens.c			\
+		   execute.c				\
+		   access_methods.c			\
+		   ms_env.c					\
 		   print_things.c			\
 		   prompt.c					\
 		   signal_handlers.c		\

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.h                                          :+:      :+:    :+:   */
+/*   ms_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,16 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTE_H
-# define EXECUTE_H
+#include "execute.h"
 
-# include <unistd.h>
-# include <sys/wait.h>
-# include "builtins/builtins.h"
-# include "parsing/parsing.h"
+extern char **environ;
 
-void	execute(t_program *program_list);
-char	*it_exists(char *name, char **ms_env);
-int		initialize_ms_env(char ***ms_env);
+int	initialize_ms_env(char ***ms_env)
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (environ[i])
+		i++;
+	*ms_env = ft_calloc(sizeof(char *), (i + 1));
+	if (ms_env == NULL)
+		return (1);
+	i = 0;
+	while (environ[i])
+	{
+		(*ms_env)[i] = ft_strdup(environ[i]);
+		if ((*ms_env)[i] == NULL)
+			return (1);
+		i++;
+	}
+	return (0);
+}

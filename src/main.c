@@ -13,6 +13,7 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <debug/debug.h>
+#include <execute/execute.h>
 
 int	quit_minishell(void)
 {

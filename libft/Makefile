@@ -9,7 +9,7 @@ SRC		:=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 			ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
 			ft_lstmap.c ft_isspace.c ft_intlen.c ft_range.c \
 			ft_atoll.c get_next_line.c ft_stox.c ft_uitoa.c ft_stoa_base.c \
-			ft_strtoupper.c ft_itox.c ft_memjoin.c
+			ft_strtoupper.c ft_itox.c ft_memjoin.c ft_dfree.c
 
 PRINTF_SRC := ft_printf/core.c \
 	ft_printf/ft_asprintf.c \

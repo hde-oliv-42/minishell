@@ -25,24 +25,28 @@
 
 static char	*get_last_three_dirs(void)
 {
-	int		i;
-	int		slashs;
-	char	*str;
-	char	*cwd;
+	int			i;
+	int			slashs;
+	char		*str;
+	char		*cwd;
+	static char	*previous_dir;
 
 	slashs = 0;
 	cwd = getcwd(NULL, 0);
+	if (cwd != NULL)
+	{
+		free(previous_dir);
+		previous_dir = cwd;
+	}
+	else
+		cwd = previous_dir;
 	i = ft_strlen(cwd);
 	while (slashs < 3 && i > 0)
-	{
-		i--;
-		if (cwd[i] == '/')
+		if (cwd[i--] == '/')
 			slashs++;
-	}
 	if (i > 0)
 		i++;
 	str = ft_substr(cwd, i, ft_strlen(cwd) - i);
-	free(cwd);
 	return (str);
 }
 

@@ -13,6 +13,9 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-int	loop_prompt(void);
+void	child_handlers(void);
+void	reset_signals(void);
+void	handle_signals(void);
+void	ignore_signals(void);
 
 #endif

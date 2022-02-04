@@ -6,11 +6,12 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/01/29 20:23:59 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/02/03 20:32:53 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "signals/signals.h"
 
 void	execute_subcommand(t_program *program)
 {
@@ -106,11 +107,15 @@ void	execute_one_command(t_program *program, char **ms_env)
 			pid = fork();
 			if (pid == 0)
 			{
+				child_handlers();
 				argv = generate_argv_array(program);
 				// print_array_of_strings(ms_env);
 				execve(path, argv, ms_env);
+				exit(1);
 			}
+			ignore_signals();
 			waitpid(pid, &ret, 0);
+			handle_signals();
 		}
 	}
 }

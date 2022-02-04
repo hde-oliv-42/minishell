@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:56:23 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/01 18:14:24 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/03 20:36:05 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,54 @@
 
 static void	handler(int signum)
 {
-	if (signum == SIGINT)
-	{
-		ft_putchar_fd('\n', 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	ft_putchar_fd('\n', 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void)signum;
 }
 
-void	handle_interrupt(void)
+void	handle_signals(void)
+{
+	struct sigaction		sa;
+	struct sigaction		sa_quit;
+
+	sigemptyset(&sa.sa_mask);
+	sigemptyset(&sa_quit.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa_quit.sa_mask, SIGQUIT);
+	sa.sa_flags = 0;
+	sa.sa_handler = handler;
+	sa_quit.sa_handler = SIG_IGN;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		printf("error handling signal SIGINT\n");
+	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
+		printf("error handling signal SIGQUIT\n");
+}
+
+void	reset_signals(void)
+{
+	struct sigaction		sa;
+
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	sa.sa_handler = SIG_DFL;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		printf("error reseting the signal handler\n");
+}
+
+void	child_handlers(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_INTERRUPT;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-		printf("error handling signal\n");
-	}
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) < 0)
+		printf("failed to reset the handler for SIGINT\n");
+	if (sigaction(SIGQUIT, &sa, NULL) < 0)
+		printf("failed to reset the handler for SIGQUIT\n");
 }

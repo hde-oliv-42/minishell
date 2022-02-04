@@ -12,8 +12,9 @@
 #include <ft_printf/libftprintf.h>
 #include <errno.h>
 #include <sys/wait.h>
-#include <debug/debug.h>
 #include <execute/execute.h>
+#include <signals/signals.h>
+#include <debug/debug.h>
 
 int	quit_minishell(void)
 {
@@ -22,8 +23,6 @@ int	quit_minishell(void)
 	exit(0);
 }
 
-void	handle_interrupt(void);
-
 int	loop_prompt(void)
 {
 	char	*line;
@@ -31,7 +30,7 @@ int	loop_prompt(void)
 	t_token	**tokens;
 	t_program	*program;
 
-	handle_interrupt();
+	handle_signals();
 	while (1)
 	{
 		prompt = generate_prompt();

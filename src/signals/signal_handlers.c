@@ -37,6 +37,7 @@ void	handle_signals(void)
 	sigaddset(&sa_quit.sa_mask, SIGQUIT);
 	sa.sa_flags = 0;
 	sa.sa_handler = handler;
+	sa_quit.sa_flags = 0;
 	sa_quit.sa_handler = SIG_IGN;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		printf("error handling signal SIGINT\n");
@@ -52,6 +53,7 @@ void	reset_signals(void)
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaddset(&sa.sa_mask, SIGQUIT);
 	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		printf("error reseting the signal handler\n");
 }

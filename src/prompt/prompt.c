@@ -42,7 +42,7 @@ static char	*get_last_three_dirs(void)
 		cwd = previous_dir;
 	i = ft_strlen(cwd);
 	while (slashs < 3 && i > 0)
-		if (cwd[i--] == '/')
+		if (cwd[--i] == '/')
 			slashs++;
 	if (i > 0)
 		i++;

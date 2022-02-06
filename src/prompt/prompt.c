@@ -52,17 +52,17 @@ static char	*get_last_three_dirs(void)
 
 char	*generate_prompt(void)
 {
-	char	*pasta;
+	char	*directory;
 	int		result;
 	char	*prompt;
 	char	*user;
 
-	pasta = get_last_three_dirs();
+	directory = get_last_three_dirs();
 	user = getenv("USER");
 	result = ft_asprintf(&prompt, YELLOW "%s" BOLD BLUE " %s"
-			GREEN " >>> " RESET, user, pasta);
+			GREEN " >>> " RESET, user, directory);
 	if (result == -1)
 		return (ft_strdup("[error generating prompt] > "));
-	free(pasta);
+	free(directory);
 	return (prompt);
 }

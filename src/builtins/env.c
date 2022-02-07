@@ -12,22 +12,11 @@
 
 #include "builtins.h"
 
-void	env(t_ht *ms_env)
+void	env(char **ms_env)
 {
-	int		i;
-	t_lst	*tmp;
+	int	i;
 
-	i = -1;
-	while (++i < ms_env->buckets)
-	{	
-		if (!(ms_env->table[i])->next)
-			continue ;
-		tmp = (ms_env->table[i])->next;
-		printf("%s=%s\n", tmp->key, tmp->data);
-		while (tmp->next != NULL)
-		{
-			tmp = tmp->next;
-			printf("%s=%s\n", tmp->key, tmp->data);
-		}
-	}
+	i = 0;
+	while (ms_env[i])
+		printf("%s\n", ms_env[i++]);
 }

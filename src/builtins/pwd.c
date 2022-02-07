@@ -12,11 +12,14 @@
 
 #include "builtins.h"
 
-void	pwd(void)
+int	pwd(void)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+		return (1);
 	printf("%s\n", pwd);
 	free(pwd);
+	return (0);
 }

@@ -19,5 +19,6 @@
 # include "parsing/parsing.h"
 
 int		cd(t_program *program, char **ms_env);
+int		pwd(void);
 
 #endif

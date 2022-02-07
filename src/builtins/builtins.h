@@ -16,17 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft.h"
-# include <hash_table/hash_table.h>
+# include "parsing/parsing.h"
 
-void	pwd(void);
-
-// Won't print the first argument
-// Prints until a NULL
-// If the first argument is not a NULL, its behavior is of "-n" flag
-void	echo(char **args);
-int		cd(char *path);
-void	env(t_ht *ms_env);
-int		export(t_ht *ms_env, char *str);
-void	unset(t_ht *ms_env);
+int		cd(t_program *program, char **ms_env);
 
 #endif

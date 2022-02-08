@@ -118,6 +118,7 @@ int	export(t_program *program, char **ms_env)
 				return (handle_new_var(program->params->content, &ms_env));
 		}
 		program->params = program->params->next;
+		// TODO: Use a temporary pointer instead
 	}
 	return (1);
 }

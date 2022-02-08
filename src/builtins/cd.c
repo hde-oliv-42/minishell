@@ -12,7 +12,7 @@
 
 #include "builtins.h"
 
-int	get_home(char **ms_env, char **home)
+static int	get_home(char **ms_env, char **home)
 {
 	int	i;
 

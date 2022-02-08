@@ -98,17 +98,32 @@ char	*expand_word(const char *word)
 	int		start;
 	int		end;
 	char	*str;
+	char	inside_quote;
 	t_list	*piece_list;
 
 	start = 0;
 	end = -1;
 	piece_list = NULL;
+	inside_quote = '\0';
 	while (word[++end])
 	{
-		if (word[end] == '\'')
+		if (word[end] == '\'' && inside_quote != '"')
 		{
-			get_piece(&piece_list, word, start, end++);
-			start = end;
+			get_piece(&piece_list, word, start, end);
+			if (!inside_quote)
+				inside_quote = '\'';
+			else
+				inside_quote = '\0';
+			start = end + 1;
+		}
+		else if (word[end] == '"' && inside_quote != '\'')
+		{
+			get_piece(&piece_list, word, start, end);
+			if (!inside_quote)
+				inside_quote = '"';
+			else
+				inside_quote = '\0';
+			start = end + 1;
 		}
 	}
 	if (end > start)

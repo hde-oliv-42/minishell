@@ -19,6 +19,7 @@ vpath %.c src 						\
 	src/prompt 						\
 	src/signals 					\
 	src/execute						\
+	src/expand						\
 	src/debug
 
 TEST_SRC = pwd.c 					\
@@ -43,6 +44,7 @@ TEST_SRC = pwd.c 					\
 		   prompt.c					\
 		   signal_handlers.c		\
 		   signal_ignorers.c		\
+		   expand.c					\
 
 SRC = main.c $(TEST_SRC)
 

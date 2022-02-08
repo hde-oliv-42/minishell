@@ -22,5 +22,6 @@ int		cd(t_program *program, char **ms_env);
 int		pwd(void);
 void	env(char **ms_env);
 int		echo(t_program *program);
+int		export(t_program *program, char **ms_env);
 
 #endif

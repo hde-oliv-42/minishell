@@ -1,3 +1,4 @@
+#include "expand/expand.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -55,5 +56,26 @@ int	loop_prompt(void)
 
 int	main(void)
 {
-	return (loop_prompt());
+	char *strings[] = {
+		"oi",
+		"a'vida'e'loka'",
+		"a\"vida\"e'loka'",
+		"a\"vidae'loka'\"",
+		"a'vida''e''loka'",
+		"a\"\"vida\"e\"\"loka\"",
+		"'a\"\"vida\"e\"\"loka\"'",
+		"'a\"\"vida\"e'\"\"loka\"\"",
+		"\" $USER$$HOME\"",
+		NULL};
+	int i = 0;
+
+	while (strings[i])
+	{
+		char *expanded = expand_word(strings[i]);
+		printf("actual:   %s\n", strings[i]);
+		printf("expanded: %s\n", expanded);
+		free(expanded);
+		i++;
+	}
+	// return (loop_prompt());
 }

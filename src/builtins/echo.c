@@ -12,13 +12,42 @@
 
 #include "builtins.h"
 
-void	echo(char **args)
+int	echo(t_program *program)
 {
 	int	i;
 
-	i = 0;
-	while (args[++i])
-		printf("%s ", args[i]);
-	if (args[i] == NULL)
+	i = ft_lstsize(program->params);
+	if (i == 0)
+	{
 		printf("\n");
+		return (0);
+	}
+	else if (!ft_strncmp(program->params->content, "-n", 2))
+	{
+		if (i == 1)
+			return (0);
+		while (program->params->next)
+		{
+			program->params = program->params->next;
+			printf("%s ", (char *) program->params->content);
+		}
+		printf("%s", (char *) program->params->content);
+		return (0);
+	}
+	else
+	{
+		if (i == 1)
+		{
+			printf("\n");
+			return (0);
+		}
+		while (program->params->next)
+		{
+			program->params = program->params->next;
+			printf("%s ", (char *) program->params->content);
+		}
+		printf("%s\n", (char *) program->params->content);
+		return (0);
+	}
+	return (1);
 }

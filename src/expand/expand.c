@@ -6,128 +6,119 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 13:44:47 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/06 14:03:03 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/10 20:59:30 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "parsing/parsing.h"
-#include "tokenizer/tokenizer.h"
 #include "expand/expand.h"
-#include <stdlib.h>
 
-struct s_piece {
-	int		len;
-	char	*value;
-};
+#define VAR_DELIMITERS "\"'$ =@(*)"
 
-typedef struct s_piece	t_piece;
-
-static t_piece	*new_piece(char *value, int len)
+static int	skip_dollar(t_list **piece_list, char chr)
 {
+	char	*delimiters;
 	t_piece	*piece;
+	char	*value;
 
-	if (value == NULL)
-		return (NULL);
-	piece = malloc(sizeof(t_piece));
-	if (piece == NULL)
-		return (NULL);
-	piece->value = value;
-	piece->len = len;
-	return (piece);
-}
-
-char	*get_next_break_point(char current)
-{
-	if (current == '\'')
-		return ("'");
-	else if (current == '"')
-		return ("\"$");
+	delimiters = "$ =@(*)";
+	value = malloc(3);
+	value[0] = '$';
+	if (ft_strchr(delimiters, chr))
+		value[1] = chr;
 	else
-		return ("\"'$");
-}
-
-static int	get_piece(t_list **piece_list, const char *str, int start, int end)
-{
-	t_piece	*piece;
-	char	*value;
-
-	value = ft_substr(str, start, end - start);
-	if (value == NULL)
-		return (0);
-	piece = new_piece(value, end - start);
-	if (piece == NULL)
-		return (0);
+		value[1] = '\0';
+	value[2] = '\0';
+	piece = new_piece(value, ft_strlen(value));
 	ft_lstadd_back(piece_list, ft_lstnew(piece));
 	return (1);
 }
 
-static char	*merge_pieces(t_list *piece_list)
+static int	get_env_variable(
+		t_list **piece_list, const char *str, int *size)
 {
-	t_list	*tmp;
-	int		total_len;
-	char	*str;
+	char	*delimiters;
+	char	*key;
+	char	*value;
+	t_piece	*piece;
 
-	tmp = piece_list;
-	total_len = 0;
-	while (tmp)
-	{
-		total_len += ((t_piece *)tmp->content)->len;
-		tmp = tmp->next;
-	}
-	str = ft_calloc(total_len + 1, 1);
-	if (str == NULL)
-		return (NULL);
-	tmp = piece_list;
-	while (tmp)
-	{
-		ft_strlcat(str, ((t_piece *)tmp->content)->value, total_len + 1);
-		tmp = tmp->next;
-	}
-	return (str);
+	delimiters = VAR_DELIMITERS;
+	(*size)++;
+	if (ft_strchr(delimiters, str[*size]))
+		return (skip_dollar(piece_list, str[*size]));
+	while (!ft_strchr(delimiters, str[*size]))
+		(*size)++;
+	key = ft_substr(str, 0, *size);
+	(*size)--;
+	if (ft_strncmp("USER", key, 5) == 0)
+		value = ft_strdup("paulo");
+	else
+		value = ft_strdup("[none]");
+	free(key);
+	piece = new_piece(value, ft_strlen(value));
+	ft_lstadd_back(piece_list, ft_lstnew(piece));
+	return (1);
 }
 
-static void	destroy_piece(void *piece)
+void	asdf(
+		t_list **piece_list, char **word, char *inside_quote, int *size)
 {
-	free(((t_piece *)piece)->value);
-	free(piece);
+	char	quote;
+
+	quote = (*word)[*size];
+	get_piece(piece_list, *word, *size);
+	if (!*inside_quote)
+		*inside_quote = quote;
+	else
+		*inside_quote = '\0';
+	*word += *size + 1;
+	*size = -1;
 }
 
-char	*expand_word(const char *word)
+void	try_get_piece(
+		t_list **piece_list, char **word, char *inside_quote, int *size)
 {
-	int		start;
-	int		end;
+	if ((*word)[*size] == '\'' && *inside_quote != '"')
+	{
+		asdf(piece_list, word, inside_quote, size);
+	}
+	else if ((*word)[*size] == '"' && *inside_quote != '\'')
+	{
+		asdf(piece_list, word, inside_quote, size);
+		// get_piece(piece_list, *word, *size);
+		// if (!*inside_quote)
+		// 	*inside_quote = '"';
+		// else
+		// 	*inside_quote = '\0';
+		// *word += *size + 1;
+		// *size = -1;
+	}
+	else if ((*word)[*size] == '$' && *inside_quote != '\'')
+	{
+		get_piece(piece_list, *word, *size);
+		*word += *size + 1;
+		*size = -1;
+		get_env_variable(piece_list, *word, size);
+		*word += *size + ((*word)[*size] != '\0');
+		*size = -1;
+	}
+}
+
+char	*expand_word(char *word)
+{
+	int		size;
 	char	*str;
 	char	inside_quote;
 	t_list	*piece_list;
 
-	start = 0;
-	end = -1;
+	size = -1;
 	piece_list = NULL;
 	inside_quote = '\0';
-	while (word[++end])
+	while (word[++size])
 	{
-		if (word[end] == '\'' && inside_quote != '"')
-		{
-			get_piece(&piece_list, word, start, end);
-			if (!inside_quote)
-				inside_quote = '\'';
-			else
-				inside_quote = '\0';
-			start = end + 1;
-		}
-		else if (word[end] == '"' && inside_quote != '\'')
-		{
-			get_piece(&piece_list, word, start, end);
-			if (!inside_quote)
-				inside_quote = '"';
-			else
-				inside_quote = '\0';
-			start = end + 1;
-		}
+		try_get_piece(&piece_list, &word, &inside_quote, &size);
 	}
-	if (end > start)
-		get_piece(&piece_list, word, start, end);
+	if (size > 0)
+		get_piece(&piece_list, word, size);
 	str = merge_pieces(piece_list);
 	ft_lstclear(&piece_list, destroy_piece);
 	return (str);

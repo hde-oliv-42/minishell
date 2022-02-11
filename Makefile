@@ -45,6 +45,7 @@ TEST_SRC = pwd.c 					\
 		   signal_handlers.c		\
 		   signal_ignorers.c		\
 		   expand.c					\
+		   pieces.c					\
 
 SRC = main.c $(TEST_SRC)
 

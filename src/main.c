@@ -47,7 +47,7 @@ int	loop_prompt(void)
 		program = parse(tokens);
 		if (program == NULL)
 			continue ;
-		execute(program);
+		// execute(program);
 		destroy_pipeline(program);
 		destroy_token_array(tokens);
 	}
@@ -57,22 +57,41 @@ int	loop_prompt(void)
 int	main(void)
 {
 	char *strings[] = {
-		"oi",
-		"a'vida'e'loka'",
-		"a\"vida\"e'loka'",
-		"a\"vidae'loka'\"",
-		"a'vida''e''loka'",
-		"a\"\"vida\"e\"\"loka\"",
-		"'a\"\"vida\"e\"\"loka\"'",
-		"'a\"\"vida\"e'\"\"loka\"\"",
-		"\" $USER$$HOME\"",
+		"minishell",
+		"mi'ni'sh'ell'",
+		"mi\"ni\"sh'ell'",
+		"mi\"ni'shell'\"",
+		"mi'ni''sh''ell'",
+		"mi\"\"ni\"sh\"\"ell\"",
+		"'mi\"\"ni\"sh\"\"ell\"'",
+		"'mi\"\"ni\"sh'\"\"ell\"\"",
+		"\"mini shell\"",
+		"$USER",
+		"'$USER'",
+		"\"$USER\"",
+		"echo\"$USER\"",
+		"echo$USER",
+		"echo$USER$USER",
+		"echo$US$ER$USER",
+		"\"$USER é legal\"",
+		"'$USER é legal'",
+		"$$USER é legal",
+		"$=USER é legal",
+		"$@USER é legal",
+		"$(USER é legal",
+		"$)USER é legal",
+		"$*USER é legal",
+		"dsjak lfads jfkdl sjf (ajsdkfl jdskf jasdkl)",
+		"massa$",
+		"\"daora$\"",
+		"\"daora$\"massa",
 		NULL};
 	int i = 0;
 
 	while (strings[i])
 	{
 		char *expanded = expand_word(strings[i]);
-		printf("actual:   %s\n", strings[i]);
+		printf("\nactual:   %s\n", strings[i]);
 		printf("expanded: %s\n", expanded);
 		free(expanded);
 		i++;

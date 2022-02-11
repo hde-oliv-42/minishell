@@ -19,7 +19,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-extern char **g_env;
+static char **g_env;
 
 // void	command_not_found(char *program_name)
 // {
@@ -255,10 +255,7 @@ void	check_if_must_open_stdin(t_program *last_program, int fd[2])
 void	check_if_must_open_stdout(t_program *program, int fd[2])
 {
 	if (!program->output_list && program->next_relation == PIPE)
-	{
-		pipe(fd);
 		dup2(fd[1], 1);
-	}
 }
 
 void	open_all_output_files(t_program *program, int out_fd)
@@ -326,7 +323,24 @@ char	**generate_argv_array(t_program *program)
 	return (argv);
 }
 
-void	execute_one_command(t_program *program, int *wstatus)
+void	check_pipe_relations(t_program *last_program, t_program *program, int fd[2])
+{
+	if (last_program && last_program->next_relation == PIPE)
+	{
+		if (program->next_relation == PIPE)
+			return ;
+		close(fd[1]);
+	}
+	if (last_program && last_program->next_relation != PIPE)
+	{
+		close(fd[0]);
+		if (program->next_relation == PIPE)
+			return ;
+		close(fd[1]);
+	}
+}
+
+void	execute_one_command(t_program *last_program, t_program *program, int fd[2], int *wstatus)
 {
 	char	*path;
 	char	**argv;
@@ -343,6 +357,7 @@ void	execute_one_command(t_program *program, int *wstatus)
 	{
 		child_handlers();
 		argv = generate_argv_array(program);
+		check_pipe_relations(last_program, program, fd);
 		execve(path, argv, g_env);
 	}
 }
@@ -373,33 +388,42 @@ void	handle_wait(t_program *program_list, int *wstatus)
 	}
 }
 
-// NOTE: If next_relation is PIPE or NONE do not run WAIT immediately
+void	handle_child(t_program *last_program, t_program *program, int fd[2], int wstatus)
+{
+	// int	out_fd;
+
+	// out_fd = 0;
+	check_if_must_open_stdin(last_program, fd);
+	// check_conditional_error(last_program, wstatus);
+	check_if_must_open_stdout(program, fd);
+	// open_all_output_files(program, out_fd);
+	// open_all_input_files(program, out_fd);
+	execute_one_command(last_program, program, fd, &wstatus);
+}
+
+// NOTE: In conditional executions, WAIT will be needed inside the loop
 void	execute(t_program *program_list)
 {
 	int				fd[2];
 	int				wstatus;
-	int				out_fd;
 	t_program		*program;
 	t_program		*last_program;
 
+	if (g_env == NULL)
+		initialize_ms_env(&g_env);
 	program = program_list;
 	last_program = NULL;
 	wstatus = 0;
-	out_fd = 0;
 	ignore_signals();
 	while (program)
 	{
+		pipe(fd);
 		if (fork() == 0)
-		{
-			check_if_must_open_stdin(last_program, fd);
-			check_conditional_error(last_program, wstatus);
-			check_if_must_open_stdout(program, fd);
-			open_all_output_files(program, out_fd);
-			open_all_input_files(program, out_fd);
-			execute_one_command(program, &wstatus);
-		}
+			handle_child(last_program, program, fd, wstatus);
 		else
 		{
+			close(fd[0]);
+			close(fd[1]);
 			last_program = program;
 			program = program->next;
 		}
@@ -407,3 +431,5 @@ void	execute(t_program *program_list)
 	handle_wait(program_list, &wstatus);
 	handle_signals();
 }
+
+// --trace-children=yes --track-fds=yes -s --leak-check=full --show-leak-kinds=all

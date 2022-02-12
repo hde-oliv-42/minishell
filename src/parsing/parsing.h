@@ -34,6 +34,7 @@ typedef enum e_program_type {
 
 struct s_program {
 	char			*name;
+	int				next_pipe[2];
 	t_program_type	type;
 	t_list			*params;
 	t_list			*input_list;

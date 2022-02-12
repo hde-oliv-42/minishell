@@ -246,16 +246,23 @@ void	check_conditional_error(t_program *last_program, int wstatus)
 	}
 }
 
-void	check_if_must_open_stdin(t_program *last_program, int fd[2])
+void	check_if_must_open_stdin(t_program *last_program)
 {
 	if (last_program && last_program->next_relation == PIPE)
-		dup2(fd[0], 0);
+	{
+		dup2(last_program->next_pipe[0], STDIN_FILENO);
+		close(last_program->next_pipe[0]);
+	}
+
 }
 
-void	check_if_must_open_stdout(t_program *program, int fd[2])
+void	check_if_must_open_stdout(t_program *program)
 {
 	if (!program->output_list && program->next_relation == PIPE)
-		dup2(fd[1], 1);
+	{
+		dup2(program->next_pipe[1], STDOUT_FILENO);
+		close(program->next_pipe[1]);
+	}
 }
 
 void	open_all_output_files(t_program *program, int out_fd)
@@ -323,24 +330,30 @@ char	**generate_argv_array(t_program *program)
 	return (argv);
 }
 
-void	check_pipe_relations(t_program *last_program, t_program *program, int fd[2])
+void	check_pipe_relations(t_program *last_program, t_program *program)
 {
-	if (last_program && last_program->next_relation == PIPE)
-	{
-		if (program->next_relation == PIPE)
-			return ;
-		close(fd[1]);
-	}
+	if (last_program)
+		close(last_program->next_pipe[0]);
+	close(program->next_pipe[0]);
 	if (last_program && last_program->next_relation != PIPE)
-	{
-		close(fd[0]);
-		if (program->next_relation == PIPE)
-			return ;
-		close(fd[1]);
-	}
+		close(last_program->next_pipe[1]);
+	if (program->next_relation != PIPE)
+		close(program->next_pipe[1]);
+	// Leitura, Escrita
+	// Fecha de onde o anterior leu porque nao importa pro atual
+	// Se o anterior escreveu algo para mim,
+		// Ele escreveu no meu STDIN ORIGINAL, entao eu nao fecho o de escrita dele porque o sistema fecha
+	// Se ele nao escreveu algo pra mim,
+		// Eu fecho o de escrita dele
+	// Como eu uso o STDIN ORIGINAL, eu nao preciso do meu pipe (a ponta de leitura) porque ninguem vai escrever nele para mim
+	// Fecha o meu de leitura
+	// Se eu preciso escrever algo pro proximo comando
+		// Eu nao fecho o meu de escrita
+	// Se eu nao preciso escrever algo pro proximo comando
+		// Eu o fecho o meu de escrita
 }
 
-void	execute_one_command(t_program *last_program, t_program *program, int fd[2], int *wstatus)
+void	execute_one_command(t_program *last_program, t_program *program, int *wstatus)
 {
 	char	*path;
 	char	**argv;
@@ -357,7 +370,7 @@ void	execute_one_command(t_program *last_program, t_program *program, int fd[2],
 	{
 		child_handlers();
 		argv = generate_argv_array(program);
-		check_pipe_relations(last_program, program, fd);
+		check_pipe_relations(last_program, program);
 		execve(path, argv, g_env);
 	}
 }
@@ -388,23 +401,22 @@ void	handle_wait(t_program *program_list, int *wstatus)
 	}
 }
 
-void	handle_child(t_program *last_program, t_program *program, int fd[2], int wstatus)
+void	handle_child(t_program *last_program, t_program *program, int wstatus)
 {
 	// int	out_fd;
 
 	// out_fd = 0;
-	check_if_must_open_stdin(last_program, fd);
+	check_if_must_open_stdin(last_program);
 	// check_conditional_error(last_program, wstatus);
-	check_if_must_open_stdout(program, fd);
+	check_if_must_open_stdout(program);
 	// open_all_output_files(program, out_fd);
 	// open_all_input_files(program, out_fd);
-	execute_one_command(last_program, program, fd, &wstatus);
+	execute_one_command(last_program, program, &wstatus);
 }
 
 // NOTE: In conditional executions, WAIT will be needed inside the loop
 void	execute(t_program *program_list)
 {
-	int				fd[2];
 	int				wstatus;
 	t_program		*program;
 	t_program		*last_program;
@@ -417,13 +429,21 @@ void	execute(t_program *program_list)
 	ignore_signals();
 	while (program)
 	{
-		pipe(fd);
+		pipe(program->next_pipe);
 		if (fork() == 0)
-			handle_child(last_program, program, fd, wstatus);
+			handle_child(last_program, program, wstatus);
 		else
 		{
-			close(fd[0]);
-			close(fd[1]);
+			if (last_program)
+			{
+				close(last_program->next_pipe[0]);
+				close(last_program->next_pipe[1]);
+			}
+			if (!program->next)
+			{
+				close(program->next_pipe[0]);
+				close(program->next_pipe[1]);
+			}
 			last_program = program;
 			program = program->next;
 		}

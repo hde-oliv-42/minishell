@@ -333,24 +333,12 @@ char	**generate_argv_array(t_program *program)
 void	check_pipe_relations(t_program *last_program, t_program *program)
 {
 	if (last_program)
-		close(last_program->next_pipe[0]);
+		close(last_program->next_pipe[1]);
 	close(program->next_pipe[0]);
 	if (last_program && last_program->next_relation != PIPE)
-		close(last_program->next_pipe[1]);
+		close(last_program->next_pipe[0]);
 	if (program->next_relation != PIPE)
 		close(program->next_pipe[1]);
-	// Leitura, Escrita
-	// Fecha de onde o anterior leu porque nao importa pro atual
-	// Se o anterior escreveu algo para mim,
-		// Ele escreveu no meu STDIN ORIGINAL, entao eu nao fecho o de escrita dele porque o sistema fecha
-	// Se ele nao escreveu algo pra mim,
-		// Eu fecho o de escrita dele
-	// Como eu uso o STDIN ORIGINAL, eu nao preciso do meu pipe (a ponta de leitura) porque ninguem vai escrever nele para mim
-	// Fecha o meu de leitura
-	// Se eu preciso escrever algo pro proximo comando
-		// Eu nao fecho o meu de escrita
-	// Se eu nao preciso escrever algo pro proximo comando
-		// Eu o fecho o meu de escrita
 }
 
 void	execute_one_command(t_program *last_program, t_program *program, int *wstatus)
@@ -364,7 +352,8 @@ void	execute_one_command(t_program *last_program, t_program *program, int *wstat
 	{
 		command_not_found(program->name);
 		*wstatus = 1;
-		// Free everything and exit
+		// Free everything
+		exit(1);
 	}
 	else
 	{

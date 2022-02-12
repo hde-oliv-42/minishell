@@ -22,30 +22,31 @@ vpath %.c src 						\
 	src/expand						\
 	src/debug
 
-TEST_SRC = pwd.c 					\
-		   process.c				\
-		   parse.c					\
-		   subshell.c				\
-		   destroy.c				\
-		   redirection.c			\
-		   tokenize.c				\
-		   tokenize_word.c			\
-		   character_checkers.c		\
-		   character_checkers2.c	\
-		   token_checkers.c			\
-		   getters.c				\
-		   validator.c				\
-		   validator2.c				\
-		   destroy_tokens.c			\
-		   execute.c				\
-		   access_methods.c			\
-		   ms_env.c					\
-		   print_things.c			\
-		   prompt.c					\
-		   signal_handlers.c		\
-		   signal_ignorers.c		\
-		   expand.c					\
-		   pieces.c					\
+TEST_SRC = 	pwd.c
+TEST_SRC +=	process.c
+TEST_SRC += parse.c
+TEST_SRC += subshell.c
+TEST_SRC += destroy.c
+TEST_SRC += redirection.c
+TEST_SRC += tokenize.c
+TEST_SRC += tokenize_word.c
+TEST_SRC += character_checkers.c
+TEST_SRC += character_checkers2.c
+TEST_SRC += token_checkers.c
+TEST_SRC += getters.c
+TEST_SRC += validator.c
+TEST_SRC += validator2.c
+TEST_SRC += destroy_tokens.c
+# TEST_SRC += execute.c
+TEST_SRC += access_methods.c
+TEST_SRC += ms_env.c
+TEST_SRC += print_things.c
+TEST_SRC += prompt.c
+TEST_SRC += signal_handlers.c
+TEST_SRC += signal_ignorers.c
+TEST_SRC += expand.c
+TEST_SRC += pieces.c
+TEST_SRC += expand_asterisk.c
 
 SRC = main.c $(TEST_SRC)
 

@@ -6,19 +6,18 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 18:23:37 by hde-oliv          #+#    #+#             */
-/*   Updated: 2021/05/20 17:08:11 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/02/11 11:48:05 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_dfree(char **a, size_t i)
+void	ft_dfree(char **a)
 {
-	while (i > 0)
-	{
-		free(a[i]);
-		i--;
-	}
-	free(a[0]);
-	free(a);
+	char	**pointer;
+
+	pointer = a;
+	while (*a)
+		free(*a++);
+	free(pointer);
 }

@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:43:30 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/10 20:43:41 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/11 16:32:24 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ t_piece	*new_piece(char *value, int len);
 int		get_piece(t_list **piece_list, const char *str, int size);
 char	*merge_pieces(t_list *piece_list);
 void	destroy_piece(void *piece);
+t_list	*expand_asterisk(void);
 
 #endif

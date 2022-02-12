@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 17:08:31 by hde-oliv          #+#    #+#             */
-/*   Updated: 2021/11/09 21:41:22 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/02/11 11:46:44 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,7 +485,7 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
  * @a: Pointer to allocated array of array.
  * @i: How many arrays it has.
  */
-void		ft_dfree(char **a, size_t i);
+void		ft_dfree(char **a);
 
 /**
  * ft_intlen - How many decimal cases a integer has.

@@ -8,5 +8,6 @@
 
 void	print_tokens(t_token **tokens);
 void	print_pipeline(t_program *program);
+void	print_array(char **array);
 
 #endif /* !DEBUG */

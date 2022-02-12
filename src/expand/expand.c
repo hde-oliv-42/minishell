@@ -6,13 +6,14 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 13:44:47 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/10 20:59:30 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/11 10:08:33 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand/expand.h"
+#include "libft.h"
 
-#define VAR_DELIMITERS "\"'$ =@(*)"
+#define VAR_DELIMITERS "\"'$ =@(*)#"
 
 static int	skip_dollar(t_list **piece_list, char chr)
 {
@@ -20,7 +21,7 @@ static int	skip_dollar(t_list **piece_list, char chr)
 	t_piece	*piece;
 	char	*value;
 
-	delimiters = "$ =@(*)";
+	delimiters = "$ =@(*)#";
 	value = malloc(3);
 	value[0] = '$';
 	if (ft_strchr(delimiters, chr))
@@ -84,13 +85,6 @@ void	try_get_piece(
 	else if ((*word)[*size] == '"' && *inside_quote != '\'')
 	{
 		asdf(piece_list, word, inside_quote, size);
-		// get_piece(piece_list, *word, *size);
-		// if (!*inside_quote)
-		// 	*inside_quote = '"';
-		// else
-		// 	*inside_quote = '\0';
-		// *word += *size + 1;
-		// *size = -1;
 	}
 	else if ((*word)[*size] == '$' && *inside_quote != '\'')
 	{
@@ -124,10 +118,31 @@ char	*expand_word(char *word)
 	return (str);
 }
 
+void	expand_list(t_list *list)
+{
+	t_list	*cursor;
+	char	*str;
+	char	*new_str;
+
+	cursor = list;
+	while (cursor)
+	{
+		str = cursor->content;
+		new_str = expand_word(str);
+		free(str);
+		cursor->content = new_str;
+		cursor = cursor->next;
+	}
+}
+
 void	expand_words(t_program *programs)
 {
 	while (programs)
 	{
 		programs->name = expand_word(programs->name);
+		expand_list(programs->input_list);
+		expand_list(programs->output_list);
+		expand_list(programs->params);
+		programs = programs->next;
 	}
 }

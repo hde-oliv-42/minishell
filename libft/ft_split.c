@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 17:05:40 by hde-oliv          #+#    #+#             */
-/*   Updated: 2021/05/24 21:24:06 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/02/11 11:47:24 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static char	*snxtwrd(char const *s, char c)
 		return ((char *) s);
 }
 
-static char	**freeall(char **a, size_t i)
+static char	**freeall(char **a)
 {
-	ft_dfree(a, i);
+	ft_dfree(a);
 	return (NULL);
 }
 
@@ -91,7 +91,7 @@ char	**ft_split(char const *s, char c)
 			j++;
 		a[i++] = ft_substr(start, 0, j);
 		if (a[i - 1] == NULL)
-			return (freeall(a, i - 1));
+			return (freeall(a));
 		start = next;
 	}
 	a[i] = NULL;

@@ -56,45 +56,49 @@ int	loop_prompt(void)
 
 int	main(void)
 {
-	char *strings[] = {
-		"minishell",
-		"mi'ni'sh'ell'",
-		"mi\"ni\"sh'ell'",
-		"mi\"ni'shell'\"",
-		"mi'ni''sh''ell'",
-		"mi\"\"ni\"sh\"\"ell\"",
-		"'mi\"\"ni\"sh\"\"ell\"'",
-		"'mi\"\"ni\"sh'\"\"ell\"\"",
-		"\"mini shell\"",
-		"$USER",
-		"'$USER'",
-		"\"$USER\"",
-		"echo\"$USER\"",
-		"echo$USER",
-		"echo$USER$USER",
-		"echo$US$ER$USER",
-		"\"$USER é legal\"",
-		"'$USER é legal'",
-		"$$USER é legal",
-		"$=USER é legal",
-		"$@USER é legal",
-		"$(USER é legal",
-		"$)USER é legal",
-		"$*USER é legal",
-		"dsjak lfads jfkdl sjf (ajsdkfl jdskf jasdkl)",
-		"massa$",
-		"\"daora$\"",
-		"\"daora$\"massa",
-		NULL};
-	int i = 0;
-
-	while (strings[i])
-	{
-		char *expanded = expand_word(strings[i]);
-		printf("\nactual:   %s\n", strings[i]);
-		printf("expanded: %s\n", expanded);
-		free(expanded);
-		i++;
-	}
-	// return (loop_prompt());
+	// char *strings[] = {
+	// 	"minishell",
+	// 	"mi'ni'sh'ell'",
+	// 	"mi\"ni\"sh'ell'",
+	// 	"mi\"ni'shell'\"",
+	// 	"mi'ni''sh''ell'",
+	// 	"mi\"\"ni\"sh\"\"ell\"",
+	// 	"'mi\"\"ni\"sh\"\"ell\"'",
+	// 	"'mi\"\"ni\"sh'\"\"ell\"\"",
+	// 	"\"mini shell\"",
+	// 	"$USER",
+	// 	"'$USER'",
+	// 	"\"$USER\"",
+	// 	"echo\"$USER\"",
+	// 	"\"$USER\"élegal",
+	// 	"echo$USER$USER",
+	// 	"echo$US$ER$USER",
+	// 	"\"$USERélegal\"",
+	// 	"'$USER é legal'",
+	// 	"$$USER",
+	// 	"$=USER",
+	// 	"$@USER",
+	// 	"\"$(USER é legal\"",
+	// 	"\"$)USER é legal\"",
+	// 	"$*USER",
+	// 	"$#USER",
+	// 	"massa$",
+	// 	"\"daora$\"",
+	// 	"\"daora$\"massa",
+	// 	"\"'$USER'\"",
+	// 	"'\"$USER\"'",
+	// 	"\"\"$USER''",
+	// 	NULL};
+	// int i = 0;
+	//
+	// while (strings[i])
+	// {
+	// 	char *expanded = expand_word(strings[i]);
+	// 	printf("\nactual:   %s\n", strings[i]);
+	// 	printf("expanded: %s\n", expanded);
+	// 	free(expanded);
+	// 	i++;
+	// }
+	// expand_asterisk();
+	return (loop_prompt());
 }

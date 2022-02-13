@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 11:25:07 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/22 17:51:18 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/13 16:27:45 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int	validate_after_parenthesis(char *value, t_token *next)
 			return (unexpected_token("end of line"));
 		if (*next->value == ')')
 			return (unexpected_token(")"));
-		if (next->type == TK_AND || next->type == TK_OR || next->type == TK_PIPE)
+		if (next->type == TK_AND
+			|| next->type == TK_OR || next->type == TK_PIPE)
 			return (unexpected_token(next->value));
 		return (1);
 	}
@@ -31,7 +32,8 @@ static int	validate_after_parenthesis(char *value, t_token *next)
 			return (1);
 		if (*next->value == ')')
 			return (1);
-		if (next->type == TK_AND || next->type == TK_OR || next->type == TK_PIPE)
+		if (next->type == TK_AND
+			|| next->type == TK_OR || next->type == TK_PIPE)
 			return (1);
 		if (is_redirection_tk(next->type))
 			return (1);

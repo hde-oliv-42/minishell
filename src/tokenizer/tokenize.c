@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <parsing/parsing.h>
 #include <tokenizer/tokenizer.h>
+#include <expand/expand.h>
 
 t_token	*get_next_token(char *line, int *cursor)
 {
@@ -81,6 +82,7 @@ t_token	**token_list_to_array(t_list *tokens)
 t_token	**tokenize(char *line)
 {
 	t_token	**tokens;
+	t_token	**expanded_tokens;
 	t_list	*token_list;
 	int		valid;
 
@@ -97,7 +99,9 @@ t_token	**tokenize(char *line)
 			destroy_token_array(tokens);
 			return (NULL);
 		}
-		return (tokens);
+		expanded_tokens = expand_tokens(tokens);
+		free(tokens);
+		return (expanded_tokens);
 	}
 	return (NULL);
 }

@@ -46,6 +46,7 @@ TEST_SRC += signal_handlers.c
 TEST_SRC += signal_ignorers.c
 TEST_SRC += expand.c
 TEST_SRC += pieces.c
+TEST_SRC += expand_tokens.c
 TEST_SRC += expand_asterisk.c
 
 SRC = main.c $(TEST_SRC)

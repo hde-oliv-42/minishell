@@ -24,32 +24,44 @@ int	quit_minishell(void)
 	exit(0);
 }
 
-int	loop_prompt(void)
+t_program	*get_program_pipeline(void)
 {
 	char	*line;
 	char	*prompt;
 	t_token	**tokens;
-	t_program	*program;
+	t_program	*programs;
+
+	prompt = generate_prompt();
+	line = readline(prompt);
+	free(prompt);
+	if (line == NULL)
+		quit_minishell();
+	if (ft_strlen(line) == 0)
+		return (NULL);
+	add_history(line);
+	tokens = tokenize(line);
+	free(line);
+	if (tokens == NULL)
+		return (NULL);
+	programs = parse(tokens);
+	if (programs == NULL)
+		return (NULL);
+	destroy_token_array(tokens);
+	return (programs);
+}
+
+int	loop_prompt(void)
+{
+	t_program	*programs;
 
 	handle_signals();
 	while (1)
 	{
-		prompt = generate_prompt();
-		line = readline(prompt);
-		free(prompt);
-		if (line == NULL)
-			return (quit_minishell());
-		add_history(line);
-		tokens = tokenize(line);
-		free(line);
-		if (tokens == NULL)
+		programs = get_program_pipeline();
+		if (programs == NULL)
 			continue ;
-		program = parse(tokens);
-		if (program == NULL)
-			continue ;
-		execute(program);
-		destroy_pipeline(program);
-		destroy_token_array(tokens);
+		execute(programs);
+		destroy_pipeline(programs);
 	}
 	return (0);
 }

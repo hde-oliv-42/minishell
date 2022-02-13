@@ -35,4 +35,6 @@ char	*merge_pieces(t_list *piece_list);
 void	destroy_piece(void *piece);
 t_list	*expand_asterisk(void);
 
+t_token	**expand_tokens(t_token **token_array);
+
 #endif

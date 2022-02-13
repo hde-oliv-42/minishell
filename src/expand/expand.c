@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 13:44:47 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/11 10:08:33 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/13 16:31:14 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,33 +112,4 @@ char	*expand_word(char *word)
 	str = merge_pieces(piece_list);
 	ft_lstclear(&piece_list, destroy_piece);
 	return (str);
-}
-
-void	expand_list(t_list *list)
-{
-	t_list	*cursor;
-	char	*str;
-	char	*new_str;
-
-	cursor = list;
-	while (cursor)
-	{
-		str = cursor->content;
-		new_str = expand_word(str);
-		free(str);
-		cursor->content = new_str;
-		cursor = cursor->next;
-	}
-}
-
-void	expand_words(t_program *programs)
-{
-	while (programs)
-	{
-		programs->name = expand_word(programs->name);
-		expand_list(programs->input_list);
-		expand_list(programs->output_list);
-		expand_list(programs->params);
-		programs = programs->next;
-	}
 }

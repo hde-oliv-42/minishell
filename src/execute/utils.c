@@ -7,13 +7,17 @@ void	command_not_found(char *program_name)
 
 void	flush_minishell(void)
 {
-	// Cancel everything and print prompt
+	// TODO: Cancel everything, free and print prompt
 }
 
 void	close_pipe(int fd[2])
 {
 	if (close(fd[0]))
-		quit_minishell();
+	{
+		// flush_minishell();
+	}
 	if (close(fd[1]))
-		quit_minishell();
+	{
+		// flush_minishell();
+	}
 }

@@ -24,18 +24,26 @@ void	check_pipe_relations(t_program *last_program, t_program *program)
 	if (last_program)
 	{
 		if (close(last_program->next_pipe[1]))
-			quit_minishell();
+		{
+			// flush_minishell();
+		}
 	}
 	if (close(program->next_pipe[0]))
-		quit_minishell();
+	{
+		// flush_minishell();
+	}
 	if (last_program && last_program->next_relation != PIPE)
 	{
 		if (close(last_program->next_pipe[0]))
-			quit_minishell();
+		{
+			// flush_minishell();
+		}
 	}
 	if (program->next_relation != PIPE)
 	{
 		if (close(program->next_pipe[1]))
-			quit_minishell();
+		{
+			// flush_minishell();
+		}
 	}
 }

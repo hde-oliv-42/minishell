@@ -27,7 +27,7 @@ void	execute_one_command(t_program *last_program, t_program *program, int *wstat
 	{
 		command_not_found(program->name);
 		*wstatus = 1;
-		// Free everything
+		// free_minishell();
 		exit(1);
 	}
 	else
@@ -41,46 +41,46 @@ void	execute_one_command(t_program *last_program, t_program *program, int *wstat
 	}
 }
 
-// NOTE: In conditional executions, WAIT will be needed inside the loop
 void	execute(t_program *program_list)
 {
 	int				wstatus;
 	t_program		*program;
 	t_program		*last_program;
 	int				id;
+	int				program_count;
 
 	if (g_env == NULL)
 		initialize_ms_env(&g_env);
 	program = program_list;
 	last_program = NULL;
 	wstatus = 0;
+	program_count = 0;
 	ignore_signals();
 	while (program)
 	{
 		if (program->next_relation == PIPE)
-		{
-			pipe(program->next_pipe);
-			// Cancel everything on error and return prompt
-		}
+			if (pipe(program->next_pipe))
+				break ;
+		if (check_conditional_error(last_program, wstatus))
+			break;
 		id = fork();
 		if (id == 0)
 			handle_child(last_program, program, wstatus);
-		/* else if (id == -1) */
-		/* 	// Cancel everything and return prompt */
+		else if (id < 0)
+			break ;
 		else
 		{
 			if (program->next_relation == AND || program->next_relation == OR)
-				handle_parent_wait(&wstatus);
-			if (last_program)
+				handle_conditional_wait(&wstatus);
+			else
+				program_count++;
+			if (last_program && last_program->next_relation == PIPE)
 				close_pipe(last_program->next_pipe);
-			if (!program->next)
-				close_pipe(program->next_pipe);
 			last_program = program;
 			program = program->next;
 		}
 	}
+	// TODO: Check ERRNO if and print any errors
 	handle_wait(program_list, &wstatus);
 	handle_signals();
 }
-
-// --trace-children=yes --track-fds=yes -s --leak-check=full --show-leak-kinds=all

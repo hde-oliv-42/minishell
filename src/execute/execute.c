@@ -12,9 +12,11 @@
 
 #include "execute.h"
 #include "builtins/builtins.h"
+#include "debug/debug.h"
 #include "libft.h"
 #include "parsing/parsing.h"
 #include "signals/signals.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -265,7 +267,7 @@ void	check_if_must_open_stdout(t_program *program)
 	}
 }
 
-void	open_all_output_files(t_program *program, int out_fd)
+void	open_all_output_files(t_program *program, int *out_fd)
 {
 	t_list			*files_out;
 	t_redirection	*file_out;
@@ -274,10 +276,10 @@ void	open_all_output_files(t_program *program, int out_fd)
 	while (files_out)
 	{
 		file_out = files_out->content;
-		out_fd = open(file_out->file_name, O_CREAT | file_out->type);
-		dup2(out_fd, 1);
+		*out_fd = open(file_out->file_name, O_CREAT | O_WRONLY | file_out->type, 0644);
+		dup2(*out_fd, 1);
 		files_out = files_out->next;
-		close(out_fd);
+		close(*out_fd);
 	}
 }
 
@@ -293,11 +295,11 @@ void	open_all_input_files(t_program *program, int out_fd)
 		file_in = files_in->content;
 		if (file_in->type == RD_HERE_DOC)
 		{
-			//handle_heredoc();
+			// handle_heredoc();
 		}
 		else
 		{
-			in_fd = open(file_in->file_name, file_in->type); // TODO: Check for errors later
+			in_fd = open(file_in->file_name, file_in->type, 0644); // TODO: Check for errors later
 			dup2(out_fd, 0);
 			files_in = files_in->next;
 			close(in_fd);
@@ -375,7 +377,8 @@ void	handle_wait(t_program *program_list, int *wstatus)
 	size = 0;
 	while (tmp)
 	{
-		size++;
+		if (tmp->next_relation != OR && tmp->next_relation != AND)
+			size++;
 		tmp = tmp->next;
 	}
 	while (size)
@@ -392,15 +395,34 @@ void	handle_wait(t_program *program_list, int *wstatus)
 
 void	handle_child(t_program *last_program, t_program *program, int wstatus)
 {
-	// int	out_fd;
+	int	out_fd;
 
-	// out_fd = 0;
+	out_fd = 0;
 	check_if_must_open_stdin(last_program);
-	// check_conditional_error(last_program, wstatus);
+	check_conditional_error(last_program, wstatus);
 	check_if_must_open_stdout(program);
-	// open_all_output_files(program, out_fd);
-	// open_all_input_files(program, out_fd);
+	open_all_output_files(program, &out_fd);
+	open_all_input_files(program, out_fd);
 	execute_one_command(last_program, program, &wstatus);
+}
+
+void	close_pipe(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
+
+void	handle_parent_wait(int *wstatus)
+{
+	int	waifu;
+	int	status;
+
+	wait(&status);
+	waifu = WIFEXITED(status);
+	if (waifu)
+		*wstatus = WEXITSTATUS(status);
+	else
+		*wstatus = 1;
 }
 
 // NOTE: In conditional executions, WAIT will be needed inside the loop
@@ -423,16 +445,12 @@ void	execute(t_program *program_list)
 			handle_child(last_program, program, wstatus);
 		else
 		{
+			if (program->next_relation == AND || program->next_relation == OR)
+				handle_parent_wait(&wstatus);
 			if (last_program)
-			{
-				close(last_program->next_pipe[0]);
-				close(last_program->next_pipe[1]);
-			}
+				close_pipe(last_program->next_pipe);
 			if (!program->next)
-			{
-				close(program->next_pipe[0]);
-				close(program->next_pipe[1]);
-			}
+				close_pipe(program->next_pipe);
 			last_program = program;
 			program = program->next;
 		}

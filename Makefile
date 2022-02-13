@@ -16,6 +16,7 @@ vpath %.c src 						\
 	src/process 					\
 	src/parsing 					\
 	src/tokenizer 					\
+	src/heredoc 					\
 	src/prompt 						\
 	src/signals 					\
 	src/execute						\
@@ -52,6 +53,7 @@ TEST_SRC += expand.c
 TEST_SRC += pieces.c
 TEST_SRC += expand_tokens.c
 TEST_SRC += expand_asterisk.c
+TEST_SRC += heredoc.c
 
 SRC = main.c $(TEST_SRC)
 

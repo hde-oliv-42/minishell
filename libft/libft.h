@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 17:08:31 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/11 11:46:44 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/13 16:16:18 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -674,5 +674,6 @@ char		*ft_itox(ssize_t nbr);
 char		*ft_strtoupper(char *str);
 char		*ft_uitoa(unsigned int nbr);
 char		*ft_stox(size_t nbr);
+void		do_nothing(void *p);
 
 #endif

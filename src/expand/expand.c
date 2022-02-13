@@ -60,7 +60,7 @@ static int	get_env_variable(
 	return (1);
 }
 
-void	asdf(
+void	extract_until_quote(
 		t_list **piece_list, char **word, char *inside_quote, int *size)
 {
 	char	quote;
@@ -79,13 +79,9 @@ void	try_get_piece(
 		t_list **piece_list, char **word, char *inside_quote, int *size)
 {
 	if ((*word)[*size] == '\'' && *inside_quote != '"')
-	{
-		asdf(piece_list, word, inside_quote, size);
-	}
+		extract_until_quote(piece_list, word, inside_quote, size);
 	else if ((*word)[*size] == '"' && *inside_quote != '\'')
-	{
-		asdf(piece_list, word, inside_quote, size);
-	}
+		extract_until_quote(piece_list, word, inside_quote, size);
 	else if ((*word)[*size] == '$' && *inside_quote != '\'')
 	{
 		get_piece(piece_list, *word, *size);

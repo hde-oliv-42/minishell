@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 08:57:31 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/11 16:46:34 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/13 16:17:38 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,19 @@ static char	**string_list_to_array(t_list *list)
 	return (arr);
 }
 
-static void	do_nothing(void *content)
-{
-	(void)content;
-}
-
 static t_list	*array_to_list(char **file_names_array)
 {
 	t_list	*list;
+	char	**array_pointer;
 
 	list = NULL;
+	array_pointer = file_names_array;
 	while (*file_names_array)
 	{
 		ft_lstadd_back(&list, ft_lstnew(*file_names_array));
 		file_names_array++;
 	}
+	free(array_pointer);
 	return (list);
 }
 
@@ -118,11 +116,9 @@ t_list	*expand_asterisk(void)
 		dir_data = readdir(dir);
 	}
 	if (errno)
-		perror("readdir: ");
+		perror("readdir");
 	file_names_array = string_list_to_array(file_names);
 	sort_directories(file_names_array);
-	print_array(file_names_array);
-	free(file_names_array);
 	closedir(dir);
 	ft_lstclear(&file_names, do_nothing);
 	return (array_to_list(file_names_array));

@@ -37,7 +37,7 @@ void	free_path_array(char **path_array)
 	free(path_array);
 }
 
-char	*it_exists(char *name, char **ms_env)
+char	*find_path(char *name, char **ms_env)
 {
 	char	*path_string;
 	char	**path_array;

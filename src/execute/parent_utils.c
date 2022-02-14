@@ -23,19 +23,11 @@ int	check_conditional_error(t_data *data)
 
 void	handle_wait(t_data *data)
 {
-	t_program	*tmp;
 	int			size;
 	int			status;
 	int			waifu; // TODO: Change this name later
 
-	tmp = data->program_list;
-	size = 0;
-	while (tmp)
-	{
-		if (tmp->next_relation != OR && tmp->next_relation != AND)
-			size++;
-		tmp = tmp->next;
-	}
+	size = data->program_count;
 	while (size)
 	{
 		wait(&status);

@@ -13,7 +13,6 @@ LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 
 vpath %.c src 						\
 	src/builtins 					\
-	src/process 					\
 	src/parsing 					\
 	src/tokenizer 					\
 	src/heredoc 					\
@@ -24,7 +23,6 @@ vpath %.c src 						\
 	src/debug
 
 TEST_SRC = 	pwd.c
-TEST_SRC +=	process.c
 TEST_SRC += parse.c
 TEST_SRC += subshell.c
 TEST_SRC += destroy.c

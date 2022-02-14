@@ -4,7 +4,6 @@
 #include <readline/history.h>
 #include <stdlib.h>
 
-#include <process/process.h>
 #include <parsing/parsing.h>
 #include <tokenizer/tokenizer.h>
 #include <execute/execute.h>

@@ -24,13 +24,22 @@
 # include "ft_printf/libftprintf.h"
 # include "signals/signals.h"
 
+typedef struct s_data
+{
+	t_program	*program_list;
+	t_program	*program;
+	t_program	*last_program;
+	int			program_count;
+	int			*wstatus;
+}	t_data;
+
 // Execute
 void	execute(t_program *program_list);
-void	execute_one_command(t_program *last_program, t_program *program, t_program *program_list, int *wstatus);
+void	execute_one_command(t_data *data);
 
 // Execute utils
 char	**generate_argv_array(t_program *program);
-void	check_pipe_relations(t_program *last_program, t_program *program);
+void	check_pipe_relations(t_data *data);
 
 // Environment
 int		initialize_ms_env(char ***ms_env);
@@ -39,20 +48,21 @@ int		initialize_ms_env(char ***ms_env);
 char	*find_path(char *name, char **ms_env);
 
 // Child utils
-void	check_if_must_open_stdin(t_program *last_program);
-void	check_if_must_open_stdout(t_program *program);
-void	open_all_output_files(t_program *program, int *out_fd);
-void	open_all_input_files(t_program *program, int out_fd);
+void	check_if_must_open_stdin(t_data *data);
+void	check_if_must_open_stdout(t_data *data);
+void	open_all_output_files(t_data *data, int *out_fd);
+void	open_all_input_files(t_data *data, int out_fd);
 
 // Parent utils
-void	handle_wait(t_program *program_list, int *wstatus);
-void	handle_child(t_program *last_program, t_program *program, t_program *program_list, int wstatus);
-void	handle_conditional_wait(int *wstatus);
-int		check_conditional_error(t_program *last_program, int wstatus);
+void	handle_wait(t_data *data);
+void	handle_child(t_data *data);
+void	handle_conditional_wait(t_data *data);
+int		check_conditional_error(t_data *data);
 
 // Utils
 void	command_not_found(char *program_name);
-void	flush_minishell(void);
-void	close_pipe(int fd[2]);
+void	flush_minishell(t_data *data);
+void	free_minishell(t_data *data);
+void	close_pipe(int fd[2], t_data *data);
 
 #endif

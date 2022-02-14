@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "libft.h"
+#include "parsing/parsing.h"
 
 void	command_not_found(char *program_name)
 {
@@ -20,6 +22,9 @@ void	command_not_found(char *program_name)
 void	flush_minishell(t_data *data)
 {
 	(void)data;
+	destroy_pipeline(data->program_list);
+	ft_dfree(g_env);
+	perror("FLUSH");
 	exit(errno);
 }
 

@@ -26,7 +26,7 @@
 
 // Execute
 void	execute(t_program *program_list);
-void	execute_one_command(t_program *last_program, t_program *program, int *wstatus);
+void	execute_one_command(t_program *last_program, t_program *program, t_program *program_list, int *wstatus);
 
 // Execute utils
 char	**generate_argv_array(t_program *program);
@@ -46,7 +46,7 @@ void	open_all_input_files(t_program *program, int out_fd);
 
 // Parent utils
 void	handle_wait(t_program *program_list, int *wstatus);
-void	handle_child(t_program *last_program, t_program *program, int wstatus);
+void	handle_child(t_program *last_program, t_program *program, t_program *program_list, int wstatus);
 void	handle_conditional_wait(int *wstatus);
 int		check_conditional_error(t_program *last_program, int wstatus);
 

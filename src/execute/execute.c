@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "libft.h"
 
 static char **g_env;
 
 // TODO: Check for builtins
-void	execute_one_command(t_program *last_program, t_program *program, int *wstatus)
+void	execute_one_command(t_program *last_program, t_program *program, t_program *program_list, int *wstatus)
 {
 	char	*path;
 	char	**argv;
@@ -27,6 +28,8 @@ void	execute_one_command(t_program *last_program, t_program *program, int *wstat
 	{
 		command_not_found(program->name);
 		*wstatus = 1;
+		destroy_pipeline(program_list);
+		ft_dfree(g_env);
 		// free_minishell();
 		exit(1);
 	}
@@ -65,7 +68,7 @@ void	execute(t_program *program_list)
 			break;
 		id = fork();
 		if (id == 0)
-			handle_child(last_program, program, wstatus);
+			handle_child(last_program, program, program_list, wstatus);
 		else if (id < 0)
 			break ;
 		else

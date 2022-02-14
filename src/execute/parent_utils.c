@@ -49,7 +49,7 @@ void	handle_conditional_wait(int *wstatus)
 		*wstatus = 1;
 }
 
-void	handle_child(t_program *last_program, t_program *program, int wstatus)
+void	handle_child(t_program *last_program, t_program *program, t_program *program_list, int wstatus)
 {
 	int	out_fd;
 
@@ -58,5 +58,5 @@ void	handle_child(t_program *last_program, t_program *program, int wstatus)
 	check_if_must_open_stdout(program);
 	open_all_output_files(program, &out_fd);
 	open_all_input_files(program, out_fd);
-	execute_one_command(last_program, program, &wstatus);
+	execute_one_command(last_program, program, program_list, &wstatus);
 }

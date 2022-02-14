@@ -56,7 +56,7 @@ char	*get_heredoc(char *delimiter)
 		newstr = readline("> ");
 		if (newstr == NULL)
 		{
-			ft_dprintf(2022, "unexpected end-of-file\n");
+			ft_dprintf(2, "unexpected end-of-file\n");
 			ft_lstclear(&lines_list, free);
 			return (NULL);
 		}

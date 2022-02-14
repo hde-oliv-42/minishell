@@ -24,6 +24,8 @@
 # include "ft_printf/libftprintf.h"
 # include "signals/signals.h"
 
+extern char **g_env;
+
 typedef struct s_data
 {
 	t_program	*program_list;

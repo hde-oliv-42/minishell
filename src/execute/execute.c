@@ -13,7 +13,7 @@
 #include "execute.h"
 #include "libft.h"
 
-static char **g_env;
+char **g_env = NULL;
 
 // TODO: Check for builtins
 void	execute_one_command(t_data *data)
@@ -48,6 +48,7 @@ void	execute(t_program *program_list)
 
 	if (g_env == NULL)
 		initialize_ms_env(&g_env);
+	wstatus = 0;
 	data = (t_data){ program_list, program_list, NULL, 0, &wstatus };
 	ignore_signals();
 	while (data.program)

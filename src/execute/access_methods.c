@@ -19,6 +19,7 @@ int	create_path_array(char *path_string, char ***path_array)
 
 	str = ft_substr(path_string, 5, ft_strlen(path_string) - 5);
 	*path_array = ft_split(str, ':');
+	free(str);
 	if (*path_array == NULL)
 		return (1);
 	return (0);
@@ -74,5 +75,6 @@ char	*find_path(char *name, char **ms_env)
 		free(tmp2);
 		i++;
 	}
+	free_path_array(path_array);
 	return (NULL);
 }

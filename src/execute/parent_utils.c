@@ -1,42 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parent_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
+/*   Updated: 2022/02/03 20:32:53 by hde-oliv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execute.h"
 
-int	check_conditional_error(t_program *last_program, int wstatus)
+int	check_conditional_error(t_data *data)
 {
-	if (last_program && last_program->next_relation == AND && wstatus != 0)
+	if (data->last_program && data->last_program->next_relation == AND && data->wstatus != 0)
 		return (1);
-	else if (last_program && last_program->next_relation == OR && wstatus == 0)
+	else if (data->last_program && data->last_program->next_relation == OR && data->wstatus == 0)
 		return (1);
 	return (0);
 }
 
-void	handle_wait(t_program *program_list, int *wstatus)
+void	handle_wait(t_data *data)
 {
-	t_program	*tmp;
 	int			size;
 	int			status;
 	int			waifu; // TODO: Change this name later
 
-	tmp = program_list;
-	size = 0;
-	while (tmp)
-	{
-		if (tmp->next_relation != OR && tmp->next_relation != AND)
-			size++;
-		tmp = tmp->next;
-	}
+	size = data->program_count;
 	while (size)
 	{
 		wait(&status);
 		size--;
 		waifu = WIFEXITED(status);
 		if (waifu)
-			*wstatus = WEXITSTATUS(status);
+			*(data->wstatus) = WEXITSTATUS(status);
 		else
-			*wstatus = 1;
+			*(data->wstatus) = 1;
 	}
 }
 
-void	handle_conditional_wait(int *wstatus)
+void	handle_conditional_wait(t_data *data)
 {
 	int	waifu;
 	int	status;
@@ -44,19 +48,19 @@ void	handle_conditional_wait(int *wstatus)
 	wait(&status);
 	waifu = WIFEXITED(status);
 	if (waifu)
-		*wstatus = WEXITSTATUS(status);
+		*(data->wstatus) = WEXITSTATUS(status);
 	else
-		*wstatus = 1;
+		*(data->wstatus) = 1;
 }
 
-void	handle_child(t_program *last_program, t_program *program, int wstatus)
+void	handle_child(t_data *data)
 {
 	int	out_fd;
 
 	out_fd = 0;
-	check_if_must_open_stdin(last_program);
-	check_if_must_open_stdout(program);
-	open_all_output_files(program, &out_fd);
-	open_all_input_files(program, out_fd);
-	execute_one_command(last_program, program, &wstatus);
+	check_if_must_open_stdin(data);
+	check_if_must_open_stdout(data);
+	open_all_output_files(data, &out_fd);
+	open_all_input_files(data, out_fd);
+	execute_one_command(data);
 }

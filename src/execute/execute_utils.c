@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
+/*   Updated: 2022/02/03 20:32:53 by hde-oliv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execute.h"
 
 char	**generate_argv_array(t_program *program)
@@ -19,31 +31,18 @@ char	**generate_argv_array(t_program *program)
 	return (argv);
 }
 
-void	check_pipe_relations(t_program *last_program, t_program *program)
+void	check_pipe_relations(t_data *data)
 {
-	if (last_program)
+	if (data->last_program)
 	{
-		if (close(last_program->next_pipe[1]))
-		{
-			// flush_minishell();
-		}
+		if (close(data->last_program->next_pipe[1]))
+			flush_minishell(data);
 	}
-	if (close(program->next_pipe[0]))
+	if (close(data->program->next_pipe[0]))
+		flush_minishell(data);
+	if (data->last_program && data->last_program->next_relation != PIPE)
 	{
-		// flush_minishell();
-	}
-	if (last_program && last_program->next_relation != PIPE)
-	{
-		if (close(last_program->next_pipe[0]))
-		{
-			// flush_minishell();
-		}
-	}
-	if (program->next_relation != PIPE)
-	{
-		if (close(program->next_pipe[1]))
-		{
-			// flush_minishell();
-		}
+		if (close(data->last_program->next_pipe[0]))
+			flush_minishell(data);
 	}
 }

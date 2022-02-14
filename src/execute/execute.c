@@ -50,7 +50,6 @@ void	execute(t_program *program_list)
 		initialize_ms_env(&g_env);
 	wstatus = 0;
 	data = (t_data){ program_list, program_list, NULL, 0, &wstatus };
-	ignore_signals();
 	while (data.program)
 	{
 		if (data.program->next_relation == PIPE)
@@ -76,6 +75,7 @@ void	execute(t_program *program_list)
 		}
 	}
 	// TODO: Check ERRNO and print any errors
+	ignore_signals();
 	handle_wait(&data);
 	handle_signals();
 	// Free data

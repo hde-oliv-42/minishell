@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "ft_printf/libftprintf.h"
+#include "heredoc.h"
 
 static int	str_equals(char *str1, char *str2)
 {

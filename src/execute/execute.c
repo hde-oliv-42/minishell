@@ -16,6 +16,7 @@
 
 char **g_env = NULL;
 
+// TODO: Refactor this later
 int	is_builtin(t_data *data)
 {
 	if (!ft_strncmp(data->program->name, "cd", 3))

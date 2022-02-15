@@ -11,42 +11,42 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "debug/debug.h"
+#include "parsing/parsing.h"
 
 int	echo(t_program *program)
 {
-	int	i;
+	int			i;
+	t_program	*tmp;
 
 	i = ft_lstsize(program->params);
+	tmp = program;
 	if (i == 0)
 	{
 		printf("\n");
 		return (0);
 	}
-	else if (!ft_strncmp(program->params->content, "-n", 2))
+	else if (!ft_strncmp(tmp->params->content, "-n", 2))
 	{
 		if (i == 1)
 			return (0);
-		while (program->params->next)
+		tmp->params = tmp->params->next;
+		while (tmp->params->next)
 		{
-			program->params = program->params->next;
-			printf("%s ", (char *) program->params->content);
+			printf("%s ", (char *) tmp->params->content);
+			tmp->params = tmp->params->next;
 		}
-		printf("%s", (char *) program->params->content);
+		printf("%s", (char *) tmp->params->content);
 		return (0);
 	}
 	else
 	{
-		if (i == 1)
+		while (tmp->params->next)
 		{
-			printf("\n");
-			return (0);
+			printf("%s ", (char *) tmp->params->content);
+			tmp->params = tmp->params->next;
 		}
-		while (program->params->next)
-		{
-			program->params = program->params->next;
-			printf("%s ", (char *) program->params->content);
-		}
-		printf("%s\n", (char *) program->params->content);
+		printf("%s\n", (char *) tmp->params->content);
 		return (0);
 	}
 	return (1);

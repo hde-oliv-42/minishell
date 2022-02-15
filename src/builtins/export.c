@@ -53,7 +53,7 @@ static int	handle_already_exists(char *var_with_content, char **ms_env)
 	i = 0;
 	while (ms_env[i])
 	{
-		if (!ft_strncmp(ms_env[i], var, ft_strlen(ms_env[i])))
+		if (!ft_strncmp(ms_env[i], var, ft_strlen(var)))
 		{
 			free(ms_env[i]);
 			ms_env[i] = ft_strdup(var_with_content);
@@ -71,14 +71,14 @@ static int	var_already_exists(char *var_with_content, char **ms_env)
 	char	*var;
 	int		i;
 
-	var = ft_substr(var_with_content, 0, ft_strchr(var_with_content, '=') - var_with_content);
+	var = ft_substr(var_with_content, 0, ft_strchr(var_with_content, '=') - var_with_content + 1);
 	// TODO: Check later if this is sufficient to handle errors
 	if (var == NULL)
 		return (-1);
 	i = 0;
 	while (ms_env[i])
 	{
-		if (!ft_strncmp(ms_env[i], var, ft_strlen(ms_env[i]))) // TODO: Check later if this will break
+		if (!ft_strncmp(ms_env[i], var, ft_strlen(var))) // TODO: Check later if this will break
 		{
 			free(var);
 			return (1);
@@ -89,7 +89,7 @@ static int	var_already_exists(char *var_with_content, char **ms_env)
 	return (0);
 }
 
-int	export(t_program *program, char **ms_env)
+int	export(t_program *program, char ***ms_env)
 {
 	char	*equals_ptr;
 	int		i;
@@ -97,7 +97,7 @@ int	export(t_program *program, char **ms_env)
 	i = ft_lstsize(program->params);
 	if (i == 0)
 	{
-		env(ms_env);
+		env(*ms_env);
 		return (0);
 	}
 	while (program->params)
@@ -112,10 +112,10 @@ int	export(t_program *program, char **ms_env)
 			return (export_error(program->params->content));
 		else
 		{
-			if (var_already_exists(program->params->content, ms_env) == 1)
-				return (handle_already_exists(program->params->content, ms_env));
+			if (var_already_exists(program->params->content, *ms_env) == 1)
+				return (handle_already_exists(program->params->content, *ms_env));
 			else
-				return (handle_new_var(program->params->content, &ms_env));
+				return (handle_new_var(program->params->content, ms_env));
 		}
 		program->params = program->params->next;
 		// TODO: Use a temporary pointer instead

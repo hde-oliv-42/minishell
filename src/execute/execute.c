@@ -52,7 +52,7 @@ int	execute_builtin(t_data *data, int id)
 	}
 	else if (id == 3)
 	{
-		if (export(data->program, g_env))
+		if (export(data->program, &g_env))
 			*(data->wstatus) = 1;
 	}
 	else if (id == 4)

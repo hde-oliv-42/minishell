@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include <errno.h>
-#include <sys/wait.h>
 
 int	check_conditional_error(t_data *data)
 {

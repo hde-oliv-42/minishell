@@ -11,9 +11,27 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "builtins/builtins.h"
 #include "libft.h"
 
 char **g_env = NULL;
+
+int	is_builtin(t_data *data)
+{
+	if (!ft_strncmp(data->program->name, "cd", 3))
+		return (1);
+	return (0);
+}
+
+void	execute_builtin(t_data *data)
+{
+	if (!ft_strncmp(data->program->name, "cd", 3))
+	{
+		if (cd(data->program, g_env))
+			*(data->wstatus) = 1;
+	}
+	*(data->wstatus) = 0;
+}
 
 // TODO: Check for builtins
 void	execute_one_command(t_data *data)
@@ -21,6 +39,8 @@ void	execute_one_command(t_data *data)
 	char	*path;
 	char	**argv;
 
+	if (is_builtin(data))
+		execute_builtin(data);
 	path = NULL;
 	path = find_path(data->program->name, g_env);
 	if (path == NULL)
@@ -52,6 +72,13 @@ void	execute(t_program *program_list)
 	data = (t_data){ program_list, program_list, NULL, 0, &wstatus };
 	while (data.program)
 	{
+		if (is_builtin(&data))
+		{
+			execute_builtin(&data);
+			data.last_program = data.program;
+			data.program = data.program->next;
+			continue ;
+		}
 		if (data.program->next_relation == PIPE)
 			if (pipe(data.program->next_pipe))
 				break ;

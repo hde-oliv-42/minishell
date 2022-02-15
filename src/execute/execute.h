@@ -52,8 +52,8 @@ char	*find_path(char *name, char **ms_env);
 // Child utils
 void	check_if_must_open_stdin(t_data *data);
 void	check_if_must_open_stdout(t_data *data);
-void	open_all_output_files(t_data *data, int *out_fd);
-void	open_all_input_files(t_data *data, int out_fd);
+void	open_all_output_files(t_data *data);
+void	open_all_input_files(t_data *data);
 
 // Parent utils
 void	handle_wait(t_data *data);

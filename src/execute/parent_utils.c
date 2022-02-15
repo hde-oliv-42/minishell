@@ -59,12 +59,9 @@ void	handle_conditional_wait(t_data *data)
 
 void	handle_child(t_data *data)
 {
-	int	out_fd;
-
-	out_fd = 0;
 	check_if_must_open_stdin(data);
 	check_if_must_open_stdout(data);
-	open_all_output_files(data, &out_fd);
-	open_all_input_files(data, out_fd);
+	open_all_output_files(data);
+	open_all_input_files(data);
 	execute_one_command(data);
 }

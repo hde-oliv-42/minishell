@@ -34,27 +34,28 @@ void	check_if_must_open_stdout(t_data *data)
 	}
 }
 
-void	open_all_output_files(t_data *data, int *out_fd)
+void	open_all_output_files(t_data *data)
 {
 	t_list			*files_out;
 	t_redirection	*file_out;
+	int				out_fd;
 
 	files_out = data->program->output_list;
 	while (files_out)
 	{
 		file_out = files_out->content;
-		*out_fd = open(file_out->file_name, O_CREAT | O_WRONLY | file_out->type, 0644);
-		if (*out_fd == -1)
+		out_fd = open(file_out->file_name, O_CREAT | O_WRONLY | file_out->type, 0644);
+		if (out_fd == -1)
 			flush_minishell(data);
-		if (dup2(*out_fd, 1) < 0)
+		if (dup2(out_fd, 1) < 0)
 			flush_minishell(data);
 		files_out = files_out->next;
-		if (close(*out_fd))
+		if (close(out_fd))
 			flush_minishell(data);
 	}
 }
 
-void	open_all_input_files(t_data *data, int out_fd)
+void	open_all_input_files(t_data *data)
 {
 	t_list			*files_in;
 	t_redirection	*file_in;
@@ -73,7 +74,7 @@ void	open_all_input_files(t_data *data, int out_fd)
 			in_fd = open(file_in->file_name, file_in->type); // TODO: Check for errors later
 			if (in_fd == -1)
 				flush_minishell(data);
-			if (dup2(out_fd, 0) < 0)
+			if (dup2(in_fd, 0) < 0)
 				flush_minishell(data);
 			files_in = files_in->next;
 			if (close(in_fd))

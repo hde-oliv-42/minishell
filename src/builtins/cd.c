@@ -55,8 +55,8 @@ int	cd(t_program *program, char **ms_env)
 	}
 	else
 	{
-		if (chdir(program->params->content))
-		return (0);
+		if (!chdir(program->params->content))
+			return (0);
 	}
 	return (1);
 }

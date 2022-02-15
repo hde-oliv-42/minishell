@@ -68,7 +68,8 @@ void	open_all_input_files(t_data *data)
 		file_in = files_in->content;
 		if (file_in->type == RD_HERE_DOC)
 		{
-			// get_heredoc(file_in->file_name);
+			get_heredoc(file_in->file_name);
+			files_in = files_in->next;
 		}
 		else
 		{

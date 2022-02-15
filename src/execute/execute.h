@@ -23,6 +23,7 @@
 # include "debug/debug.h"
 # include "ft_printf/libftprintf.h"
 # include "signals/signals.h"
+# include "heredoc/heredoc.h"
 
 extern char **g_env;
 

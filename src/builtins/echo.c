@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "debug/debug.h"
-#include "parsing/parsing.h"
 
 int	echo(t_program *program)
 {

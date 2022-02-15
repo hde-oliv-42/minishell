@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include <heredoc/heredoc.h>
 
 void	check_if_must_open_stdin(t_data *data)
 {

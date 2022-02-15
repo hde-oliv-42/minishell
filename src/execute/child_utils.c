@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include <heredoc/heredoc.h>
 
 void	check_if_must_open_stdin(t_data *data)
 {
@@ -45,7 +44,9 @@ void	open_all_output_files(t_data *data)
 	while (files_out)
 	{
 		file_out = files_out->content;
-		out_fd = open(file_out->file_name, O_CREAT | O_WRONLY | file_out->type, 0644);
+		out_fd = open(file_out->file_name, \
+						O_CREAT | O_WRONLY | file_out->type, \
+						0644);
 		if (out_fd == -1)
 			flush_minishell(data);
 		if (dup2(out_fd, 1) < 0)
@@ -73,7 +74,7 @@ void	open_all_input_files(t_data *data)
 		}
 		else
 		{
-			in_fd = open(file_in->file_name, file_in->type); // TODO: Check for errors later
+			in_fd = open(file_in->file_name, file_in->type);
 			if (in_fd == -1)
 				flush_minishell(data);
 			if (dup2(in_fd, 0) < 0)

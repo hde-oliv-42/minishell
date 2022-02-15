@@ -12,7 +12,7 @@
 
 #include "execute.h"
 
-extern char **environ;
+extern char	**environ;
 
 int	initialize_ms_env(char ***ms_env)
 {

@@ -17,6 +17,7 @@
 # include <sys/wait.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <errno.h>
 # include "libft.h"
 # include "builtins/builtins.h"
 # include "parsing/parsing.h"
@@ -25,7 +26,7 @@
 # include "signals/signals.h"
 # include "heredoc/heredoc.h"
 
-extern char **g_env;
+extern char	**g_env;
 
 typedef struct s_data
 {
@@ -40,9 +41,16 @@ typedef struct s_data
 void	execute(t_program *program_list);
 void	execute_one_command(t_data *data);
 
+// Execute builtin
+int		is_builtin(t_data *data);
+int		execute_builtin(t_data *data, int id);
+
 // Execute utils
 char	**generate_argv_array(t_program *program);
 void	check_pipe_relations(t_data *data);
+void	command_not_found(char *program_name);
+void	flush_minishell(t_data *data);
+void	close_pipe(int fd[2], t_data *data);
 
 // Environment
 int		initialize_ms_env(char ***ms_env);
@@ -61,11 +69,5 @@ void	handle_wait(t_data *data);
 void	handle_child(t_data *data);
 void	handle_conditional_wait(t_data *data);
 int		check_conditional_error(t_data *data);
-
-// Utils
-void	command_not_found(char *program_name);
-void	flush_minishell(t_data *data);
-void	free_minishell(t_data *data);
-void	close_pipe(int fd[2], t_data *data);
 
 #endif

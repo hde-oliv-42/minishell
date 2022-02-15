@@ -15,7 +15,7 @@
 
 int	create_path_array(char *path_string, char ***path_array)
 {
-	char *str;
+	char	*str;
 
 	str = ft_substr(path_string, 5, ft_strlen(path_string) - 5);
 	*path_array = ft_split(str, ':');
@@ -27,7 +27,7 @@ int	create_path_array(char *path_string, char ***path_array)
 
 void	free_path_array(char **path_array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (path_array[i])
@@ -38,6 +38,22 @@ void	free_path_array(char **path_array)
 	free(path_array);
 }
 
+void	fetch_path_string(char **ms_env, char **path_string)
+{
+	int		i;
+
+	i = 0;
+	while (ms_env[i])
+	{
+		if (!ft_strncmp(ms_env[i], "PATH=", 5))
+		{
+			*path_string = ms_env[i];
+			break ;
+		}
+		i++;
+	}
+}
+
 char	*find_path(char *name, char **ms_env)
 {
 	char	*path_string;
@@ -46,17 +62,8 @@ char	*find_path(char *name, char **ms_env)
 	char	*tmp2;
 	int		i;
 
-	i = 0;
 	path_string = NULL;
-	while (ms_env[i])
-	{
-		if (!ft_strncmp(ms_env[i], "PATH=", 5))
-		{
-			path_string = ms_env[i];
-			break;
-		}
-		i++;
-	}
+	fetch_path_string(ms_env, &path_string);
 	if (path_string == NULL)
 		return (NULL);
 	if (create_path_array(path_string, &path_array))
@@ -64,7 +71,7 @@ char	*find_path(char *name, char **ms_env)
 	i = 0;
 	while (path_array[i])
 	{
-		tmp = ft_strjoin(path_array[i], "/");
+		tmp = ft_strjoin(path_array[i++], "/");
 		tmp2 = ft_strjoin(tmp, name);
 		free(tmp);
 		if (!access(tmp2, F_OK))
@@ -73,7 +80,6 @@ char	*find_path(char *name, char **ms_env)
 			return (tmp2);
 		}
 		free(tmp2);
-		i++;
 	}
 	free_path_array(path_array);
 	return (NULL);

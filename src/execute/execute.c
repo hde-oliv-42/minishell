@@ -23,17 +23,55 @@ int	is_builtin(t_data *data)
 		return (0);
 	else if (!ft_strncmp(data->program->name, "cd", 3))
 		return (1);
+	else if (!ft_strncmp(data->program->name, "echo", 5))
+		return (2);
+	else if (!ft_strncmp(data->program->name, "export", 7))
+		return (3);
+	else if (!ft_strncmp(data->program->name, "unset", 6))
+		return (4);
+	else if (!ft_strncmp(data->program->name, "env", 4))
+		return (5);
+	else if (!ft_strncmp(data->program->name, "pwd", 4))
+		return (6);
 	return (0);
 }
 
-void	execute_builtin(t_data *data)
+int	execute_builtin(t_data *data, int id)
 {
-	if (!ft_strncmp(data->program->name, "cd", 3))
+	if (id == 0)
+		return (-1);
+	if (id == 1)
 	{
 		if (cd(data->program, g_env))
 			*(data->wstatus) = 1;
 	}
-	*(data->wstatus) = 0;
+	else if (id == 2)
+	{
+		if (echo(data->program))
+			*(data->wstatus) = 1;
+	}
+	else if (id == 3)
+	{
+		if (export(data->program, g_env))
+			*(data->wstatus) = 1;
+	}
+	else if (id == 4)
+	{
+		if (unset(data->program, g_env))
+			*(data->wstatus) = 1;
+	}
+	else if (id == 5)
+		env(g_env);
+	else if (id == 6)
+	{
+		if (pwd())
+			*(data->wstatus) = 1;
+	}
+	else
+		*(data->wstatus) = 0;
+	data->last_program = data->program;
+	data->program = data->program->next;
+	return (*(data->wstatus));
 }
 
 // TODO: Check for builtins
@@ -42,8 +80,6 @@ void	execute_one_command(t_data *data)
 	char	*path;
 	char	**argv;
 
-	if (is_builtin(data))
-		execute_builtin(data);
 	path = NULL;
 	path = find_path(data->program->name, g_env);
 	if (path == NULL)
@@ -75,13 +111,8 @@ void	execute(t_program *program_list)
 	data = (t_data){ program_list, program_list, NULL, 0, &wstatus };
 	while (data.program)
 	{
-		if (is_builtin(&data))
-		{
-			execute_builtin(&data);
-			data.last_program = data.program;
-			data.program = data.program->next;
+		if (execute_builtin(&data, is_builtin(&data)) != -1)
 			continue ;
-		}
 		if (data.program->next_relation == PIPE)
 			if (pipe(data.program->next_pipe))
 				break ;

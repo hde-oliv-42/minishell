@@ -23,6 +23,7 @@ vpath %.c src 						\
 	src/debug
 
 TEST_SRC = 	pwd.c
+TEST_SRC += cd.c
 TEST_SRC += parse.c
 TEST_SRC += subshell.c
 TEST_SRC += destroy.c

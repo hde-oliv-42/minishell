@@ -24,7 +24,7 @@ static int	get_home(char **ms_env, char **home)
 		{
 			*home = ft_substr(ms_env[i], 5, ft_strlen(ms_env[i]) - 5);
 			if (*home == NULL)
-				return (1);
+				return (-1);
 			return (0);
 		}
 		i++;
@@ -38,13 +38,18 @@ int	cd(t_program *program, char **ms_env)
 	char	*home;
 
 	i = ft_lstsize(program->params);
+	home = NULL;
 	if (i > 1)
 		printf("minishell: cd: too many arguments\n");
 	else if (i == 0)
 	{
-		if (!get_home(ms_env, &home))
+		if (get_home(ms_env, &home) != -1)
 		{
-
+			if (home == NULL)
+			{
+				printf("minishell: cd: HOME not set\n");
+				return (1);
+			}
 			if (chdir(home))
 			{
 				free(home);

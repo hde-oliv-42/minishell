@@ -47,7 +47,9 @@ static int	handle_already_exists(char *var_with_content, char **ms_env)
 	char	*var;
 	int		i;
 
-	var = ft_substr(var_with_content, 0, ft_strchr(var_with_content, '=') - var_with_content);
+	var = ft_substr(var_with_content, \
+					0, \
+					ft_strchr(var_with_content, '=') - var_with_content);
 	if (var == NULL)
 		return (1);
 	i = 0;
@@ -71,14 +73,17 @@ static int	var_already_exists(char *var_with_content, char **ms_env)
 	char	*var;
 	int		i;
 
-	var = ft_substr(var_with_content, 0, ft_strchr(var_with_content, '=') - var_with_content + 1);
+	var = ft_substr(var_with_content, \
+					0, \
+					ft_strchr(var_with_content, '=') - var_with_content + 1);
 	// TODO: Check later if this is sufficient to handle errors
 	if (var == NULL)
 		return (-1);
 	i = 0;
 	while (ms_env[i])
 	{
-		if (!ft_strncmp(ms_env[i], var, ft_strlen(var))) // TODO: Check later if this will break
+		// TODO: Check later if this will break
+		if (!ft_strncmp(ms_env[i], var, ft_strlen(var)))
 		{
 			free(var);
 			return (1);
@@ -113,7 +118,8 @@ int	export(t_program *program, char ***ms_env)
 		else
 		{
 			if (var_already_exists(program->params->content, *ms_env) == 1)
-				return (handle_already_exists(program->params->content, *ms_env));
+				return (handle_already_exists(program->params->content, \
+												*ms_env));
 			else
 				return (handle_new_var(program->params->content, ms_env));
 		}

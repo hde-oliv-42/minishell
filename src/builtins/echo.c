@@ -12,6 +12,31 @@
 
 #include "builtins.h"
 
+static int	handle_n_option(t_program *tmp, int i)
+{
+	if (i == 1)
+		return (0);
+	tmp->params = tmp->params->next;
+	while (tmp->params->next)
+	{
+		printf("%s ", (char *) tmp->params->content);
+		tmp->params = tmp->params->next;
+	}
+	printf("%s", (char *) tmp->params->content);
+	return (0);
+}
+
+static int	handle_no_option(t_program *tmp)
+{
+	while (tmp->params->next)
+	{
+		printf("%s ", (char *) tmp->params->content);
+		tmp->params = tmp->params->next;
+	}
+	printf("%s\n", (char *) tmp->params->content);
+	return (0);
+}
+
 int	echo(t_program *program)
 {
 	int			i;
@@ -25,27 +50,8 @@ int	echo(t_program *program)
 		return (0);
 	}
 	else if (!ft_strncmp(tmp->params->content, "-n", 2))
-	{
-		if (i == 1)
-			return (0);
-		tmp->params = tmp->params->next;
-		while (tmp->params->next)
-		{
-			printf("%s ", (char *) tmp->params->content);
-			tmp->params = tmp->params->next;
-		}
-		printf("%s", (char *) tmp->params->content);
-		return (0);
-	}
+		return (handle_n_option(tmp, i));
 	else
-	{
-		while (tmp->params->next)
-		{
-			printf("%s ", (char *) tmp->params->content);
-			tmp->params = tmp->params->next;
-		}
-		printf("%s\n", (char *) tmp->params->content);
-		return (0);
-	}
+		return (handle_no_option(tmp));
 	return (1);
 }

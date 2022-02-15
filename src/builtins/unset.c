@@ -12,6 +12,17 @@
 
 #include "builtins.h"
 
+static int	ms_env_size(char **ms_env)
+{
+	int	i;
+
+	i = 0;
+	while ((ms_env)[i++])
+	{
+	}
+	return (i);
+}
+
 // NOTE: If this fails, run to the hills
 static int	recreate_env(char ***ms_env, char *dummy)
 {
@@ -19,10 +30,7 @@ static int	recreate_env(char ***ms_env, char *dummy)
 	int		j;
 	char	**tmp_env;
 
-	i = 0;
-	while ((*ms_env)[i++])
-	{
-	}
+	i = ms_env_size(*ms_env);
 	tmp_env = (char **) ft_calloc(i + 1, sizeof(char *));
 	if (tmp_env == NULL)
 		return (1);
@@ -46,14 +54,16 @@ static int	recreate_env(char ***ms_env, char *dummy)
 
 static void	find_and_delete(t_list *params, char **ms_env, char *dummy)
 {
-	int i;
+	int	i;
 
 	while (params)
 	{
 		i = 0;
 		while (ms_env[i])
 		{
-			if (!ft_strncmp(ms_env[i], params->content, ft_strlen(params->content)))
+			if (!ft_strncmp(ms_env[i], \
+							params->content, \
+							ft_strlen(params->content)))
 			{
 				free(ms_env[i]);
 				ms_env[i] = dummy;
@@ -80,4 +90,3 @@ int	unset(t_program *program, char ***ms_env)
 	}
 	return (recreate_env(ms_env, &dummy));
 }
-

@@ -13,6 +13,7 @@
 #include "execute.h"
 #include "builtins/builtins.h"
 #include "libft.h"
+#include <errno.h>
 
 char **g_env = NULL;
 
@@ -133,9 +134,10 @@ void	execute(t_program *program_list)
 			data.program = data.program->next;
 		}
 	}
-	// TODO: Check ERRNO and print any errors
+	if (errno)
+		perror("execute");
 	ignore_signals();
 	handle_wait(&data);
 	handle_signals();
-	// Free data
+	free_minishell(&data);
 }

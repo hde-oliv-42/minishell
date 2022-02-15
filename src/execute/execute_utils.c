@@ -33,16 +33,14 @@ char	**generate_argv_array(t_program *program)
 
 void	check_pipe_relations(t_data *data)
 {
-	if (data->last_program)
+	if (data->last_program && data->last_program->next_relation == PIPE)
 	{
 		if (close(data->last_program->next_pipe[1]))
 			flush_minishell(data);
 	}
-	if (close(data->program->next_pipe[0]))
-		flush_minishell(data);
-	if (data->last_program && data->last_program->next_relation != PIPE)
+	if (data->program->next_relation)
 	{
-		if (close(data->last_program->next_pipe[0]))
+		if (close(data->program->next_pipe[0]))
 			flush_minishell(data);
 	}
 }

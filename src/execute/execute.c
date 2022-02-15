@@ -16,7 +16,6 @@
 
 char **g_env = NULL;
 
-// TODO: Refactor this later
 int	is_builtin(t_data *data)
 {
 	if (data->program->name == NULL)
@@ -74,7 +73,6 @@ int	execute_builtin(t_data *data, int id)
 	return (*(data->wstatus));
 }
 
-// TODO: Check for builtins
 void	execute_one_command(t_data *data)
 {
 	char	*path;

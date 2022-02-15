@@ -6,12 +6,13 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/14 20:48:27 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/14 21:03:24 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 #include <errno.h>
+#include <sys/wait.h>
 
 int	check_conditional_error(t_data *data)
 {
@@ -27,7 +28,6 @@ void	handle_wait(t_data *data)
 	int			size;
 	int			status;
 	int			wait_result;
-	int			waifu; // TODO: Change this name later
 
 	size = data->program_count;
 	while (size)
@@ -36,11 +36,14 @@ void	handle_wait(t_data *data)
 		if (wait_result == -1 && errno == EINTR)
 			continue ;
 		size--;
-		waifu = WIFEXITED(status);
-		if (waifu)
+		if (WIFEXITED(status))
 			*(data->wstatus) = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			*(data->wstatus) = WTERMSIG(status) + 128;
+		else if (WIFSIGNALED(status))
+			*(data->wstatus) = WSTOPSIG(status) + 128;
 		else
-			*(data->wstatus) = 1;
+			*(data->wstatus) = 0;
 	}
 }
 

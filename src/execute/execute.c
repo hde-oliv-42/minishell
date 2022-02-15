@@ -57,7 +57,7 @@ int	execute_builtin(t_data *data, int id)
 	}
 	else if (id == 4)
 	{
-		if (unset(data->program, g_env))
+		if (unset(data->program, &g_env))
 			*(data->wstatus) = 1;
 	}
 	else if (id == 5)

@@ -65,7 +65,7 @@ static void	find_and_delete(t_list *params, char **ms_env, char *dummy)
 }
 
 // TODO: Do not touch the original ms_env if any malloc fails
-int	unset(t_program *program, char **ms_env)
+int	unset(t_program *program, char ***ms_env)
 {
 	int		i;
 	char	dummy;
@@ -75,9 +75,9 @@ int	unset(t_program *program, char **ms_env)
 		return (0); // TODO: Check return values with original
 	while (program->params)
 	{
-		find_and_delete(program->params, ms_env, &dummy);
+		find_and_delete(program->params, *ms_env, &dummy);
 		program->params = program->params->next;
 	}
-	return (recreate_env(&ms_env, &dummy));
+	return (recreate_env(ms_env, &dummy));
 }
 

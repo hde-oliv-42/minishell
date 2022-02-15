@@ -27,7 +27,7 @@ void	check_if_must_open_stdout(t_data *data)
 {
 	if (!data->program->output_list && data->program->next_relation == PIPE)
 	{
-		if (dup2(data->program->next_pipe[1], STDOUT_FILENO))
+		if (dup2(data->program->next_pipe[1], STDOUT_FILENO) < 0)
 			flush_minishell(data);
 		if (close(data->program->next_pipe[1]))
 			flush_minishell(data);

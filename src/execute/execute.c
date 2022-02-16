@@ -11,19 +11,21 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "parsing/parsing.h"
 
 char	**g_env = NULL;
 
 void	execute_one_command(t_data *data)
 {
 	char	*path;
+	char	*program_name;
 	char	**argv;
 
-	path = NULL;
-	path = find_path(data->program->name, g_env);
+	program_name = ((t_string *)data->program->name)->value;
+	path = find_path(program_name, g_env);
 	if (path == NULL)
 	{
-		command_not_found(data->program->name);
+		command_not_found(program_name);
 		*(data->wstatus) = 1;
 		destroy_pipeline(data->program_list);
 		ft_dfree(g_env);

@@ -11,20 +11,25 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "parsing/parsing.h"
 
 char	**generate_argv_array(t_program *program)
 {
 	char	**argv;
+	char	*program_name;
+	char	*param;
 	int		size;
 	int		i;
 
 	i = 0;
 	size = ft_lstsize(program->params) + 1;
 	argv = (char **)ft_calloc(size + 1, sizeof(char *));
-	argv[i++] = ft_strdup(program->name);
+	program_name = ((t_string *)program->name)->value;
+	argv[i++] = ft_strdup(program_name);
 	while (i < size)
 	{
-		argv[i++] = ft_strdup(program->params->content);
+		param = ((t_string *)program->params->content)->value;
+		argv[i++] = ft_strdup(param);
 		program->params = program->params->next;
 	}
 	argv[i] = NULL;

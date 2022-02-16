@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "libft.h"
 
 static int	ms_env_size(char **ms_env)
 {
@@ -23,7 +24,6 @@ static int	ms_env_size(char **ms_env)
 	return (i);
 }
 
-// NOTE: If this fails, run to the hills
 static int	recreate_env(char ***ms_env, char *dummy)
 {
 	int		i;
@@ -52,21 +52,21 @@ static int	recreate_env(char ***ms_env, char *dummy)
 	return (0);
 }
 
-static void	find_and_delete(t_list *params, char **ms_env, char *dummy)
+static void	find_and_delete(t_list *params, char ***ms_env, char *dummy)
 {
 	int	i;
 
 	while (params)
 	{
 		i = 0;
-		while (ms_env[i])
+		while ((*ms_env)[i])
 		{
-			if (!ft_strncmp(ms_env[i], \
-							params->content, \
-							ft_strlen(params->content)))
+			if (!ft_strncmp((*ms_env)[i], \
+							((t_string *)params->content)->value, \
+							ft_strlen(((t_string *)params->content)->value)))
 			{
-				free(ms_env[i]);
-				ms_env[i] = dummy;
+				free((*ms_env)[i]);
+				(*ms_env)[i] = dummy;
 			}
 			i++;
 		}
@@ -74,19 +74,49 @@ static void	find_and_delete(t_list *params, char **ms_env, char *dummy)
 	}
 }
 
-// TODO: Do not touch the original ms_env if any malloc fails
+static int	duplicate_env(char **ms_env, char ***tmp)
+{
+	int	i;
+
+	i = ms_env_size(ms_env);
+	*tmp = (char **) ft_calloc(i + 1, sizeof(char *));
+	if (*tmp == NULL)
+		return (1);
+	i = 0;
+	while (ms_env[i])
+	{
+		(*tmp)[i] = ft_strdup(ms_env[i]);
+		if ((*tmp)[i] == NULL)
+		{
+			ft_dfree(*tmp);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	unset(t_program *program, char ***ms_env)
 {
 	int		i;
 	char	dummy;
+	char	**tmp;
+	t_list	*params;
 
-	i = ft_lstsize(program->params);
+	params = program->params;
+	i = ft_lstsize(params);
 	if (i == 0)
-		return (0); // TODO: Check return values with original
-	while (program->params)
+		return (0);
+	if (duplicate_env(*ms_env, &tmp))
+		return (1);
+	while (params)
 	{
-		find_and_delete(program->params, *ms_env, &dummy);
-		program->params = program->params->next;
+		find_and_delete(params, &tmp, &dummy);
+		params = params->next;
 	}
-	return (recreate_env(ms_env, &dummy));
+	if (recreate_env(&tmp, &dummy))
+		return (1);
+	ft_dfree(*ms_env);
+	*ms_env = tmp;
+	return (0);
 }

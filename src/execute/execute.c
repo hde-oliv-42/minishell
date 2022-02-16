@@ -57,7 +57,6 @@ static void	handle_parent(t_data *data)
 	data->program = data->program->next;
 }
 
-// TODO: Check for permissions
 void	execute_loop(t_data *data)
 {
 	int		id;

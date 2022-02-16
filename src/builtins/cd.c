@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "parsing/parsing.h"
 
 static int	get_home(char **ms_env, char **home)
 {
@@ -54,6 +55,7 @@ int	cd(t_program *program, char **ms_env)
 {
 	int		i;
 	char	*home;
+	char	*dir;
 
 	i = ft_lstsize(program->params);
 	home = NULL;
@@ -63,7 +65,8 @@ int	cd(t_program *program, char **ms_env)
 		return (handle_home(&home, ms_env));
 	else
 	{
-		if (!chdir(program->params->content))
+		dir = ((t_string *)program->params->content)->value;
+		if (!chdir(dir))
 			return (0);
 	}
 	return (1);

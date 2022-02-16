@@ -115,6 +115,26 @@ char	*expand_word(char *word)
 	return (str);
 }
 
+void	expand_redirections(t_list *list)
+{
+	t_list			*cursor;
+	t_redirection	*redirection;
+	char			*new_str;
+
+	cursor = list;
+	while (cursor)
+	{
+		redirection = cursor->content;
+		if (redirection->should_redirect)
+		{
+			new_str = expand_word(redirection->file_name);
+			free(redirection->file_name);
+			redirection->file_name = new_str;
+		}
+		cursor = cursor->next;
+	}
+}
+
 void	expand_program(t_program *program)
 {
 	char		*tmp;
@@ -139,4 +159,6 @@ void	expand_program(t_program *program)
 		}
 		tmp_list = tmp_list->next;
 	}
+	expand_redirections(program->input_list);
+	expand_redirections(program->output_list);
 }

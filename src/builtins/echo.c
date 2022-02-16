@@ -13,35 +13,35 @@
 #include "builtins.h"
 #include "parsing/parsing.h"
 
-static int	handle_n_option(t_program *tmp, int i)
+static int	handle_n_option(t_list *tmp, int i)
 {
 	char	*str;
 
 	if (i == 1)
 		return (0);
-	tmp->params = tmp->params->next;
-	while (tmp->params->next)
+	tmp = tmp->next;
+	while (tmp->next)
 	{
-		str = ((t_string *)tmp->params->content)->value;
+		str = ((t_string *)tmp->content)->value;
 		printf("%s ", str);
-		tmp->params = tmp->params->next;
+		tmp = tmp->next;
 	}
-	str = ((t_string *)tmp->params->content)->value;
+	str = ((t_string *)tmp->content)->value;
 	printf("%s", str);
 	return (0);
 }
 
-static int	handle_no_option(t_program *tmp)
+static int	handle_no_option(t_list *tmp)
 {
 	char	*str;
 
-	while (tmp->params->next)
+	while (tmp->next)
 	{
-		str = ((t_string *)tmp->params->content)->value;
+		str = ((t_string *)tmp->content)->value;
 		printf("%s ", str);
-		tmp->params = tmp->params->next;
+		tmp = tmp->next;
 	}
-	str = ((t_string *)tmp->params->content)->value;
+	str = ((t_string *)tmp->content)->value;
 	printf("%s\n", str);
 	return (0);
 }
@@ -49,16 +49,16 @@ static int	handle_no_option(t_program *tmp)
 int	echo(t_program *program)
 {
 	int			i;
-	t_program	*tmp;
+	t_list	*tmp;
 
 	i = ft_lstsize(program->params);
-	tmp = program;
+	tmp = program->params;
 	if (i == 0)
 	{
 		printf("\n");
 		return (0);
 	}
-	else if (!ft_strncmp(((t_string *)tmp->params->content)->value, "-n", 3))
+	else if (!ft_strncmp(((t_string *)tmp->content)->value, "-n", 3))
 		return (handle_n_option(tmp, i));
 	else
 		return (handle_no_option(tmp));

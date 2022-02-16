@@ -12,6 +12,7 @@
 
 #include "execute.h"
 #include "libft.h"
+#include "builtins/builtins.h"
 
 int	is_builtin(t_data *data)
 {
@@ -54,7 +55,7 @@ int	execute_builtin(t_data *data, int id)
 	else if (id == 6)
 		*(data->wstatus) = pwd();
 	else if (id == 7)
-		*(data->wstatus) = ms_exit(data->program);
+		*(data->wstatus) = ms_exit(data->program, data);
 	else
 		*(data->wstatus) = 0;
 	data->last_program = data->program;

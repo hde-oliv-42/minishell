@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_exit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/14 19:42:14 by hde-oliv          #+#    #+#             */
+/*   Updated: 2022/01/06 20:23:59 by hde-oliv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 #include "ft_printf/libftprintf.h"
 #include "libft.h"
@@ -31,7 +43,8 @@ int	ms_exit(t_program *program, t_data *data)
 	j = ft_atoi(((t_string *)program->params->content)->value);
 	ft_dprintf(2, "exit\n");
 	if (!is_number(((t_string *)program->params->content)->value))
-		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", ((t_string *)program->params->content)->value);
+		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", \
+				((t_string *)program->params->content)->value);
 	else if (i == 0)
 	{
 		destroy_pipeline(data->program_list);

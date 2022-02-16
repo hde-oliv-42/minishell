@@ -48,7 +48,7 @@ static int	handle_no_option(t_list *tmp)
 
 int	echo(t_program *program)
 {
-	int			i;
+	int		i;
 	t_list	*tmp;
 
 	i = ft_lstsize(program->params);

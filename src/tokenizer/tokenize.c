@@ -91,7 +91,6 @@ t_token	**tokenize(char *line)
 	if (get_tokens(&token_list, line))
 	{
 		tokens = token_list_to_array(token_list);
-		print_tokens(tokens);
 		if (tokens == NULL)
 			return (NULL);
 		ft_lstclear(&token_list, keep_token);
@@ -102,8 +101,6 @@ t_token	**tokenize(char *line)
 			return (NULL);
 		}
 		expanded_tokens = expand_tokens(tokens);
-		printf("expanded tokens: \n");
-		print_tokens(expanded_tokens);
 		free(tokens);
 		return (expanded_tokens);
 	}

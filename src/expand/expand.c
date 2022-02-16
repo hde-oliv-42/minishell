@@ -6,13 +6,14 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 13:44:47 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/13 16:31:14 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/16 12:45:12 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand/expand.h"
 #include "libft.h"
 #include "parsing/parsing.h"
+#include "execute/ms_env.h"
 
 #define VAR_DELIMITERS "\"'$ =@(*)#"
 
@@ -51,10 +52,9 @@ static int	get_env_variable(
 		(*size)++;
 	key = ft_substr(str, 0, *size);
 	(*size)--;
-	if (ft_strncmp("USER", key, 5) == 0)
-		value = ft_strdup("paulo");
-	else
-		value = ft_strdup("[none]");
+	value = search_env(key);
+	if (value == NULL)
+		value = ft_strdup("");
 	free(key);
 	piece = new_piece(value, ft_strlen(value));
 	ft_lstadd_back(piece_list, ft_lstnew(piece));

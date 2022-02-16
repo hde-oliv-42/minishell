@@ -16,13 +16,6 @@
 #include "ft_printf/libftprintf.h"
 #include "heredoc.h"
 
-static int	str_equals(char *str1, char *str2)
-{
-	if (str1 == str2)
-		return (1);
-	return (ft_strncmp(str1, str2, ft_strlen(str1) + 1) == 0);
-}
-
 static char	*finish_heredoc(t_list *lines)
 {
 	char	*full_text;

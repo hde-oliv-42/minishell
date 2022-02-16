@@ -55,7 +55,7 @@ void	print_pipeline(t_program *program)
 				type = "|";
 			else
 				type = "!!!!!!";
-			printf("  next: %s %s\n", type, (char *)program->next->name);
+			printf("  next: %s %s\n", type, ((t_string *)program->next->name)->value);
 		}
 		program = program->next;
 	}

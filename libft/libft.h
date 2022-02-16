@@ -675,5 +675,6 @@ char		*ft_strtoupper(char *str);
 char		*ft_uitoa(unsigned int nbr);
 char		*ft_stox(size_t nbr);
 void		do_nothing(void *p);
+int			str_equals(char *str1, char *str2);
 
 #endif

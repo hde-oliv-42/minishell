@@ -11,22 +11,26 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "parsing/parsing.h"
 
 int	is_builtin(t_data *data)
 {
-	if (data->program->name == NULL)
+	char	*program_name;
+
+	program_name = ((t_string *)data->program->name)->value;
+	if (program_name == NULL)
 		return (0);
-	else if (!ft_strncmp(data->program->name, "cd", 3))
+	else if (!ft_strncmp(program_name, "cd", 3))
 		return (1);
-	else if (!ft_strncmp(data->program->name, "echo", 5))
+	else if (!ft_strncmp(program_name, "echo", 5))
 		return (2);
-	else if (!ft_strncmp(data->program->name, "export", 7))
+	else if (!ft_strncmp(program_name, "export", 7))
 		return (3);
-	else if (!ft_strncmp(data->program->name, "unset", 6))
+	else if (!ft_strncmp(program_name, "unset", 6))
 		return (4);
-	else if (!ft_strncmp(data->program->name, "env", 4))
+	else if (!ft_strncmp(program_name, "env", 4))
 		return (5);
-	else if (!ft_strncmp(data->program->name, "pwd", 4))
+	else if (!ft_strncmp(program_name, "pwd", 4))
 		return (6);
 	return (0);
 }

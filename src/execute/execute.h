@@ -57,6 +57,9 @@ int		initialize_ms_env(char ***ms_env);
 
 // Access methods
 char	*find_path(char *name, char **ms_env);
+int		is_writable(char *path);
+int		is_readable(char *path);
+int		is_executable(char *path);
 
 // Access utils
 int		create_path_array(char *path_string, char ***path_array);

@@ -65,7 +65,7 @@ void	handle_child(t_data *data)
 {
 	check_if_must_open_stdin(data);
 	check_if_must_open_stdout(data);
-	open_all_output_files(data);
 	open_all_input_files(data);
+	open_all_output_files(data);
 	execute_one_command(data);
 }

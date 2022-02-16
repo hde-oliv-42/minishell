@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "parsing/parsing.h"
 
 void	check_if_must_open_stdin(t_data *data)
 {
@@ -47,6 +48,8 @@ void	open_all_output_files(t_data *data)
 		out_fd = open(file_out->file_name, \
 						O_CREAT | O_WRONLY | file_out->type, \
 						0644);
+		if (!is_writable(file_out->file_name))
+			flush_minishell(data);
 		if (out_fd == -1)
 			flush_minishell(data);
 		if (dup2(out_fd, 1) < 0)
@@ -55,6 +58,13 @@ void	open_all_output_files(t_data *data)
 		if (close(out_fd))
 			flush_minishell(data);
 	}
+}
+
+// TODO: Check if this works later
+static void	handle_heredoc(t_list *files_in, t_redirection *file_in)
+{
+	get_heredoc(file_in->file_name);
+	files_in = files_in->next;
 }
 
 void	open_all_input_files(t_data *data)
@@ -68,13 +78,12 @@ void	open_all_input_files(t_data *data)
 	{
 		file_in = files_in->content;
 		if (file_in->type == RD_HERE_DOC)
-		{
-			get_heredoc(file_in->file_name);
-			files_in = files_in->next;
-		}
+			handle_heredoc(files_in, file_in);
 		else
 		{
 			in_fd = open(file_in->file_name, file_in->type);
+			if (!is_readable(file_in->file_name))
+				flush_minishell(data);
 			if (in_fd == -1)
 				flush_minishell(data);
 			if (dup2(in_fd, 0) < 0)

@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 07:57:41 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/22 18:00:40 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/15 10:37:07 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum e_token_type	t_type;
 
 struct s_token {
 	t_type	type;
+	int		should_expand;
 	char	*value;
 };
 
@@ -42,6 +43,7 @@ typedef struct s_token		t_token;
 
 t_token	**tokenize(char *line);
 t_token	*new_token(t_type type, char *value);
+t_token	*new_expanded_token(t_type type, char *value);
 void	destroy_token(void *content);
 t_token	**token_list_to_array(t_list *tokens);
 

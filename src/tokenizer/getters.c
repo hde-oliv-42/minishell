@@ -6,12 +6,25 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 07:50:07 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/22 18:00:40 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/15 10:35:36 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 #include <stdio.h>
+
+t_token	*new_expanded_token(t_type type, char *value)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (token == NULL)
+		return (NULL);
+	token->type = type;
+	token->value = value;
+	token->should_expand = 0;
+	return (token);
+}
 
 t_token	*new_token(t_type type, char *value)
 {
@@ -22,6 +35,7 @@ t_token	*new_token(t_type type, char *value)
 		return (NULL);
 	token->type = type;
 	token->value = value;
+	token->should_expand = 1;
 	return (token);
 }
 

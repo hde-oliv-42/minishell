@@ -12,6 +12,15 @@
 
 #include "parsing.h"
 
+void	destroy_string(void *content)
+{
+	t_string	*string;
+
+	string = content;
+	free(string->value);
+	free(string);
+}
+
 void	destroy_redirection(void *content)
 {
 	t_redirection	*redirection;
@@ -28,8 +37,8 @@ void	do_nothing(void *content)
 
 void	destroy_program(t_program *program)
 {
-	free(program->name);
-	ft_lstclear(&program->params, free);
+	destroy_string(program->name);
+	ft_lstclear(&program->params, destroy_string);
 	ft_lstclear(&program->input_list, destroy_redirection);
 	ft_lstclear(&program->output_list, destroy_redirection);
 	free(program);

@@ -13,6 +13,7 @@
 #include "libft.h"
 #include "parsing.h"
 #include "tokenizer/tokenizer.h"
+#include <stdlib.h>
 
 static char	*merge_strings(char *str1, char *str2)
 {
@@ -58,13 +59,18 @@ static char	*get_param(t_token **tokens, int *cursor)
 
 int	make_subshell(t_program *program, t_token **tokens, int *cursor)
 {
-	char	*param;
+	char		*param;
+	t_string	*string;
 
-	program->name = ft_strdup("subshell");
 	program->type = SUBSHELL;
 	param = get_param(tokens, cursor);
 	if (param == NULL)
 		return (0);
+	string = malloc(sizeof(t_string));
+	if (string == NULL)
+		return (free(param), 0);
+	string->value = param;
+	string->should_expand = 0;
 	ft_lstadd_back(&program->params, ft_lstnew(param));
 	return (1);
 }

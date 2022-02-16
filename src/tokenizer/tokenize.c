@@ -6,10 +6,11 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 23:22:59 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/16 13:21:47 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/15 15:27:10 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug/debug.h"
 #include "libft.h"
 #include <stdlib.h>
 #include <parsing/parsing.h>
@@ -90,6 +91,7 @@ t_token	**tokenize(char *line)
 	if (get_tokens(&token_list, line))
 	{
 		tokens = token_list_to_array(token_list);
+		print_tokens(tokens);
 		if (tokens == NULL)
 			return (NULL);
 		ft_lstclear(&token_list, keep_token);
@@ -100,6 +102,8 @@ t_token	**tokenize(char *line)
 			return (NULL);
 		}
 		expanded_tokens = expand_tokens(tokens);
+		printf("expanded tokens: \n");
+		print_tokens(expanded_tokens);
 		free(tokens);
 		return (expanded_tokens);
 	}

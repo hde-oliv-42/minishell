@@ -26,17 +26,29 @@ static int	is_end_of_program(t_token *token)
 	);
 }
 
+t_string	*new_string(t_token *word)
+{
+	t_string	*string;
+
+	string = ft_calloc(1, sizeof(t_string));
+	if (string == NULL)
+		return (NULL);
+	string->value = ft_strdup(word->value);
+	string->should_expand = word->should_expand;
+	return (string);
+}
+
 static int	handle_word(t_program *program, t_token **tokens, int *cursor)
 {
-	char	*word;
+	t_token	*word;
 	t_list	*new_param;
 
-	word = tokens[*cursor]->value;
+	word = tokens[*cursor];
 	if (program->name == NULL)
-		program->name = ft_strdup(word);
+		program->name = new_string(word);
 	else
 	{
-		new_param = ft_lstnew(ft_strdup(word));
+		new_param = ft_lstnew(new_string(word));
 		if (new_param == NULL)
 			return (0);
 		ft_lstadd_back(&program->params, new_param);

@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 15:34:49 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/29 14:47:07 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/15 10:55:17 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef enum e_program_type {
 }	t_program_type;
 
 struct s_program {
-	char			*name;
+	void			*name;
 	int				next_pipe[2];
 	t_program_type	type;
 	t_list			*params;
@@ -53,6 +53,7 @@ typedef enum e_redirection_type {
 typedef struct s_redirection {
 	t_redirection_type	type;
 	char				*file_name;
+	int					should_redirect;
 }	t_redirection;
 
 t_program		*parse(t_token **tokens);
@@ -66,5 +67,12 @@ int				add_redirection(t_program *program,
 
 int				make_subshell(t_program *program,
 					t_token **tokens, int *cursor);
+
+typedef struct s_string {
+	char	*value;
+	int		should_expand;
+}	t_string;
+
+t_string		*new_string(t_token *word);
 
 #endif

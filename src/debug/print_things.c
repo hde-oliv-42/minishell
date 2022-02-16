@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "parsing/parsing.h"
 
 void	print_pipeline(t_program *program)
 {
@@ -10,12 +11,12 @@ void	print_pipeline(t_program *program)
 	while (program)
 	{
 		printf("=== program ===\n");
-		printf("  name: %s\n", program->name);
+		printf("  name: %s\n", ((t_string *)program->name)->value);
 		printf("  params: [ ");
 		params = program->params;
 		while (params)
 		{
-			printf("%s, ", (char *)params->content);
+			printf("%s, ", ((t_string *)params->content)->value);
 			params = params->next;
 		}
 		printf("NULL ]\n");
@@ -54,7 +55,7 @@ void	print_pipeline(t_program *program)
 				type = "|";
 			else
 				type = "!!!!!!";
-			printf("  next: %s %s\n", type, program->next->name);
+			printf("  next: %s %s\n", type, (char *)program->next->name);
 		}
 		program = program->next;
 	}
@@ -154,7 +155,10 @@ void	print_tokens(t_token **tokens)
 		int indent = 0;
 		while (indent++ < open_parenthesis)
 			printf("   ");
-		printf("[%s] %s\n", type, tokens[i]->value);
+		printf("[%s] %s ", type, tokens[i]->value);
+		if (tokens[i]->should_expand)
+			printf("*");
+		printf("\n");
 		if (tokens[i]->type == TK_OPEN_PARENTHESIS)
 			open_parenthesis++;
 		else if (tokens[i]->type == TK_CLOSE_PARENTHESIS)

@@ -12,6 +12,7 @@
 
 #include "expand/expand.h"
 #include "libft.h"
+#include "parsing/parsing.h"
 
 #define VAR_DELIMITERS "\"'$ =@(*)#"
 
@@ -112,4 +113,30 @@ char	*expand_word(char *word)
 	str = merge_pieces(piece_list);
 	ft_lstclear(&piece_list, destroy_piece);
 	return (str);
+}
+
+void	expand_program(t_program *program)
+{
+	char		*tmp;
+	t_list		*tmp_list;
+	t_string	*tmp_string;
+
+	if (program->name->should_expand)
+	{
+		tmp = program->name->value;
+		program->name->value = expand_word(tmp);
+		free(tmp);
+	}
+	tmp_list = program->params;
+	while (tmp_list)
+	{
+		if (((t_string *)tmp_list->content)->should_expand)
+		{
+			tmp_string = tmp_list->content;
+			tmp = tmp_string->value;
+			tmp_string->value = expand_word(tmp);
+			free(tmp);
+		}
+		tmp_list = tmp_list->next;
+	}
 }

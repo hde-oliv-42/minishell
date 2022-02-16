@@ -18,6 +18,11 @@
 # include "tokenizer/tokenizer.h"
 # include <stdio.h>
 
+typedef struct s_string {
+	char	*value;
+	int		should_expand;
+}	t_string;
+
 typedef struct s_program	t_program;
 
 typedef enum e_next_relation {
@@ -33,7 +38,7 @@ typedef enum e_program_type {
 }	t_program_type;
 
 struct s_program {
-	void			*name;
+	t_string		*name;
 	int				next_pipe[2];
 	t_program_type	type;
 	t_list			*params;
@@ -67,11 +72,6 @@ int				add_redirection(t_program *program,
 
 int				make_subshell(t_program *program,
 					t_token **tokens, int *cursor);
-
-typedef struct s_string {
-	char	*value;
-	int		should_expand;
-}	t_string;
 
 t_string		*new_string(t_token *word);
 

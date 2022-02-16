@@ -37,7 +37,6 @@ void	execute_one_command(t_data *data)
 		argv = generate_argv_array(data->program);
 		check_pipe_relations(data);
 		execve(path, argv, g_env);
-		// TODO: Handle execve errors
 	}
 }
 
@@ -54,6 +53,7 @@ static void	handle_parent(t_data *data)
 	data->program = data->program->next;
 }
 
+// TODO: Check for permissions
 void	execute_loop(t_data *data)
 {
 	int		id;

@@ -58,6 +58,12 @@ int		initialize_ms_env(char ***ms_env);
 // Access methods
 char	*find_path(char *name, char **ms_env);
 
+// Access utils
+int		create_path_array(char *path_string, char ***path_array);
+void	free_path_array(char **path_array);
+void	fetch_path_string(char **ms_env, char **path_string);
+char	*loop_path_array(char *name, char **path_array);
+
 // Child utils
 void	check_if_must_open_stdin(t_data *data);
 void	check_if_must_open_stdout(t_data *data);

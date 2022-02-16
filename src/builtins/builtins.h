@@ -24,5 +24,6 @@ void	env(char **ms_env);
 int		echo(t_program *program);
 int		export(t_program *program, char ***ms_env);
 int		unset(t_program *program, char ***ms_env);
+int		ms_exit(t_program *program);
 
 #endif

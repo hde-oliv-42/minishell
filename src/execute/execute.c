@@ -32,6 +32,8 @@ void	execute_one_command(t_data *data)
 		ft_dfree(g_env);
 		exit(1);
 	}
+	else if (!is_executable(path))
+		flush_minishell(data);
 	else
 	{
 		child_handlers();

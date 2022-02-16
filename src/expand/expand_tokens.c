@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 16:13:04 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/13 16:14:18 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/15 10:37:15 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_list	*string_to_token_list(t_list *string_list)
 	token_list = NULL;
 	while (string_list)
 	{
-		token = new_token(TK_WORD, string_list->content);
+		token = new_expanded_token(TK_WORD, string_list->content);
 		ft_lstadd_back(&token_list, ft_lstnew(token));
 		string_list = string_list->next;
 	}
@@ -64,15 +64,6 @@ t_list	*token_array_to_list(t_token **token_array)
 	return (list);
 }
 
-static void	handle_word(t_token *token)
-{
-	char	*value;
-
-	value = token->value;
-	token->value = expand_word(value);
-	free(value);
-}
-
 t_token	**expand_tokens(t_token **token_array)
 {
 	char	*value;
@@ -89,8 +80,6 @@ t_token	**expand_tokens(t_token **token_array)
 		value = ((t_token *)token->content)->value;
 		if (ft_strncmp("*", value, 2) == 0)
 			handle_asterisk(&head, &token, last_token);
-		else if (((t_token *)token->content)->type == TK_WORD)
-			handle_word(token->content);
 		last_token = token;
 		if (token)
 			token = token->next;

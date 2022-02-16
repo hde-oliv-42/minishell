@@ -28,6 +28,7 @@ TEST_SRC += echo.c
 TEST_SRC += unset.c
 TEST_SRC += export.c
 TEST_SRC += env.c
+TEST_SRC += ms_exit.c
 TEST_SRC += parse.c
 TEST_SRC += subshell.c
 TEST_SRC += destroy.c

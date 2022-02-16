@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "parsing/parsing.h"
+#include "libft.h"
+#include "builtins/builtins.h"
 
 int	is_builtin(t_data *data)
 {
@@ -32,6 +33,8 @@ int	is_builtin(t_data *data)
 		return (5);
 	else if (!ft_strncmp(program_name, "pwd", 4))
 		return (6);
+	else if (!ft_strncmp(program_name, "exit", 5))
+		return (7);
 	return (0);
 }
 
@@ -51,6 +54,8 @@ int	execute_builtin(t_data *data, int id)
 		env(g_env);
 	else if (id == 6)
 		*(data->wstatus) = pwd();
+	else if (id == 7)
+		*(data->wstatus) = ms_exit(data->program, data);
 	else
 		*(data->wstatus) = 0;
 	data->last_program = data->program;

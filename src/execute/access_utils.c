@@ -41,6 +41,13 @@ void	fetch_path_string(char **ms_env, char **path_string)
 	}
 }
 
+static int	is_relative(char *name)
+{
+	if (!access(name, F_OK))
+		return (1);
+	return (0);
+}
+
 char	*loop_path_array(char *name, char **path_array)
 {
 	int		i;
@@ -61,5 +68,7 @@ char	*loop_path_array(char *name, char **path_array)
 		free(tmp2);
 	}
 	free_path_array(path_array);
+	if (is_relative(name))
+		return (ft_strdup(name));
 	return (NULL);
 }

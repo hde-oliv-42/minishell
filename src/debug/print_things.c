@@ -82,7 +82,7 @@ char	**generate_argv(t_program *program)
 	array = ft_calloc(size + 2, sizeof(char **));
 	if (array == NULL)
 		exit(2);
-	array[0] = program->name;
+	array[0] = program->name->value;
 	i = 1;
 	while (params)
 	{
@@ -115,7 +115,7 @@ void	execute_pipeline(t_program *pipeline)
 		if (pid == 0)
 		{
 			argv = generate_argv(pipeline);
-			execve(pipeline->name, argv, NULL);
+			execve(pipeline->name->value, argv, NULL);
 			if (errno == ENOENT)
 				printf("minishell: command not found\n");
 			else

@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include "libft.h"
 # include "parsing/parsing.h"
+# include "execute/execute.h"
 
 int		cd(t_program *program, char **ms_env);
 int		pwd(void);
@@ -24,5 +25,6 @@ void	env(char **ms_env);
 int		echo(t_program *program);
 int		export(t_program *program, char ***ms_env);
 int		unset(t_program *program, char ***ms_env);
+int		ms_exit(t_program *program, t_data *data);
 
 #endif

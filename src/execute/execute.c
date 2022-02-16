@@ -12,6 +12,7 @@
 
 #include "execute.h"
 #include "parsing/parsing.h"
+#include "expand/expand.h"
 
 char	**g_env = NULL;
 
@@ -60,6 +61,7 @@ void	execute_loop(t_data *data)
 
 	while (data->program)
 	{
+		expand_program(data->program);
 		if (execute_builtin(data, is_builtin(data)) != -1)
 			continue ;
 		if (data->program->next_relation == PIPE)

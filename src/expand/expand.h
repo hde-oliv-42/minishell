@@ -36,5 +36,6 @@ void	destroy_piece(void *piece);
 t_list	*expand_asterisk(void);
 
 t_token	**expand_tokens(t_token **token_array);
+void	expand_program(t_program *program);
 
 #endif

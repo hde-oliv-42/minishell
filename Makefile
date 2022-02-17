@@ -75,7 +75,7 @@ $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	make -j6 -C $(LIBFT_DIR)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

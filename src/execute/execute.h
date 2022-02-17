@@ -35,6 +35,7 @@ typedef struct s_data
 	int			program_count;
 	int			*wstatus;
 	char		*cwd;
+	int			must_continue;
 }	t_data;
 
 // Execute
@@ -43,7 +44,7 @@ void	execute_one_command(t_data *data);
 
 // Execute builtin
 int		is_builtin(t_data *data);
-int		execute_builtin(t_data *data, int id);
+int		execute_builtin(t_data *data, int id, int og_fd[2]);
 
 // Execute utils
 char	**generate_argv_array(t_program *program);
@@ -68,8 +69,8 @@ void	fetch_path_string(char **ms_env, char **path_string);
 char	*loop_path_array(char *name, char **path_array);
 
 // Child utils
-void	check_if_must_open_stdin(t_data *data);
-void	check_if_must_open_stdout(t_data *data);
+void	check_if_must_open_stdin(t_data *data, int is_child);
+void	check_if_must_open_stdout(t_data *data, int is_child);
 void	open_all_output_files(t_data *data);
 void	open_all_input_files(t_data *data);
 

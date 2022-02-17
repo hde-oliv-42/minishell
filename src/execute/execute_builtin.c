@@ -13,6 +13,8 @@
 #include "execute.h"
 #include "libft.h"
 #include "builtins/builtins.h"
+#include <stdio.h>
+#include <unistd.h>
 
 int	is_builtin(t_data *data)
 {
@@ -38,10 +40,8 @@ int	is_builtin(t_data *data)
 	return (0);
 }
 
-int	execute_builtin(t_data *data, int id)
+static void	capeta(t_data *data, int id)
 {
-	if (id == 0)
-		return (-1);
 	if (id == 1)
 		*(data->wstatus) = cd(data->program, g_env);
 	else if (id == 2)
@@ -58,6 +58,26 @@ int	execute_builtin(t_data *data, int id)
 		*(data->wstatus) = ms_exit(data->program, data);
 	else
 		*(data->wstatus) = 0;
+}
+
+void	restore_fd(int og_fd[2])
+{
+	if (dup2(og_fd[0], STDIN_FILENO) < 0)
+		dprintf(2, "a\n");
+	if (dup2(og_fd[1], STDOUT_FILENO) < 0)
+		dprintf(2, "b\n");
+}
+
+int	execute_builtin(t_data *data, int id, int og_fd[2])
+{
+	if (id == 0)
+		return (-1);
+	check_if_must_open_stdin(data, 0);
+	check_if_must_open_stdout(data, 0);
+	open_all_input_files(data);
+	open_all_output_files(data);
+	capeta(data, id);
+	restore_fd(og_fd);
 	data->last_program = data->program;
 	data->program = data->program->next;
 	return (*(data->wstatus));

@@ -50,21 +50,39 @@ void	handle_wait(t_data *data)
 
 void	handle_conditional_wait(t_data *data)
 {
-	int	waifu;
 	int	status;
+	int	wait_result;
 
-	wait(&status);
-	waifu = WIFEXITED(status);
-	if (waifu)
-		*(data->wstatus) = WEXITSTATUS(status);
-	else
-		*(data->wstatus) = 1;
+	while (1)
+	{
+		wait_result = wait(&status);
+		if (wait_result == -1 && errno == EINTR)
+		{
+			errno = 0;
+			continue ;
+		}
+		if (WIFEXITED(status))
+			*(data->wstatus) = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			data->must_continue = 0;
+			*(data->wstatus) = WTERMSIG(status) + 128;
+		}
+		else if (WIFSIGNALED(status))
+		{
+			data->must_continue = 0;
+			*(data->wstatus) = WSTOPSIG(status) + 128;
+		}
+		else
+			*(data->wstatus) = 0;
+		break ;
+	}
 }
 
 void	handle_child(t_data *data)
 {
-	check_if_must_open_stdin(data);
-	check_if_must_open_stdout(data);
+	check_if_must_open_stdin(data, 1);
+	check_if_must_open_stdout(data, 1);
 	open_all_input_files(data);
 	open_all_output_files(data);
 	execute_one_command(data);

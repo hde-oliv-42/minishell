@@ -13,6 +13,8 @@
 #include "execute.h"
 #include "parsing/parsing.h"
 #include "expand/expand.h"
+#include <stdio.h>
+#include <unistd.h>
 
 char	**g_env = NULL;
 
@@ -53,22 +55,27 @@ static void	handle_parent(t_data *data)
 		data->program_count++;
 	if (data->last_program && data->last_program->next_relation == PIPE)
 		close_pipe(data->last_program->next_pipe, data);
-	data->last_program = data->program;
-	data->program = data->program->next;
+	if (data->must_continue == 0)
+		data->program = NULL;
+	else
+	{
+		data->last_program = data->program;
+		data->program = data->program->next;
+	}
 }
 
-void	execute_loop(t_data *data)
+void	execute_loop(t_data *data, int og_fd[2])
 {
 	int		id;
 
 	while (data->program)
 	{
 		expand_program(data->program, data);
-		if (execute_builtin(data, is_builtin(data)) != -1)
-			continue ;
 		if (data->program->next_relation == PIPE)
 			if (pipe(data->program->next_pipe))
 				break ;
+		if (execute_builtin(data, is_builtin(data), og_fd) != -1)
+			continue ;
 		if (check_conditional_error(data))
 			break ;
 		id = fork();
@@ -81,18 +88,32 @@ void	execute_loop(t_data *data)
 	}
 }
 
+void	close_og_fd(int og_fd[2])
+{
+	if (close(og_fd[0]))
+		dprintf(2, "c\n");
+	if (close(og_fd[1]))
+		dprintf(2, "d\n");
+}
+
 void	execute(t_data *data, t_program *program_list)
 {
-	// data = (t_data){program_list, program_list, NULL, 0, &wstatus};
+	int		og_fd[2];
+
+	if (g_env == NULL)
+		initialize_ms_env(&g_env);
+	og_fd[0] = dup(STDIN_FILENO);
+	og_fd[1] = dup(STDOUT_FILENO);
 	data->program_list = program_list;
 	data->program = program_list;
 	data->last_program = NULL;
 	data->program_count = 0;
 	*data->wstatus = 0;
-	execute_loop(data);
+	execute_loop(data, og_fd);
 	if (errno)
 		perror("execute");
 	ignore_signals();
 	handle_wait(data);
+	close_og_fd(og_fd);
 	handle_signals();
 }

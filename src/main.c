@@ -66,7 +66,7 @@ int	loop_prompt(t_data *data)
 	while (1)
 	{
 		programs = get_program_pipeline(data);
-		print_pipeline(programs);
+		// print_pipeline(programs);
 		if (programs == NULL)
 			continue ;
 		execute(data, programs);

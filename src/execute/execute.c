@@ -13,6 +13,7 @@
 #include "execute.h"
 #include "parsing/parsing.h"
 #include "expand/expand.h"
+#include <stdio.h>
 
 char	**g_env = NULL;
 

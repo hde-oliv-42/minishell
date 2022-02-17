@@ -43,7 +43,7 @@ void	check_pipe_relations(t_data *data)
 		if (close(data->last_program->next_pipe[1]))
 			flush_minishell(data);
 	}
-	if (data->program->next_relation)
+	if (data->program->next_relation == PIPE)
 	{
 		if (close(data->program->next_pipe[0]))
 			flush_minishell(data);

@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "ft_printf/libftprintf.h"
+#include "libft.h"
 
 int	create_path_array(char *path_string, char ***path_array)
 {
@@ -55,8 +57,22 @@ void	fetch_path_string(char **ms_env, char **path_string)
 
 static int	is_relative(char *name)
 {
-	if (!access(name, F_OK))
-		return (1);
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+		return (0);
+	if (name[0] == '.' || (ft_strchr(&(name[1]), '/') && name[0] != '/' ))
+	{
+		if (!access(name, F_OK))
+			return (1);
+		return (-1);
+	}
+	else if (name[0] == '/')
+	{
+		if (!access(name, F_OK))
+			return (1);
+	}
 	return (0);
 }
 
@@ -66,6 +82,11 @@ char	*loop_path_array(char *name, char **path_array)
 	char	*tmp;
 	char	*tmp2;
 
+	i = is_relative(name);
+	if (i == 1)
+		return (ft_strdup(name));
+	else if (i == -1)
+		return (NULL);
 	i = 0;
 	while (path_array[i])
 	{
@@ -80,7 +101,5 @@ char	*loop_path_array(char *name, char **path_array)
 		free(tmp2);
 	}
 	free_path_array(path_array);
-	if (is_relative(name))
-		return (ft_strdup(name));
 	return (NULL);
 }

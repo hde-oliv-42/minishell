@@ -40,9 +40,16 @@ void	handle_wait(t_data *data)
 		if (WIFEXITED(status))
 			*(data->wstatus) = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
+		{
+			
+			data->must_continue = 0;
 			*(data->wstatus) = WTERMSIG(status) + 128;
+		}
 		else if (WIFSIGNALED(status))
+		{
+			data->must_continue = 0;
 			*(data->wstatus) = WSTOPSIG(status) + 128;
+		}
 		else
 			*(data->wstatus) = 0;
 	}

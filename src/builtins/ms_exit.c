@@ -37,14 +37,15 @@ static int	is_number(char *number)
 int	ms_exit(t_program *program, t_data *data)
 {
 	int	i;
-	int	j;
 
 	i = ft_lstsize(program->params);
-	j = ft_atoi(((t_string *)program->params->content)->value);
 	ft_dprintf(2, "exit\n");
 	if (!is_number(((t_string *)program->params->content)->value))
+	{
 		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", \
 				((t_string *)program->params->content)->value);
+		exit(2);
+	}
 	else if (i == 0)
 	{
 		destroy_pipeline(data->program_list);
@@ -55,7 +56,7 @@ int	ms_exit(t_program *program, t_data *data)
 	{
 		destroy_pipeline(data->program_list);
 		ft_dfree(g_env);
-		exit(j);
+		exit(ft_atoi(((t_string *)program->params->content)->value));
 	}
 	else
 		ft_dprintf(2, "minishell: exit: too many arguments\n");

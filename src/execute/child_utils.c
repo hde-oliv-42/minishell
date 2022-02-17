@@ -13,25 +13,31 @@
 #include "execute.h"
 #include "parsing/parsing.h"
 
-void	check_if_must_open_stdin(t_data *data)
+void	check_if_must_open_stdin(t_data *data, int is_child)
 {
 	if (data->last_program && data->last_program->next_relation == PIPE)
 	{
 		if (dup2(data->last_program->next_pipe[0], STDIN_FILENO) < 0)
 			flush_minishell(data);
-		if (close(data->last_program->next_pipe[0]))
-			flush_minishell(data);
+		if (is_child)
+		{
+			if (close(data->last_program->next_pipe[0]))
+				flush_minishell(data);
+		}
 	}
 }
 
-void	check_if_must_open_stdout(t_data *data)
+void	check_if_must_open_stdout(t_data *data, int is_child)
 {
 	if (!data->program->output_list && data->program->next_relation == PIPE)
 	{
 		if (dup2(data->program->next_pipe[1], STDOUT_FILENO) < 0)
 			flush_minishell(data);
-		if (close(data->program->next_pipe[1]))
-			flush_minishell(data);
+		if (is_child)
+		{
+			if (close(data->program->next_pipe[1]))
+				flush_minishell(data);
+		}
 	}
 }
 

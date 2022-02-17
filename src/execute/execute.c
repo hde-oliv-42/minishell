@@ -32,7 +32,7 @@ void	execute_one_command(t_data *data)
 		*(data->wstatus) = 1;
 		destroy_pipeline(data->program_list);
 		ft_dfree(g_env);
-		exit(1);
+		exit(127);
 	}
 	else if (!is_executable(path))
 		flush_minishell(data);

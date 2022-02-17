@@ -72,6 +72,7 @@ static int	is_relative(char *name)
 	{
 		if (!access(name, F_OK))
 			return (1);
+		return (-1);
 	}
 	return (0);
 }

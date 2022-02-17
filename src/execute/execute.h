@@ -34,10 +34,11 @@ typedef struct s_data
 	t_program	*last_program;
 	int			program_count;
 	int			*wstatus;
+	char		*cwd;
 }	t_data;
 
 // Execute
-void	execute(t_program *program_list);
+void	execute(t_data *data, t_program *program_list);
 void	execute_one_command(t_data *data);
 
 // Execute builtin

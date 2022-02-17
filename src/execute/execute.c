@@ -63,7 +63,7 @@ void	execute_loop(t_data *data)
 
 	while (data->program)
 	{
-		expand_program(data->program);
+		expand_program(data->program, data);
 		if (execute_builtin(data, is_builtin(data)) != -1)
 			continue ;
 		if (data->program->next_relation == PIPE)
@@ -81,19 +81,18 @@ void	execute_loop(t_data *data)
 	}
 }
 
-void	execute(t_program *program_list)
+void	execute(t_data *data, t_program *program_list)
 {
-	t_data	data;
-	int		wstatus;
-
-	if (g_env == NULL)
-		initialize_ms_env(&g_env);
-	wstatus = 0;
-	data = (t_data){program_list, program_list, NULL, 0, &wstatus};
-	execute_loop(&data);
+	// data = (t_data){program_list, program_list, NULL, 0, &wstatus};
+	data->program_list = program_list;
+	data->program = program_list;
+	data->last_program = NULL;
+	data->program_count = 0;
+	*data->wstatus = 0;
+	execute_loop(data);
 	if (errno)
 		perror("execute");
 	ignore_signals();
-	handle_wait(&data);
+	handle_wait(data);
 	handle_signals();
 }

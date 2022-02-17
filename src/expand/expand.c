@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "expand/expand.h"
+#include "execute/execute.h"
 #include "libft.h"
 #include "parsing/parsing.h"
 #include "execute/ms_env.h"
@@ -36,8 +37,21 @@ static int	skip_dollar(t_list **piece_list, char chr)
 	return (1);
 }
 
+static char	*get_last_status(t_data *data)
+{
+	char	*status_str;
+
+	status_str = ft_itoa(*data->wstatus);
+	if (status_str == NULL)
+	{
+		perror("error getting last status");
+		return (NULL);
+	}
+	return (status_str);
+}
+
 static int	get_env_variable(
-		t_list **piece_list, const char *str, int *size)
+		t_list **piece_list, const char *str, int *size, t_data *data)
 {
 	char	*delimiters;
 	char	*key;
@@ -52,7 +66,10 @@ static int	get_env_variable(
 		(*size)++;
 	key = ft_substr(str, 0, *size);
 	(*size)--;
-	value = search_env(key);
+	if (str_equals(key, "?"))
+		value = get_last_status(data);
+	else
+		value = search_env(key);
 	if (value == NULL)
 		value = ft_strdup("");
 	free(key);
@@ -76,9 +93,21 @@ void	extract_until_quote(
 	*size = -1;
 }
 
-void	try_get_piece(
-		t_list **piece_list, char **word, char *inside_quote, int *size)
+typedef struct s_expander
 {
+	t_list	*piece_list;
+	char	*word;
+	char	inside_quote;
+}	t_expander;
+
+void	try_get_piece(
+		t_expander *expander, char *inside_quote, int *size, t_data *data)
+{
+	char	**word;
+	t_list	**piece_list;
+
+	word = &expander->word;
+	piece_list = &expander->piece_list;
 	if ((*word)[*size] == '\'' && *inside_quote != '"')
 		extract_until_quote(piece_list, word, inside_quote, size);
 	else if ((*word)[*size] == '"' && *inside_quote != '\'')
@@ -88,34 +117,36 @@ void	try_get_piece(
 		get_piece(piece_list, *word, *size);
 		*word += *size + 1;
 		*size = -1;
-		get_env_variable(piece_list, *word, size);
+		get_env_variable(piece_list, *word, size, data);
 		*word += *size + ((*word)[*size] != '\0');
 		*size = -1;
 	}
 }
 
-char	*expand_word(char *word)
+char	*expand_word(char *word, t_data *data)
 {
-	int		size;
-	char	*str;
-	char	inside_quote;
-	t_list	*piece_list;
+	int			size;
+	char		*str;
+	char		inside_quote;
+	t_expander	expander;
 
+	expander.piece_list = NULL;
+	expander.inside_quote = '\0';
+	expander.word = word;
 	size = -1;
-	piece_list = NULL;
 	inside_quote = '\0';
 	while (word[++size])
 	{
-		try_get_piece(&piece_list, &word, &inside_quote, &size);
+		try_get_piece(&expander, &inside_quote, &size, data);
 	}
 	if (size > 0)
-		get_piece(&piece_list, word, size);
-	str = merge_pieces(piece_list);
-	ft_lstclear(&piece_list, destroy_piece);
+		get_piece(&expander.piece_list, expander.word, size);
+	str = merge_pieces(expander.piece_list);
+	ft_lstclear(&expander.piece_list, destroy_piece);
 	return (str);
 }
 
-void	expand_redirections(t_list *list)
+void	expand_redirections(t_list *list, t_data *data)
 {
 	t_list			*cursor;
 	t_redirection	*redirection;
@@ -127,7 +158,7 @@ void	expand_redirections(t_list *list)
 		redirection = cursor->content;
 		if (redirection->should_redirect)
 		{
-			new_str = expand_word(redirection->file_name);
+			new_str = expand_word(redirection->file_name, data);
 			free(redirection->file_name);
 			redirection->file_name = new_str;
 		}
@@ -135,7 +166,7 @@ void	expand_redirections(t_list *list)
 	}
 }
 
-void	expand_program(t_program *program)
+void	expand_program(t_program *program, t_data *data)
 {
 	char		*tmp;
 	t_list		*tmp_list;
@@ -144,7 +175,7 @@ void	expand_program(t_program *program)
 	if (program->name->should_expand)
 	{
 		tmp = program->name->value;
-		program->name->value = expand_word(tmp);
+		program->name->value = expand_word(tmp, data);
 		free(tmp);
 	}
 	tmp_list = program->params;
@@ -154,11 +185,11 @@ void	expand_program(t_program *program)
 		{
 			tmp_string = tmp_list->content;
 			tmp = tmp_string->value;
-			tmp_string->value = expand_word(tmp);
+			tmp_string->value = expand_word(tmp, data);
 			free(tmp);
 		}
 		tmp_list = tmp_list->next;
 	}
-	expand_redirections(program->input_list);
-	expand_redirections(program->output_list);
+	expand_redirections(program->input_list, data);
+	expand_redirections(program->output_list, data);
 }

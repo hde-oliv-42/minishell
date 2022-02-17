@@ -16,25 +16,34 @@
 #include <signals/signals.h>
 #include <debug/debug.h>
 
-int	quit_minishell(void)
+void	destroy_data(t_data *data)
+{
+	// destroy_pipeline(data->program_list);
+	data->cwd = NULL;
+}
+
+int	quit_minishell(t_data *data)
 {
 	// TODO: free stuff
+	free(data->cwd);
 	rl_clear_history();
+	ft_dfree(g_env);
+	ft_printf("exit\n");
 	exit(0);
 }
 
-t_program	*get_program_pipeline(void)
+t_program	*get_program_pipeline(t_data *data)
 {
 	char	*line;
 	char	*prompt;
 	t_token	**tokens;
 	t_program	*programs;
 
-	prompt = generate_prompt();
+	prompt = generate_prompt(data);
 	line = readline(prompt);
 	free(prompt);
 	if (line == NULL)
-		quit_minishell();
+		quit_minishell(data);
 	if (ft_strlen(line) == 0)
 		return (NULL);
 	add_history(line);
@@ -49,17 +58,18 @@ t_program	*get_program_pipeline(void)
 	return (programs);
 }
 
-int	loop_prompt(void)
+int	loop_prompt(t_data *data)
 {
 	t_program	*programs;
 
 	handle_signals();
 	while (1)
 	{
-		programs = get_program_pipeline();
+		programs = get_program_pipeline(data);
+		print_pipeline(programs);
 		if (programs == NULL)
 			continue ;
-		execute(programs);
+		execute(data, programs);
 		destroy_pipeline(programs);
 	}
 	return (0);
@@ -67,45 +77,12 @@ int	loop_prompt(void)
 
 int	main(void)
 {
-	/* char *strings[] = { */
-	/* 	"minishell", */
-	/* 	"mi'ni'sh'ell'", */
-	/* 	"mi\"ni\"sh'ell'", */
-	/* 	"mi\"ni'shell'\"", */
-	/* 	"mi'ni''sh''ell'", */
-	/* 	"mi\"\"ni\"sh\"\"ell\"", */
-	/* 	"'mi\"\"ni\"sh\"\"ell\"'", */
-	/* 	"'mi\"\"ni\"sh'\"\"ell\"\"", */
-	/* 	"\"mini shell\"", */
-	/* 	"$USER", */
-	/* 	"'$USER'", */
-	/* 	"\"$USER\"", */
-	/* 	"echo\"$USER\"", */
-	/* 	"echo$USER", */
-	/* 	"echo$USER$USER", */
-	/* 	"echo$US$ER$USER", */
-	/* 	"\"$USER é legal\"", */
-	/* 	"'$USER é legal'", */
-	/* 	"$$USER é legal", */
-	/* 	"$=USER é legal", */
-	/* 	"$@USER é legal", */
-	/* 	"$(USER é legal", */
-	/* 	"$)USER é legal", */
-	/* 	"$*USER é legal", */
-	/* 	"dsjak lfads jfkdl sjf (ajsdkfl jdskf jasdkl)", */
-	/* 	"massa$", */
-	/* 	"\"daora$\"", */
-	/* 	"\"daora$\"massa", */
-	/* 	NULL}; */
-	/* int i = 0; */
+	t_data	data;
+	int		wstatus;
 
-	/* while (strings[i]) */
-	/* { */
-	/* 	char *expanded = expand_word(strings[i]); */
-	/* 	printf("\nactual:   %s\n", strings[i]); */
-	/* 	printf("expanded: %s\n", expanded); */
-	/* 	free(expanded); */
-	/* 	i++; */
-	/* } */
-	return (loop_prompt());
+	ft_bzero(&data, sizeof(t_data));
+	wstatus = 0;
+	initialize_ms_env(&g_env);
+	data.wstatus = &wstatus;
+	return (loop_prompt(&data));
 }

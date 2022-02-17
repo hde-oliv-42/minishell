@@ -13,6 +13,8 @@
 #ifndef PROMPT_H
 # define PROMPT_H
 
-char	*generate_prompt(void);
+# include "execute/execute.h"
+
+char	*generate_prompt(t_data *data);
 
 #endif /* !PROMPT_H */

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execute/execute.h"
 #include "ft_printf/libftprintf.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -23,23 +24,22 @@
 #define CYAN	"\001\x1b[36m\002"
 #define RESET	"\001\x1b[0m\002"
 
-static char	*get_last_three_dirs(void)
+static char	*get_last_three_dirs(t_data *data)
 {
 	int			i;
 	int			slashs;
 	char		*str;
 	char		*cwd;
-	static char	*previous_dir;
 
 	slashs = 0;
 	cwd = getcwd(NULL, 0);
 	if (cwd != NULL)
 	{
-		free(previous_dir);
-		previous_dir = cwd;
+		free(data->cwd);
+		data->cwd = cwd;
 	}
 	else
-		cwd = previous_dir;
+		cwd = data->cwd;
 	i = ft_strlen(cwd);
 	while (slashs < 3 && i > 0)
 		if (cwd[--i] == '/')
@@ -50,19 +50,37 @@ static char	*get_last_three_dirs(void)
 	return (str);
 }
 
-char	*generate_prompt(void)
+static char	*format_prompt(char *user, char *directory, t_data *data)
+{
+	int		result;
+	char	*arrow_color;
+	char	*padding;
+	char	*prompt;
+
+	arrow_color = GREEN;
+	padding = "";
+	if (*data->wstatus)
+	{
+		arrow_color = RED;
+		padding = " ";
+	}
+	result = ft_asprintf(&prompt,
+			YELLOW "%s" BOLD BLUE " %s" RED " %.d" "%s%s>>> " RESET,
+			user, directory, *data->wstatus, padding, arrow_color);
+	if (result == -1)
+		return (ft_strdup("[error generating prompt] > "));
+	return (prompt);
+}
+
+char	*generate_prompt(t_data *data)
 {
 	char	*directory;
-	int		result;
 	char	*prompt;
 	char	*user;
 
-	directory = get_last_three_dirs();
+	directory = get_last_three_dirs(data);
 	user = getenv("USER");
-	result = ft_asprintf(&prompt, YELLOW "%s" BOLD BLUE " %s"
-			GREEN " >>> " RESET, user, directory);
-	if (result == -1)
-		return (ft_strdup("[error generating prompt] > "));
+	prompt = format_prompt(user, directory, data);
 	free(directory);
 	return (prompt);
 }

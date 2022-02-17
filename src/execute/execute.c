@@ -109,6 +109,7 @@ void	execute(t_data *data, t_program *program_list)
 	data->last_program = NULL;
 	data->program_count = 0;
 	*data->wstatus = 0;
+	data->must_continue = 1;
 	execute_loop(data, og_fd);
 	if (errno)
 		perror("execute");

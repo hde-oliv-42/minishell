@@ -16,9 +16,12 @@ void	destroy_string(void *content)
 {
 	t_string	*string;
 
-	string = content;
-	free(string->value);
-	free(string);
+	if (content)
+	{
+		string = content;
+		free(string->value);
+		free(string);
+	}
 }
 
 void	destroy_redirection(void *content)

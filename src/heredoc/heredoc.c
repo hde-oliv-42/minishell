@@ -57,7 +57,6 @@ char	*get_heredoc(char *delimiter)
 			return (NULL);
 		}
 		ft_lstadd_back(&lines_list, ft_lstnew(newstr));
-		printf("you typed: %s\n", newstr);
 		if (str_equals(delimiter, newstr))
 		{
 			full_text = finish_heredoc(lines_list);

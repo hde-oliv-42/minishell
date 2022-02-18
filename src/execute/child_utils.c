@@ -12,6 +12,7 @@
 
 #include "execute.h"
 #include "parsing/parsing.h"
+#include <unistd.h>
 
 void	check_if_must_open_stdin(t_data *data, int is_child)
 {
@@ -67,10 +68,17 @@ void	open_all_output_files(t_data *data)
 }
 
 // TODO: Check if this works later
-static void	handle_heredoc(t_list *files_in, t_redirection *file_in)
+static void	handle_heredoc(t_list **files_in, t_redirection *file_in)
 {
-	get_heredoc(file_in->file_name);
-	files_in = files_in->next;
+	int		fd[2];
+
+	// get_heredoc(file_in->file_name);
+	*files_in = (*files_in)->next;
+	pipe(fd);
+	dup2(fd[0], STDIN_FILENO);
+	write(fd[1], file_in->contents, ft_strlen(file_in->contents));
+	close(fd[0]);
+	close(fd[1]);
 }
 
 void	open_all_input_files(t_data *data)
@@ -84,7 +92,7 @@ void	open_all_input_files(t_data *data)
 	{
 		file_in = files_in->content;
 		if (file_in->type == RD_HERE_DOC)
-			handle_heredoc(files_in, file_in);
+			handle_heredoc(&files_in, file_in);
 		else
 		{
 			in_fd = open(file_in->file_name, file_in->type);

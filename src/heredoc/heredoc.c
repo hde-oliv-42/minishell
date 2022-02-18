@@ -15,6 +15,7 @@
 #include <readline/readline.h>
 #include "ft_printf/libftprintf.h"
 #include "heredoc.h"
+#include "parsing/parsing.h"
 
 static char	*finish_heredoc(t_list *lines)
 {
@@ -56,6 +57,7 @@ char	*get_heredoc(char *delimiter)
 			return (NULL);
 		}
 		ft_lstadd_back(&lines_list, ft_lstnew(newstr));
+		printf("you typed: %s\n", newstr);
 		if (str_equals(delimiter, newstr))
 		{
 			full_text = finish_heredoc(lines_list);
@@ -64,4 +66,29 @@ char	*get_heredoc(char *delimiter)
 		}
 	}
 	return (full_text);
+}
+
+void	collect_heredocs(t_program *programs)
+{
+	char			*heredoc;
+	char			*delimiter;
+	t_list			*item;
+	t_redirection	*redirection;
+
+	while (programs)
+	{
+		item = programs->input_list;
+		while (item)
+		{
+			redirection = item->content;
+			if (redirection->type == RD_HERE_DOC)
+			{
+				delimiter = redirection->file_name;
+				heredoc = get_heredoc(delimiter);
+				redirection->contents = heredoc;
+			}
+			item = item->next;
+		}
+		programs = programs->next;
+	}
 }

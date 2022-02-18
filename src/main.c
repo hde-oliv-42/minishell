@@ -1,4 +1,5 @@
 #include "expand/expand.h"
+#include "heredoc/heredoc.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -69,6 +70,7 @@ int	loop_prompt(t_data *data)
 		// print_pipeline(programs);
 		if (programs == NULL)
 			continue ;
+		collect_heredocs(programs);
 		execute(data, programs);
 		destroy_pipeline(programs);
 	}

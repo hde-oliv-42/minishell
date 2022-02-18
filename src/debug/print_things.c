@@ -11,7 +11,10 @@ void	print_pipeline(t_program *program)
 	while (program)
 	{
 		printf("=== program ===\n");
-		printf("  name: %s\n", ((t_string *)program->name)->value);
+		if (program->type == PROGRAM)
+			printf("  name: %s\n", ((t_string *)program->name)->value);
+		else
+			printf("  type: subhsell\n");
 		printf("  params: [ ");
 		params = program->params;
 		while (params)

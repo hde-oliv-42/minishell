@@ -71,6 +71,6 @@ int	make_subshell(t_program *program, t_token **tokens, int *cursor)
 		return (free(param), 0);
 	string->value = param;
 	string->should_expand = 0;
-	ft_lstadd_back(&program->params, ft_lstnew(param));
+	ft_lstadd_back(&program->params, ft_lstnew(string));
 	return (1);
 }

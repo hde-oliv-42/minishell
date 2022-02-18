@@ -28,7 +28,7 @@ t_redirection	*parse_redirection(t_token **tokens, int *cursor)
 	type[TK_REDIRECT_OUT_TRUNC] = RD_OUTFILE_TRUNC;
 	redirection->type = type[tokens[*cursor]->type];
 	redirection->file_name = ft_strdup(tokens[*cursor + 1]->value);
-	redirection->should_redirect = tokens[*cursor + 1]->should_expand;
+	redirection->should_expand = tokens[*cursor + 1]->should_expand;
 	(*cursor) = *cursor + 2;
 	return (redirection);
 }

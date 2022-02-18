@@ -156,7 +156,7 @@ void	expand_redirections(t_list *list, t_data *data)
 	while (cursor)
 	{
 		redirection = cursor->content;
-		if (redirection->should_redirect)
+		if (redirection->should_expand)
 		{
 			new_str = expand_word(redirection->file_name, data);
 			free(redirection->file_name);

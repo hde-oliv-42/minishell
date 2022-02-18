@@ -58,7 +58,8 @@ typedef enum e_redirection_type {
 typedef struct s_redirection {
 	t_redirection_type	type;
 	char				*file_name;
-	int					should_redirect;
+	int					should_expand;
+	char				*contents;
 }	t_redirection;
 
 t_program		*parse(t_token **tokens);

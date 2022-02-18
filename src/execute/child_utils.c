@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "parsing/parsing.h"
 
 void	check_if_must_open_stdin(t_data *data, int is_child)
 {

@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "ft_printf/libftprintf.h"
-#include "libft.h"
 
 int	create_path_array(char *path_string, char ***path_array)
 {

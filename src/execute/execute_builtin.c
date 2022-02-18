@@ -11,10 +11,7 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "libft.h"
 #include "builtins/builtins.h"
-#include <stdio.h>
-#include <unistd.h>
 
 int	is_builtin(t_data *data)
 {

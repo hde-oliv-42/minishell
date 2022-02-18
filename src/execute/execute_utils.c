@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "parsing/parsing.h"
 
 char	**generate_argv_array(t_program *program)
 {

@@ -97,34 +97,33 @@ static int	var_already_exists(char *var_with_content, char **ms_env)
 int	export(t_program *program, char ***ms_env)
 {
 	char	*equals_ptr;
-	int		i;
+	t_list	*tmp;
 
-	i = ft_lstsize(program->params);
-	if (i == 0)
+	tmp = program->params;
+	if (ft_lstsize(program->params) == 0)
 	{
 		env(*ms_env);
 		return (0);
 	}
-	while (program->params)
+	while (tmp)
 	{
-		equals_ptr = ft_strchr(program->params->content, '=');
+		equals_ptr = ft_strchr(tmp->content, '=');
 		if (!equals_ptr)
 		{
-			program->params = program->params->next;
+			tmp = tmp->next;
 			continue ;
 		}
-		if (equals_ptr == program->params->content)
-			return (export_error(program->params->content));
+		if (equals_ptr == tmp->content)
+			return (export_error(tmp->content));
 		else
 		{
-			if (var_already_exists(program->params->content, *ms_env) == 1)
-				return (handle_already_exists(program->params->content, \
+			if (var_already_exists(tmp->content, *ms_env) == 1)
+				return (handle_already_exists(tmp->content, \
 												*ms_env));
 			else
-				return (handle_new_var(program->params->content, ms_env));
+				return (handle_new_var(tmp->content, ms_env));
 		}
-		program->params = program->params->next;
-		// TODO: Use a temporary pointer instead
+		tmp = tmp->next;
 	}
 	return (1);
 }

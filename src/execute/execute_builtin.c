@@ -60,15 +60,15 @@ static void	capeta(t_data *data, int id)
 		*(data->wstatus) = 0;
 }
 
-void	restore_fd(int og_fd[2])
+void	restore_fd(t_data *data)
 {
-	if (dup2(og_fd[0], STDIN_FILENO) < 0)
-		dprintf(2, "a\n");
-	if (dup2(og_fd[1], STDOUT_FILENO) < 0)
-		dprintf(2, "b\n");
+	if (dup2(data->og_fd[0], STDIN_FILENO) < 0)
+		flush_minishell(data);
+	if (dup2(data->og_fd[1], STDOUT_FILENO) < 0)
+		flush_minishell(data);
 }
 
-int	execute_builtin(t_data *data, int id, int og_fd[2])
+int	execute_builtin(t_data *data, int id)
 {
 	if (id == 0)
 		return (-1);
@@ -77,7 +77,7 @@ int	execute_builtin(t_data *data, int id, int og_fd[2])
 	open_all_input_files(data);
 	open_all_output_files(data);
 	capeta(data, id);
-	restore_fd(og_fd);
+	restore_fd(data);
 	data->last_program = data->program;
 	data->program = data->program->next;
 	return (*(data->wstatus));

@@ -36,6 +36,7 @@ typedef struct s_data
 	int			*wstatus;
 	char		*cwd;
 	int			must_continue;
+	int			og_fd[2];
 }	t_data;
 
 // Execute
@@ -44,7 +45,7 @@ void	execute_one_command(t_data *data);
 
 // Execute builtin
 int		is_builtin(t_data *data);
-int		execute_builtin(t_data *data, int id, int og_fd[2]);
+int		execute_builtin(t_data *data, int id);
 
 // Execute utils
 char	**generate_argv_array(t_program *program);

@@ -59,6 +59,8 @@ void	flush_minishell(t_data *data)
 {
 	destroy_pipeline(data->program_list);
 	ft_dfree(g_env);
+	close(data->og_fd[0]);
+	close(data->og_fd[1]);
 	perror("minishell");
 	exit(errno);
 }

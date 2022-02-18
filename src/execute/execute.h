@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/01/29 20:23:59 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/02/18 14:55:43 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include "debug/debug.h"
 # include "ft_printf/libftprintf.h"
 # include "signals/signals.h"
-# include "heredoc/heredoc.h"
 
 extern char	**g_env;
 

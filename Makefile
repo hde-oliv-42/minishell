@@ -59,6 +59,7 @@ TEST_SRC += pieces.c
 TEST_SRC += expand_tokens.c
 TEST_SRC += expand_asterisk.c
 TEST_SRC += heredoc.c
+TEST_SRC += heredoc_subprocess.c
 
 SRC = main.c $(TEST_SRC)
 

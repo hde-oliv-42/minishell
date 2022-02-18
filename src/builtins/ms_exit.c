@@ -37,28 +37,25 @@ static int	is_number(char *number)
 int	ms_exit(t_program *program, t_data *data)
 {
 	int	i;
+	int	j;
+	int	n;
 
 	i = ft_lstsize(program->params);
+	j = ft_atoi(((t_string *)program->params->content)->value);
+	n = is_number(((t_string *)program->params->content)->value);
 	ft_dprintf(2, "exit\n");
-	if (!is_number(((t_string *)program->params->content)->value))
+	destroy_pipeline(data->program_list);
+	ft_dfree(g_env);
+	if (i > 1)
+		ft_dprintf(2, "minishell: exit: too many arguments\n");
+	else if (!n)
 	{
-		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n", \
-				((t_string *)program->params->content)->value);
+		ft_dprintf(2, "minishell: exit: numeric argument required\n");
 		exit(2);
 	}
 	else if (i == 0)
-	{
-		destroy_pipeline(data->program_list);
-		ft_dfree(g_env);
 		exit(0);
-	}
 	else if (i == 1)
-	{
-		destroy_pipeline(data->program_list);
-		ft_dfree(g_env);
-		exit(ft_atoi(((t_string *)program->params->content)->value));
-	}
-	else
-		ft_dprintf(2, "minishell: exit: too many arguments\n");
+		exit(j);
 	return (1);
 }

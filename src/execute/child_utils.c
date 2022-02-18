@@ -72,7 +72,6 @@ static void	handle_heredoc(t_list **files_in, t_redirection *file_in)
 {
 	int		fd[2];
 
-	// get_heredoc(file_in->file_name);
 	*files_in = (*files_in)->next;
 	pipe(fd);
 	dup2(fd[0], STDIN_FILENO);

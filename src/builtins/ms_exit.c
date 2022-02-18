@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "execute/execute.h"
 #include "ft_printf/libftprintf.h"
 #include "libft.h"
 
@@ -38,6 +39,8 @@ static void	free_and_exit(t_data *data, int number)
 {
 	destroy_pipeline(data->program_list);
 	ft_dfree(g_env);
+	close(data->og_fd[0]);
+	close(data->og_fd[1]);
 	exit(number);
 }
 

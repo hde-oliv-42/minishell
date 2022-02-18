@@ -41,7 +41,6 @@ void	handle_wait(t_data *data)
 			*(data->wstatus) = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			
 			data->must_continue = 0;
 			*(data->wstatus) = WTERMSIG(status) + 128;
 		}

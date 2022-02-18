@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "libft.h"
 
 int	is_writable(char *path)
 {

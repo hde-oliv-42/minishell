@@ -172,14 +172,14 @@ void	expand_program(t_program *program, t_data *data)
 	t_list		*tmp_list;
 	t_string	*tmp_string;
 
-	if (program->name->should_expand)
+	if (program->name && program->name->should_expand)
 	{
 		tmp = program->name->value;
 		program->name->value = expand_word(tmp, data);
 		free(tmp);
 	}
 	tmp_list = program->params;
-	while (tmp_list)
+	while (program->type != SUBSHELL && tmp_list)
 	{
 		if (((t_string *)tmp_list->content)->should_expand)
 		{

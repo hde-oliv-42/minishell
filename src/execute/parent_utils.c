@@ -44,7 +44,7 @@ void	handle_wait(t_data *data)
 			data->must_continue = 0;
 			*(data->wstatus) = WTERMSIG(status) + 128;
 		}
-		else if (WIFSIGNALED(status))
+		else if (WIFSTOPPED(status))
 		{
 			data->must_continue = 0;
 			*(data->wstatus) = WSTOPSIG(status) + 128;

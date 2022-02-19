@@ -23,14 +23,13 @@ void	execute_one_command(t_data *data)
 
 	program_name = ((t_string *)data->program->name)->value;
 	path = find_path(program_name, g_env);
+	close_pipe(data->og_fd, data);
 	if (path == NULL)
 	{
 		command_not_found(program_name);
 		*(data->wstatus) = 1;
 		destroy_pipeline(data->program_list);
 		ft_dfree(g_env);
-		close(data->og_fd[0]);
-		close(data->og_fd[1]);
 		exit(127);
 	}
 	else if (!is_executable(path))

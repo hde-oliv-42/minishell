@@ -9,5 +9,6 @@
 void	print_tokens(t_token **tokens);
 void	print_pipeline(t_program *program);
 void	print_array(char **array);
+void	print_linked_list(t_list *list);
 
 #endif /* !DEBUG */

@@ -1,6 +1,20 @@
 #include "debug.h"
 #include "parsing/parsing.h"
 
+void	print_linked_list(t_list *list)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	while (list)
+	{
+		str = list->content;
+		printf("%d -> %s\n", i++, str);
+		list = list->next;
+	}
+}
+
 void	print_pipeline(t_program *program)
 {
 	t_list	*params;

@@ -55,6 +55,7 @@ TEST_SRC += print_things.c
 TEST_SRC += prompt.c
 TEST_SRC += signal_handlers.c
 TEST_SRC += signal_ignorers.c
+TEST_SRC += heredoc_signals.c
 TEST_SRC += expand.c
 TEST_SRC += pieces.c
 TEST_SRC += expand_tokens.c

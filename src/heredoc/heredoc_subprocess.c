@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:38:19 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/18 19:13:09 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/19 14:59:19 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/wait.h>
 #include <libft.h>
 #include <minishell.h>
 #include "heredoc.h"

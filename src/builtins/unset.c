@@ -72,6 +72,7 @@ int	unset(t_program *program, char ***ms_env)
 
 	params = program->params;
 	i = ft_lstsize(params);
+	dummy = 'a';
 	if (i == 0)
 		return (0);
 	if (duplicate_env(*ms_env, &tmp))

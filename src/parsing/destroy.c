@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 17:04:01 by psergio-          #+#    #+#             */
-/*   Updated: 2021/12/30 17:04:30 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/19 15:06:26 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	destroy_redirection(void *content)
 
 	redirection = content;
 	free(redirection->file_name);
+	free(redirection->contents);
 	free(redirection);
 }
 

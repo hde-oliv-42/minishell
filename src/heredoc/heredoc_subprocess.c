@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug/debug.h"
 #include "execute/execute.h"
 #include "signals/signals.h"
 #include <errno.h>
@@ -62,13 +63,11 @@ static char	*finish_heredoc(t_list *lines)
 	return (full_text);
 }
 
-char	*get_heredoc(char *delimiter)
+char	*get_heredoc(char *delimiter, t_list	**lines_list)
 {
 	char	*newstr;
 	char	*full_text;
-	t_list	*lines_list;
 
-	lines_list = NULL;
 	full_text = NULL;
 	while (1)
 	{
@@ -77,14 +76,14 @@ char	*get_heredoc(char *delimiter)
 		{
 			ft_dprintf(2, "unexpected end-of-file, expeceted '%s'\n",
 				delimiter);
-			ft_lstclear(&lines_list, free);
+			ft_lstclear(lines_list, free);
 			return (NULL);
 		}
-		ft_lstadd_back(&lines_list, ft_lstnew(newstr));
+		ft_lstadd_back(lines_list, ft_lstnew(newstr));
 		if (str_equals(delimiter, newstr))
 		{
-			full_text = finish_heredoc(lines_list);
-			ft_lstclear(&lines_list, free);
+			full_text = finish_heredoc(*lines_list);
+			ft_lstclear(lines_list, free);
 			break ;
 		}
 	}
@@ -94,10 +93,12 @@ char	*get_heredoc(char *delimiter)
 void	child_send_heredoc(
 	t_redirection *redirection, int piper[2], t_data *data)
 {
-	int	size;
+	int		size;
+	t_list	*string_list;
 
-	set_heredoc_signals(data);
-	redirection->contents = get_heredoc(redirection->file_name);
+	string_list = NULL;
+	set_heredoc_signals(data, &string_list);
+	redirection->contents = get_heredoc(redirection->file_name, &string_list);
 	size = ft_strlen(redirection->contents);
 	write(piper[1], &size, 4);
 	write(piper[1], redirection->contents, size);

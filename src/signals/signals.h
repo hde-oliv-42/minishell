@@ -20,6 +20,6 @@ void	reset_child_signals(void);
 void	reset_signals(void);
 void	handle_signals(void);
 void	ignore_signals(void);
-void	set_heredoc_signals(t_data *data);
+void	set_heredoc_signals(t_data *data, t_list **string_list);
 
 #endif

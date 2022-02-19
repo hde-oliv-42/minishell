@@ -48,7 +48,7 @@ static void	capeta(t_data *data, int id)
 	else if (id == 4)
 		*(data->wstatus) = unset(data->program, &g_env);
 	else if (id == 5)
-		env(g_env);
+		*(data->wstatus) = env(g_env);
 	else if (id == 6)
 		*(data->wstatus) = pwd();
 	else if (id == 7)

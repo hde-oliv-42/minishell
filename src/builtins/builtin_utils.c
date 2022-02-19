@@ -1,23 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 19:53:10 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/01/06 20:56:22 by hde-oliv         ###   ########.fr       */
+/*   Created: 2022/01/06 20:27:19 by hde-oliv          #+#    #+#             */
+/*   Updated: 2022/01/06 20:53:13 by hde-oliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	env(char **ms_env)
+int	ms_env_size(char **ms_env)
 {
 	int	i;
 
 	i = 0;
+	while ((ms_env)[i++])
+	{
+	}
+	return (i);
+}
+
+int	duplicate_env(char **ms_env, char ***tmp)
+{
+	int	i;
+
+	i = ms_env_size(ms_env);
+	*tmp = (char **) ft_calloc(i + 1, sizeof(char *));
+	if (*tmp == NULL)
+		return (1);
+	i = 0;
 	while (ms_env[i])
-		printf("%s\n", ms_env[i++]);
+	{
+		(*tmp)[i] = ft_strdup(ms_env[i]);
+		if ((*tmp)[i] == NULL)
+		{
+			ft_dfree(*tmp);
+			return (1);
+		}
+		i++;
+	}
 	return (0);
+}
+
+void	export_error(char *str, char *err)
+{
+	ft_dprintf(2, err, str);
 }

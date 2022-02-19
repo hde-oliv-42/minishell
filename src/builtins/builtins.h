@@ -21,10 +21,14 @@
 
 int		cd(t_program *program, char **ms_env);
 int		pwd(void);
-void	env(char **ms_env);
+int		env(char **ms_env);
 int		echo(t_program *program);
 int		export(t_program *program, char ***ms_env);
 int		unset(t_program *program, char ***ms_env);
 int		ms_exit(t_program *program, t_data *data);
 
+// Utils
+int		ms_env_size(char **ms_env);
+int		duplicate_env(char **ms_env, char ***tmp);
+void	export_error(char *str, char *err);
 #endif

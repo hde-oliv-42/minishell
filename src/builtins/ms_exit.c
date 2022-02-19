@@ -60,6 +60,7 @@ int	ms_exit(t_program *program, t_data *data)
 		free_and_exit(data, 2);
 	}
 	else if (i == 1)
-		free_and_exit(data, ft_atoi(((t_string *)program->params->content)->value));
+		free_and_exit(data, \
+					ft_atoi(((t_string *)program->params->content)->value));
 	return (1);
 }

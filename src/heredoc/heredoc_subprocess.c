@@ -6,11 +6,12 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 14:38:19 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/19 15:09:59 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/19 15:36:13 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute/execute.h"
+#include "signals/signals.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

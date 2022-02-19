@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/18 14:55:43 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/19 15:32:46 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,8 @@
 # include "parsing/parsing.h"
 # include "debug/debug.h"
 # include "ft_printf/libftprintf.h"
-# include "signals/signals.h"
 
 extern char	**g_env;
-
-typedef struct s_data
-{
-	t_program	*program_list;
-	t_program	*program;
-	t_program	*last_program;
-	int			program_count;
-	int			*wstatus;
-	char		*cwd;
-	int			must_continue;
-	int			og_fd[2];
-}	t_data;
 
 // Execute
 void	execute(t_data *data, t_program *program_list);

@@ -11,12 +11,10 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include <stdio.h>
 
-static int	export_error(char *str)
-{
-	printf("minishell: export: '%s': not a valid identifier\n", str);
-	return (1);
-}
+#define ERRID "minishell: export: '%s': not a valid identifier\n"
+#define ERRMA "minishell: export:%s could not allocate memory\n"
 
 static int	handle_new_var(char *var_with_content, char ***ms_env)
 {
@@ -29,7 +27,7 @@ static int	handle_new_var(char *var_with_content, char ***ms_env)
 	}
 	tmp_env = (char **) ft_calloc(i + 2, sizeof(char *));
 	if (tmp_env == NULL)
-		return (1);
+		return (-1);
 	i = 0;
 	while ((*ms_env)[i])
 	{
@@ -37,52 +35,50 @@ static int	handle_new_var(char *var_with_content, char ***ms_env)
 		i++;
 	}
 	tmp_env[i] = ft_strdup(var_with_content);
+	if (tmp_env[i] == NULL)
+		return (-1);
 	free(*ms_env);
 	*ms_env = tmp_env;
 	return (0);
 }
 
-static int	handle_already_exists(char *var_with_content, char **ms_env)
+static int	handle_already_exists(char *varc, char **ms_env)
 {
 	char	*var;
 	int		i;
 
-	var = ft_substr(var_with_content, \
-					0, \
-					ft_strchr(var_with_content, '=') - var_with_content);
+	var = ft_substr(varc, 0, ft_strchr(varc, '=') - varc);
 	if (var == NULL)
-		return (1);
+		return (-1);
 	i = 0;
 	while (ms_env[i])
 	{
 		if (!ft_strncmp(ms_env[i], var, ft_strlen(var)))
 		{
 			free(ms_env[i]);
-			ms_env[i] = ft_strdup(var_with_content);
+			free(var);
+			ms_env[i] = ft_strdup(varc);
 			if (ms_env == NULL)
-				return (1);
+				return (-1);
 			return (0);
 		}
 		i++;
 	}
+	free(var);
 	return (1);
 }
 
-static int	var_already_exists(char *var_with_content, char **ms_env)
+static int	var_already_exists(char *varc, char **ms_env)
 {
 	char	*var;
 	int		i;
 
-	var = ft_substr(var_with_content, \
-					0, \
-					ft_strchr(var_with_content, '=') - var_with_content + 1);
-	// TODO: Check later if this is sufficient to handle errors
+	var = ft_substr(varc, 0, ft_strchr(varc, '=') - varc + 1);
 	if (var == NULL)
 		return (-1);
 	i = 0;
 	while (ms_env[i])
 	{
-		// TODO: Check later if this will break
 		if (!ft_strncmp(ms_env[i], var, ft_strlen(var)))
 		{
 			free(var);
@@ -94,36 +90,46 @@ static int	var_already_exists(char *var_with_content, char **ms_env)
 	return (0);
 }
 
+int	swap_env(char ***ms_env, char **new_env, int i)
+{
+	if (i != 0)
+		return (1);
+	else
+	{
+		ft_dfree(*ms_env);
+		*ms_env = new_env;
+		return (0);
+	}
+	return (1);
+}
+
 int	export(t_program *program, char ***ms_env)
 {
 	char	*equals_ptr;
+	char	**tmp_env;
 	t_list	*tmp;
+	int		i;
 
 	tmp = program->params;
-	if (ft_lstsize(program->params) == 0)
+	duplicate_env(*ms_env, &tmp_env);
+	if (ft_lstsize(tmp) == 0)
+		return (env(*ms_env));
+	i = 0;
+	while (tmp && !i)
 	{
-		env(*ms_env);
-		return (0);
-	}
-	while (tmp)
-	{
-		equals_ptr = ft_strchr(tmp->content, '=');
-		if (!equals_ptr)
+		equals_ptr = ft_strchr(((t_string *)tmp->content)->value, '=');
+		if (equals_ptr == ((t_string *)tmp->content)->value)
+			export_error(((t_string *)tmp->content)->value, ERRID);
+		else if (equals_ptr)
 		{
-			tmp = tmp->next;
-			continue ;
-		}
-		if (equals_ptr == tmp->content)
-			return (export_error(tmp->content));
-		else
-		{
-			if (var_already_exists(tmp->content, *ms_env) == 1)
-				return (handle_already_exists(tmp->content, \
-												*ms_env));
-			else
-				return (handle_new_var(tmp->content, ms_env));
+			i = var_already_exists(((t_string *)tmp->content)->value, tmp_env);
+			if (i == 1)
+				i = handle_already_exists(((t_string *)tmp->content)->value, \
+										tmp_env);
+			else if (i == 0)
+				i = handle_new_var(((t_string *)tmp->content)->value, &tmp_env);
 		}
 		tmp = tmp->next;
 	}
-	return (1);
+	return (swap_env(ms_env, tmp_env, i));
 }

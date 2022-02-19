@@ -13,17 +13,6 @@
 #include "builtins.h"
 #include "libft.h"
 
-static int	ms_env_size(char **ms_env)
-{
-	int	i;
-
-	i = 0;
-	while ((ms_env)[i++])
-	{
-	}
-	return (i);
-}
-
 static int	recreate_env(char ***ms_env, char *dummy)
 {
 	int		i;
@@ -74,28 +63,6 @@ static void	find_and_delete(t_list *params, char ***ms_env, char *dummy)
 	}
 }
 
-static int	duplicate_env(char **ms_env, char ***tmp)
-{
-	int	i;
-
-	i = ms_env_size(ms_env);
-	*tmp = (char **) ft_calloc(i + 1, sizeof(char *));
-	if (*tmp == NULL)
-		return (1);
-	i = 0;
-	while (ms_env[i])
-	{
-		(*tmp)[i] = ft_strdup(ms_env[i]);
-		if ((*tmp)[i] == NULL)
-		{
-			ft_dfree(*tmp);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 int	unset(t_program *program, char ***ms_env)
 {
 	int		i;
@@ -105,6 +72,7 @@ int	unset(t_program *program, char ***ms_env)
 
 	params = program->params;
 	i = ft_lstsize(params);
+	dummy = 'a';
 	if (i == 0)
 		return (0);
 	if (duplicate_env(*ms_env, &tmp))

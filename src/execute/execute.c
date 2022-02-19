@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/03 20:32:53 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:36:27 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_loop(t_data *data)
 {
 	int		id;
 
-	while (data->program)
+	while (data->must_continue && data->program)
 	{
 		expand_program(data->program, data);
 		if (data->program->next_relation == PIPE)
@@ -97,8 +97,6 @@ void	execute(t_data *data, t_program *program_list)
 	data->program = program_list;
 	data->last_program = NULL;
 	data->program_count = 0;
-	*data->wstatus = 0;
-	data->must_continue = 1;
 	execute_loop(data);
 	if (errno)
 		perror("execute");

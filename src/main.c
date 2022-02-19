@@ -70,6 +70,7 @@ int	loop_prompt(t_data *data)
 		// print_pipeline(programs);
 		if (programs == NULL)
 			continue ;
+		data->must_continue = 1;
 		collect_heredocs(programs, data);
 		execute(data, programs);
 		destroy_pipeline(programs);

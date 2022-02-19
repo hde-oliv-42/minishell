@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 19:52:00 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/18 19:22:19 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/18 20:00:40 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "heredoc.h"
 #include <minishell.h>
 #include "parsing/parsing.h"
+#include "signals/signals.h"
 
 static char	*finish_heredoc(t_list *lines)
 {
@@ -70,39 +71,42 @@ char	*get_heredoc(char *delimiter)
 	return (full_text);
 }
 
-static void	child_get_heredoc(
-	t_redirection *redirection, int piper[2], t_data *data)
+static int	parent_receive_heredoc(
+	t_redirection *redirection, int piper[2])
 {
-	int	size;
-
-	redirection->contents = get_heredoc(redirection->file_name);
-	size = ft_strlen(redirection->contents);
-	write(piper[1], &size, 4);
-	write(piper[1], redirection->contents, size);
-	close_pipe(piper, data);
-	quit_minishell(data);
-}
-
-static void	collect_heredoc(t_redirection *redirection, t_data *data)
-{
-	int		piper[2];
+	int		should_continue;
 	int		size;
 	char	*buffer;
 
+	ignore_signals();
+	should_continue = wait_child();
+	if (should_continue)
+	{
+		read(piper[0], &size, 4);
+		buffer = malloc(size);
+		read(piper[0], buffer, size);
+		redirection->contents = buffer;
+	}
+	handle_signals();
+	return (should_continue);
+}
+
+static int	collect_heredoc(t_redirection *redirection, t_data *data)
+{
+	int		piper[2];
+	int		should_continue;
+
+	should_continue = 0;
 	if (redirection->type == RD_HERE_DOC)
 	{
 		pipe(piper);
 		if (fork() == 0)
-			child_get_heredoc(redirection, piper, data);
+			child_send_heredoc(redirection, piper, data);
 		else
-		{
-			read(piper[0], &size, 4);
-			buffer = malloc(size);
-			read(piper[0], buffer, size);
-			redirection->contents = buffer;
-		}
+			should_continue = parent_receive_heredoc(redirection, piper);
 		close_pipe(piper, data);
 	}
+	return (should_continue);
 }
 
 void	collect_heredocs(t_program *programs, t_data *data)
@@ -114,12 +118,12 @@ void	collect_heredocs(t_program *programs, t_data *data)
 	while (should_continue && programs != NULL)
 	{
 		item = programs->input_list;
-		while (item)
+		while (should_continue && item)
 		{
-			collect_heredoc(item->content, data);
+			should_continue = collect_heredoc(item->content, data);
 			item = item->next;
 		}
+		data->must_continue = should_continue;
 		programs = programs->next;
-		should_continue = wait_process();
 	}
 }

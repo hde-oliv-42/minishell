@@ -37,7 +37,7 @@ void	execute_one_command(t_data *data)
 		flush_minishell(data);
 	else
 	{
-		child_handlers();
+		reset_child_signals();
 		argv = generate_argv_array(data->program);
 		check_pipe_relations(data);
 		execve(path, argv, g_env);

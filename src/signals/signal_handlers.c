@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:56:23 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/03 20:36:05 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:44:09 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	handle_signals(void)
 
 void	reset_signals(void)
 {
-	struct sigaction		sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
@@ -58,7 +58,26 @@ void	reset_signals(void)
 		printf("error reseting the signal handler\n");
 }
 
-void	child_handlers(void)
+static void	heredoc_handler(int signum)
+{
+	(void)signum;
+	exit(130);
+}
+
+void	set_heredoc_signals(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sa.sa_handler = heredoc_handler;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) < 0)
+		printf("failed to set the heredoc handler for SIGINT\n");
+}
+
+void	reset_child_signals(void)
 {
 	struct sigaction	sa;
 

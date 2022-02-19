@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.h                                          :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/13 19:26:31 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/18 14:55:55 by psergio-         ###   ########.fr       */
+/*   Created: 2022/02/18 19:05:25 by psergio-          #+#    #+#             */
+/*   Updated: 2022/02/18 19:06:42 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEREDOC_H
-# define HEREDOC_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include "execute/execute.h"
-# include "parsing/parsing.h"
 
-char	*get_heredoc(char *delimiter);
-void	collect_heredocs(t_program *programs, t_data *data);
-int		wait_child(void);
-void	child_send_heredoc(
-			t_redirection *redirection, int piper[2], t_data *data);
+int	quit_minishell(t_data *data);
 
-#endif /* !HEREDOC_H */
+#endif // !MINISHELL_H

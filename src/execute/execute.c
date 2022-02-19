@@ -6,12 +6,13 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/18 19:36:27 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/19 15:35:03 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 #include "expand/expand.h"
+#include "signals/signals.h"
 
 char	**g_env = NULL;
 
@@ -92,7 +93,6 @@ void	execute(t_data *data, t_program *program_list)
 		initialize_ms_env(&g_env);
 	data->og_fd[0] = dup(STDIN_FILENO);
 	data->og_fd[1] = dup(STDOUT_FILENO);
-	data->program_list = program_list;
 	data->program = program_list;
 	data->last_program = NULL;
 	data->program_count = 0;

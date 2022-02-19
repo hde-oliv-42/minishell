@@ -96,7 +96,7 @@ void	child_send_heredoc(
 {
 	int	size;
 
-	set_heredoc_signals();
+	set_heredoc_signals(data);
 	redirection->contents = get_heredoc(redirection->file_name);
 	size = ft_strlen(redirection->contents);
 	write(piper[1], &size, 4);

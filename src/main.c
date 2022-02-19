@@ -71,9 +71,11 @@ int	loop_prompt(t_data *data)
 		if (programs == NULL)
 			continue ;
 		data->must_continue = 1;
+		data->program_list = programs;
 		collect_heredocs(programs, data);
 		execute(data, programs);
 		destroy_pipeline(programs);
+		data->program_list = NULL;
 	}
 	return (0);
 }

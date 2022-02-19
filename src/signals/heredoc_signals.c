@@ -6,29 +6,38 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 14:57:24 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/19 14:59:03 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/19 15:45:08 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "execute/execute.h"
+#include "parsing/parsing.h"
 #include "signals.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-static void	heredoc_handler(int signum)
+int	heredoc_handler(int signum, void *data_ptr)
 {
-	(void)signum;
-	exit(130);
+	static t_data	*data;
+
+	if (signum == -1)
+		data = data_ptr;
+	else
+	{
+		free(data->cwd);
+		destroy_pipeline(data->program_list);
+		exit(130);
+	}
+	return (0);
 }
 
-void	set_heredoc_signals(void)
+void	set_heredoc_signals(t_data *data)
 {
-	struct sigaction	sa;
+	void	*handler_pointer;
 
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sa.sa_handler = heredoc_handler;
-	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) < 0)
+	handler_pointer = &heredoc_handler;
+	heredoc_handler(-1, data);
+	if (signal(SIGINT, (void (*)(int))handler_pointer) == SIG_ERR)
+	{
 		printf("failed to set the heredoc handler for SIGINT\n");
+		perror("heredoc_signals");
+	}
 }

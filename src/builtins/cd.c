@@ -38,7 +38,7 @@ static int	handle_home(char **home, char **ms_env)
 	{
 		if (*home == NULL)
 		{
-			printf("minishell: cd: HOME not set\n");
+			ft_dprintf(2, "minishell: cd: HOME not set\n");
 			return (1);
 		}
 		if (chdir(*home))
@@ -60,7 +60,7 @@ int	cd(t_program *program, char **ms_env)
 	i = ft_lstsize(program->params);
 	home = NULL;
 	if (i > 1)
-		printf("minishell: cd: too many arguments\n");
+		ft_dprintf(2, "minishell: cd: too many arguments\n");
 	else if (i == 0)
 		return (handle_home(&home, ms_env));
 	else

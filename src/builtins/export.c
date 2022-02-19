@@ -25,7 +25,6 @@ static int	handle_new_var(char *var_with_content, char ***ms_env)
 	while ((*ms_env)[i++])
 	{
 	}
-	dprintf(2, "a\n");
 	tmp_env = (char **) ft_calloc(i + 2, sizeof(char *));
 	if (tmp_env == NULL)
 		return (-1);

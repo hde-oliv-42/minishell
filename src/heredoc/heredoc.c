@@ -83,7 +83,8 @@ static int	parent_receive_heredoc(
 	if (should_continue)
 	{
 		read(piper[0], &size, 4);
-		buffer = malloc(size);
+		buffer = malloc(size + 1);
+		buffer[size] = '\0';
 		read(piper[0], buffer, size);
 		redirection->contents = buffer;
 	}

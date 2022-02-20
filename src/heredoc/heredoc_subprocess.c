@@ -73,16 +73,12 @@ char	*get_heredoc(char *delimiter, t_list	**lines_list)
 	while (1)
 	{
 		newstr = readline("> ");
-		if (newstr == NULL)
-		{
-			ft_dprintf(2, "unexpected end-of-file, expeceted '%s'\n",
-				delimiter);
-			ft_lstclear(lines_list, free);
-			return (NULL);
-		}
 		ft_lstadd_back(lines_list, ft_lstnew(newstr));
-		if (str_equals(delimiter, newstr))
+		if (newstr == NULL || str_equals(delimiter, newstr))
 		{
+			if (newstr == NULL)
+				ft_dprintf(2, "unexpected end-of-file, expeceted '%s'\n",
+					delimiter);
 			full_text = finish_heredoc(*lines_list);
 			ft_lstclear(lines_list, free);
 			break ;

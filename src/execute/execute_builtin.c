@@ -67,6 +67,9 @@ void	restore_fd(t_data *data)
 
 static void	execution_core(t_data *data, int id)
 {
+	if (data->program->next_relation == PIPE)
+		if (pipe(data->program->next_pipe))
+			flush_minishell(data);
 	check_if_must_open_stdin(data, 0);
 	check_if_must_open_stdout(data, 0);
 	open_all_input_files(data);

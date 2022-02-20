@@ -12,6 +12,7 @@
 
 #include "debug/debug.h"
 #include "execute/execute.h"
+#include "parsing/parsing.h"
 #include "signals/signals.h"
 #include <errno.h>
 #include <stdio.h>
@@ -103,5 +104,6 @@ void	child_send_heredoc(
 	write(piper[1], &size, 4);
 	write(piper[1], redirection->contents, size);
 	close_pipe(piper, data);
+	destroy_pipeline(data->program_list);
 	quit_minishell(data);
 }

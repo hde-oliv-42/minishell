@@ -44,6 +44,7 @@ TEST_SRC += validator.c
 TEST_SRC += validator2.c
 TEST_SRC += destroy_tokens.c
 TEST_SRC += execute.c
+TEST_SRC += execute_subshell.c
 TEST_SRC += execute_utils.c
 TEST_SRC += execute_builtin.c
 TEST_SRC += child_utils.c

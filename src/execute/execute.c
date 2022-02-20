@@ -11,8 +11,11 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "debug/debug.h"
 #include "expand/expand.h"
+#include "libft.h"
 #include "signals/signals.h"
+#include "structures.h"
 
 char	**g_env = NULL;
 
@@ -22,9 +25,11 @@ void	execute_one_command(t_data *data)
 	char	*program_name;
 	char	**argv;
 
+	close_pipe(data->og_fd, data);
+	if (data->program->type == SUBSHELL)
+		return (handle_subshell(data));
 	program_name = ((t_string *)data->program->name)->value;
 	path = find_path(program_name, g_env);
-	close_pipe(data->og_fd, data);
 	if (path == NULL)
 	{
 		command_not_found(program_name);

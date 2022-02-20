@@ -67,4 +67,7 @@ void	handle_child(t_data *data);
 void	handle_conditional_wait(t_data *data);
 int		check_conditional_error(t_data *data);
 
+// Subshell
+void	handle_subshell(t_data *data);
+
 #endif

@@ -17,6 +17,8 @@ int	is_builtin(t_data *data)
 {
 	char	*program_name;
 
+	if (data->program->name == NULL)
+		return (0);
 	program_name = ((t_string *)data->program->name)->value;
 	if (program_name == NULL)
 		return (0);

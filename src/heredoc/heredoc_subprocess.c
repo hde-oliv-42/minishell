@@ -12,6 +12,7 @@
 
 #include "debug/debug.h"
 #include "execute/execute.h"
+#include "parsing/parsing.h"
 #include "signals/signals.h"
 #include <errno.h>
 #include <stdio.h>
@@ -72,16 +73,12 @@ char	*get_heredoc(char *delimiter, t_list	**lines_list)
 	while (1)
 	{
 		newstr = readline("> ");
-		if (newstr == NULL)
-		{
-			ft_dprintf(2, "unexpected end-of-file, expeceted '%s'\n",
-				delimiter);
-			ft_lstclear(lines_list, free);
-			return (NULL);
-		}
 		ft_lstadd_back(lines_list, ft_lstnew(newstr));
-		if (str_equals(delimiter, newstr))
+		if (newstr == NULL || str_equals(delimiter, newstr))
 		{
+			if (newstr == NULL)
+				ft_dprintf(2, "unexpected end-of-file, expeceted '%s'\n",
+					delimiter);
 			full_text = finish_heredoc(*lines_list);
 			ft_lstclear(lines_list, free);
 			break ;
@@ -103,5 +100,6 @@ void	child_send_heredoc(
 	write(piper[1], &size, 4);
 	write(piper[1], redirection->contents, size);
 	close_pipe(piper, data);
+	destroy_pipeline(data->program_list);
 	quit_minishell(data);
 }

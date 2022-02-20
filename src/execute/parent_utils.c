@@ -11,6 +11,31 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "structures.h"
+#include <signal.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+static char	*get_signal_description(int signum)
+{
+	char		*description;
+	static char	*descriptions[128] = {
+	[SIGILL] = "Illegal instruction",
+	[SIGABRT] = "Abort",
+	[SIGSEGV] = "Segmentation fault",
+	[SIGTERM] = "Terminated",
+	[SIGHUP] = "Hangup",
+	[SIGQUIT] = "Quit",
+	[SIGKILL] = "Killed",
+	[SIGPIPE] = "Broken pipe",
+	[SIGALRM] = "Alarm clock",
+	};
+
+	description = descriptions[signum];
+	if (description == NULL)
+		description = "";
+	return (description);
+}
 
 int	check_conditional_error(t_data *data)
 {
@@ -24,11 +49,31 @@ int	check_conditional_error(t_data *data)
 	return (0);
 }
 
+static void	handle_child_death(int status, t_data *data)
+{
+	char	*description;
+	int		signum;
+
+	if (WIFSIGNALED(status))
+	{
+		signum = WTERMSIG(status);
+		description = get_signal_description(WTERMSIG(status));
+		ft_printf("%s", description);
+		if (signum == SIGINT)
+			data->must_continue = 0;
+		if (WCOREDUMP(status))
+			ft_printf(" (core dumped)\n");
+		*(data->wstatus) = signum + 128;
+	}
+	else
+		*(data->wstatus) = 0;
+}
+
 void	handle_wait(t_data *data)
 {
-	int			size;
-	int			status;
-	int			wait_result;
+	int		size;
+	int		status;
+	int		wait_result;
 
 	size = data->program_count;
 	while (size)
@@ -39,18 +84,8 @@ void	handle_wait(t_data *data)
 		size--;
 		if (WIFEXITED(status))
 			*(data->wstatus) = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			data->must_continue = 0;
-			*(data->wstatus) = WTERMSIG(status) + 128;
-		}
-		else if (WIFSTOPPED(status))
-		{
-			data->must_continue = 0;
-			*(data->wstatus) = WSTOPSIG(status) + 128;
-		}
 		else
-			*(data->wstatus) = 0;
+			handle_child_death(status, data);
 	}
 }
 
@@ -69,18 +104,8 @@ void	handle_conditional_wait(t_data *data)
 		}
 		if (WIFEXITED(status))
 			*(data->wstatus) = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			data->must_continue = 0;
-			*(data->wstatus) = WTERMSIG(status) + 128;
-		}
-		else if (WIFSTOPPED(status))
-		{
-			data->must_continue = 0;
-			*(data->wstatus) = WSTOPSIG(status) + 128;
-		}
 		else
-			*(data->wstatus) = 0;
+			handle_child_death(status, data);
 		break ;
 	}
 }

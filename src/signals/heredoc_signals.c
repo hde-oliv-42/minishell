@@ -46,7 +46,7 @@ void	set_heredoc_signals(t_data *data, t_list **string_list)
 	heredoc_handler(-1, data, string_list);
 	if (signal(SIGINT, (void (*)(int))handler_pointer) == SIG_ERR)
 	{
-		printf("failed to set the heredoc handler for SIGINT\n");
+		ft_dprintf(2, "failed to set the heredoc handler for SIGINT\n");
 		perror("heredoc_signals");
 	}
 }

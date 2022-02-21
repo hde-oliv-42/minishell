@@ -12,6 +12,7 @@
 
 #include "tokenizer.h"
 #include <stdio.h>
+#include "ft_printf/libftprintf.h"
 
 t_token	*new_expanded_token(t_type type, char *value)
 {
@@ -85,7 +86,7 @@ t_token	*get_connector(char *line, int *cursor)
 	}
 	else
 	{
-		printf("unrecognized token %c\n", line[*cursor]);
+		ft_dprintf(2, "unrecognized token %c\n", line[*cursor]);
 		return (NULL);
 	}
 }

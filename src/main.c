@@ -29,7 +29,7 @@ int	quit_minishell(t_data *data)
 	free(data->cwd);
 	rl_clear_history();
 	ft_dfree(g_env);
-	ft_printf("exit\n");
+	ft_dprintf(2, "exit\n");
 	exit(0);
 }
 

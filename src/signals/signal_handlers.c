@@ -16,6 +16,7 @@
 #include <libft.h>
 #include <stdlib.h>
 #include <readline/readline.h>
+#include "ft_printf/libftprintf.h"
 
 static void	handler(int signum)
 {
@@ -40,9 +41,9 @@ void	handle_signals(void)
 	sa_quit.sa_flags = 0;
 	sa_quit.sa_handler = SIG_IGN;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		printf("error handling signal SIGINT\n");
+		ft_dprintf(2, "error handling signal SIGINT\n");
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
-		printf("error handling signal SIGQUIT\n");
+		ft_dprintf(2, "error handling signal SIGQUIT\n");
 }
 
 void	reset_signals(void)
@@ -55,7 +56,7 @@ void	reset_signals(void)
 	sa.sa_handler = SIG_DFL;
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		printf("error reseting the signal handler\n");
+		ft_dprintf(2, "error reseting the signal handler\n");
 }
 
 void	reset_child_signals(void)
@@ -68,7 +69,7 @@ void	reset_child_signals(void)
 	sa.sa_handler = SIG_DFL;
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) < 0)
-		printf("failed to reset the handler for SIGINT\n");
+		ft_dprintf(2, "failed to reset the handler for SIGINT\n");
 	if (sigaction(SIGQUIT, &sa, NULL) < 0)
-		printf("failed to reset the handler for SIGQUIT\n");
+		ft_dprintf(2, "failed to reset the handler for SIGQUIT\n");
 }

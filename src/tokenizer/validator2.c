@@ -12,10 +12,11 @@
 
 #include "tokenizer.h"
 #include <stdio.h>
+#include "ft_printf/libftprintf.h"
 
 int	unexpected_token(char *token)
 {
-	printf("validation error: unexpected token '%s'\n", token);
+	ft_dprintf(2, "validation error: unexpected token '%s'\n", token);
 	return (0);
 }
 

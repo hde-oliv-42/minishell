@@ -10,7 +10,7 @@ void	print_linked_list(t_list *list)
 	while (list)
 	{
 		str = list->content;
-		printf("%d -> %s\n", i++, str);
+		dprintf(2, "%d -> %s\n", i++, str);
 		list = list->next;
 	}
 }
@@ -24,43 +24,43 @@ void	print_pipeline(t_program *program)
 
 	while (program)
 	{
-		printf("=== program ===\n");
+		dprintf(2, "=== program ===\n");
 		if (program->type == PROGRAM)
-			printf("  name: %s\n", ((t_string *)program->name)->value);
+			dprintf(2, "  name: %s\n", ((t_string *)program->name)->value);
 		else
-			printf("  type: subhsell\n");
-		printf("  params: [ ");
+			dprintf(2, "  type: subhsell\n");
+		dprintf(2, "  params: [ ");
 		params = program->params;
 		while (params)
 		{
-			printf("%s, ", ((t_string *)params->content)->value);
+			dprintf(2, "%s, ", ((t_string *)params->content)->value);
 			params = params->next;
 		}
-		printf("NULL ]\n");
-		printf("  infiles: [ ");
+		dprintf(2, "NULL ]\n");
+		dprintf(2, "  infiles: [ ");
 		infile = program->input_list;
 		while (infile)
 		{
 			redirection = infile->content;
-			printf("<");
+			dprintf(2, "<");
 			if (redirection->type == RD_HERE_DOC)
-				printf("<");
-			printf(" %s, ", redirection->file_name);
+				dprintf(2, "<");
+			dprintf(2, " %s, ", redirection->file_name);
 			infile = infile->next;
 		}
-		printf("NULL ]\n");
-		printf("  output: [ ");
+		dprintf(2, "NULL ]\n");
+		dprintf(2, "  output: [ ");
 		outfile = program->output_list;
 		while (outfile)
 		{
 			redirection = outfile->content;
-			printf(">");
+			dprintf(2, ">");
 			if (redirection->type == RD_OUTFILE_APPEND)
-				printf(">");
-			printf(" %s, ", redirection->file_name);
+				dprintf(2, ">");
+			dprintf(2, " %s, ", redirection->file_name);
 			outfile = outfile->next;
 		}
-		printf("NULL ]\n");
+		dprintf(2, "NULL ]\n");
 		if (program->next)
 		{
 			char *type;
@@ -72,7 +72,7 @@ void	print_pipeline(t_program *program)
 				type = "|";
 			else
 				type = "!!!!!!";
-			printf("  next: %s %s\n", type, ((t_string *)program->next->name)->value);
+			dprintf(2, "  next: %s %s\n", type, ((t_string *)program->next->name)->value);
 		}
 		program = program->next;
 	}
@@ -82,7 +82,7 @@ void	print_pipeline(t_program *program)
 int	is_valid(char *line)
 {
 	(void)line;
-	// printf("minishell: parse error\n");
+	// dprintf(2, "minishell: parse error\n");
 	return (1);
 }
 
@@ -114,7 +114,7 @@ void	print_array(char **array)
 {
 	while (*array)
 	{
-		printf(" %s\n", *array);
+		dprintf(2, " %s\n", *array);
 		array++;
 	}
 }
@@ -134,7 +134,7 @@ void	execute_pipeline(t_program *pipeline)
 			argv = generate_argv(pipeline);
 			execve(pipeline->name->value, argv, NULL);
 			if (errno == ENOENT)
-				printf("minishell: command not found\n");
+				dprintf(2, "minishell: command not found\n");
 			else
 				perror("minishell");
 			exit(errno);
@@ -171,11 +171,11 @@ void	print_tokens(t_token **tokens)
 		type = token_str[tokens[i]->type];
 		int indent = 0;
 		while (indent++ < open_parenthesis)
-			printf("   ");
-		printf("[%s] %s ", type, tokens[i]->value);
+			dprintf(2, "   ");
+		dprintf(2, "[%s] %s ", type, tokens[i]->value);
 		if (tokens[i]->should_expand)
-			printf("*");
-		printf("\n");
+			dprintf(2, "*");
+		dprintf(2, "\n");
 		if (tokens[i]->type == TK_OPEN_PARENTHESIS)
 			open_parenthesis++;
 		else if (tokens[i]->type == TK_CLOSE_PARENTHESIS)

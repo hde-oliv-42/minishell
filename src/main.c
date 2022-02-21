@@ -29,15 +29,8 @@
 #include <signals/signals.h>
 #include <debug/debug.h>
 
-void	destroy_data(t_data *data)
-{
-	// destroy_pipeline(data->program_list);
-	data->cwd = NULL;
-}
-
 int	quit_minishell(t_data *data)
 {
-	// TODO: free stuff
 	free(data->cwd);
 	rl_clear_history();
 	ft_dfree(g_env);
@@ -47,9 +40,9 @@ int	quit_minishell(t_data *data)
 
 t_program	*get_program_pipeline(t_data *data)
 {
-	char	*line;
-	char	*prompt;
-	t_token	**tokens;
+	char		*line;
+	char		*prompt;
+	t_token		**tokens;
 	t_program	*programs;
 
 	prompt = generate_prompt(data);
@@ -79,7 +72,6 @@ int	loop_prompt(t_data *data)
 	while (1)
 	{
 		programs = get_program_pipeline(data);
-		// print_pipeline(programs);
 		if (programs == NULL)
 			continue ;
 		data->must_continue = 1;

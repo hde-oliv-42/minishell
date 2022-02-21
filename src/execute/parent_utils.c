@@ -20,7 +20,8 @@
 int	check_conditional_error(t_data *data)
 {
 	if (data->last_program && \
-		data->last_program->next_relation == AND && data->last_program->ret != 0)
+		data->last_program->next_relation == AND && \
+		data->last_program->ret != 0)
 		return (1);
 	else if (data->last_program \
 			&& data->last_program->next_relation == OR \

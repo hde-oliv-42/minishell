@@ -31,4 +31,5 @@ int		ms_exit(t_program *program, t_data *data);
 int		ms_env_size(char **ms_env);
 int		duplicate_env(char **ms_env, char ***tmp);
 void	export_error(char *str, char *err);
+int		swap_env(char ***ms_env, char **new_env, int i);
 #endif

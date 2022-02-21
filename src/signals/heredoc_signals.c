@@ -28,6 +28,7 @@ int	heredoc_handler(int signum, void *data_ptr, void *list_ptr)
 	}
 	else
 	{
+		write(1, "\n", 1);
 		ft_lstclear(string_list, free);
 		free(data->cwd);
 		destroy_pipeline(data->program_list);

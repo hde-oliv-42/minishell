@@ -38,8 +38,9 @@ int	wait_child(void)
 	if (result == -1 && errno)
 		perror("heredoc");
 	if (WIFEXITED(wstatus))
-		if (WEXITSTATUS(wstatus) == 0)
-			return (1);
+		return (WEXITSTATUS(wstatus));
+	else if (WIFSIGNALED(wstatus))
+		return (WTERMSIG(wstatus) + 128);
 	return (0);
 }
 
@@ -101,5 +102,8 @@ void	child_send_heredoc(
 	write(piper[1], redirection->contents, size);
 	close_pipe(piper, data);
 	destroy_pipeline(data->program_list);
-	quit_minishell(data);
+	free(data->cwd);
+	rl_clear_history();
+	ft_dfree(g_env);
+	exit(0);
 }

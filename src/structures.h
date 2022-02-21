@@ -53,6 +53,8 @@ struct s_program {
 	t_string		*name;
 	int				next_pipe[2];
 	t_program_type	type;
+	int				pid;
+	int				ret;
 	t_list			*params;
 	t_list			*input_list;
 	t_list			*output_list;

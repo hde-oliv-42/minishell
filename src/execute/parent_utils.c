@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug/debug.h"
 #include "execute.h"
 #include "structures.h"
 #include <signal.h>
@@ -49,7 +50,23 @@ int	check_conditional_error(t_data *data)
 	return (0);
 }
 
-static void	handle_child_death(int status, t_data *data)
+void	set_status_code(int wait_pid, int status, t_data *data)
+{
+	t_program	*program;
+
+	program = data->program_list;
+	while (program)
+	{
+		if (program->pid == wait_pid)
+		{
+			program->ret = status;
+			break ;
+		}
+		program = program->next;
+	}
+}
+
+static void	handle_child_death(int wait_pid, int status, t_data *data)
 {
 	char	*description;
 	int		signum;
@@ -63,10 +80,11 @@ static void	handle_child_death(int status, t_data *data)
 			data->must_continue = 0;
 		if (WCOREDUMP(status))
 			ft_printf(" (core dumped)\n");
-		*(data->wstatus) = signum + 128;
+		set_status_code(wait_pid, signum + 128, data);
+		// *(data->wstatus) = signum + 128;
 	}
 	else
-		*(data->wstatus) = 0;
+		set_status_code(wait_pid, 0, data);
 }
 
 void	handle_wait(t_data *data)
@@ -83,9 +101,9 @@ void	handle_wait(t_data *data)
 			continue ;
 		size--;
 		if (WIFEXITED(status))
-			*(data->wstatus) = WEXITSTATUS(status);
+			set_status_code(wait_result, WEXITSTATUS(status), data);
 		else
-			handle_child_death(status, data);
+			handle_child_death(wait_result, status, data);
 	}
 }
 
@@ -103,9 +121,9 @@ void	handle_conditional_wait(t_data *data)
 			continue ;
 		}
 		if (WIFEXITED(status))
-			*(data->wstatus) = WEXITSTATUS(status);
+			set_status_code(wait_result, WEXITSTATUS(status), data);
 		else
-			handle_child_death(status, data);
+			handle_child_death(wait_result, status, data);
 		break ;
 	}
 }

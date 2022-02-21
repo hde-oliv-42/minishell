@@ -42,21 +42,21 @@ int	is_builtin(t_data *data)
 static void	capeta(t_data *data, int id)
 {
 	if (id == 1)
-		*(data->wstatus) = echo(data->program);
+		data->program->ret = echo(data->program);
 	else if (id == 2)
-		*(data->wstatus) = env(g_env);
+		data->program->ret = env(g_env);
 	else if (id == 3)
-		*(data->wstatus) = pwd();
+		data->program->ret = pwd();
 	else if (id == 4)
-		*(data->wstatus) = unset(data->program, &g_env);
+		data->program->ret = unset(data->program, &g_env);
 	else if (id == 5)
-		*(data->wstatus) = cd(data->program, g_env);
+		data->program->ret = cd(data->program, g_env);
 	else if (id == 6)
-		*(data->wstatus) = export(data->program, &g_env);
+		data->program->ret = export(data->program, &g_env);
 	else if (id == 7)
-		*(data->wstatus) = ms_exit(data->program, data);
+		data->program->ret = ms_exit(data->program, data);
 	else
-		*(data->wstatus) = 0;
+		data->program->ret = 0;
 }
 
 void	restore_fd(t_data *data)
@@ -82,6 +82,8 @@ static void	execution_core(t_data *data, int id)
 
 int	execute_builtin(t_data *data, int id)
 {
+	int	ret;
+
 	if (id == 0)
 		return (-1);
 	else if (id < 4)
@@ -90,7 +92,8 @@ int	execute_builtin(t_data *data, int id)
 		execution_core(data, id);
 	else if (data->program->next_relation != PIPE && !data->last_program)
 		execution_core(data, id);
+	ret = data->program->ret;
 	data->last_program = data->program;
 	data->program = data->program->next;
-	return (*(data->wstatus));
+	return (ret);
 }

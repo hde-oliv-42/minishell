@@ -47,7 +47,7 @@ static int	handle_exists(char *varc, char **ms_env)
 	char	*var;
 	int		i;
 
-	var = ft_substr(varc, 0, ft_strchr(varc, '=') - varc);
+	var = ft_substr(varc, 0, ft_strchr(varc, '=') - varc + 1);
 	if (var == NULL)
 		return (-1);
 	i = 0;
@@ -90,17 +90,10 @@ static int	var_exists(char *varc, char **ms_env)
 	return (0);
 }
 
-int	swap_env(char ***ms_env, char **new_env, int i)
+void	check_export_error(t_list *tmp, char *equals_ptr)
 {
-	if (i != 0)
-		return (1);
-	else
-	{
-		ft_dfree(*ms_env);
-		*ms_env = new_env;
-		return (0);
-	}
-	return (1);
+	if (equals_ptr == ((t_string *)tmp->content)->value)
+		export_error(((t_string *)tmp->content)->value, ERRID);
 }
 
 int	export(t_program *program, char ***ms_env)
@@ -118,9 +111,8 @@ int	export(t_program *program, char ***ms_env)
 	while (tmp && !i)
 	{
 		equals_ptr = ft_strchr(((t_string *)tmp->content)->value, '=');
-		if (equals_ptr == ((t_string *)tmp->content)->value)
-			export_error(((t_string *)tmp->content)->value, ERRID);
-		else if (equals_ptr)
+		check_export_error(tmp, equals_ptr);
+		if (equals_ptr)
 		{
 			i = var_exists(((t_string *)tmp->content)->value, tmp_env);
 			if (i == 1)

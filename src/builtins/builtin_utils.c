@@ -49,3 +49,16 @@ void	export_error(char *str, char *err)
 {
 	ft_dprintf(2, err, str);
 }
+
+int	swap_env(char ***ms_env, char **new_env, int i)
+{
+	if (i != 0)
+		return (1);
+	else
+	{
+		ft_dfree(*ms_env);
+		*ms_env = new_env;
+		return (0);
+	}
+	return (1);
+}

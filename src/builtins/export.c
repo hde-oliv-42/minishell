@@ -42,7 +42,7 @@ static int	handle_new_var(char *var_with_content, char ***ms_env)
 	return (0);
 }
 
-static int	handle_already_exists(char *varc, char **ms_env)
+static int	handle_exists(char *varc, char **ms_env)
 {
 	char	*var;
 	int		i;
@@ -68,7 +68,7 @@ static int	handle_already_exists(char *varc, char **ms_env)
 	return (1);
 }
 
-static int	var_already_exists(char *varc, char **ms_env)
+static int	var_exists(char *varc, char **ms_env)
 {
 	char	*var;
 	int		i;
@@ -122,10 +122,9 @@ int	export(t_program *program, char ***ms_env)
 			export_error(((t_string *)tmp->content)->value, ERRID);
 		else if (equals_ptr)
 		{
-			i = var_already_exists(((t_string *)tmp->content)->value, tmp_env);
+			i = var_exists(((t_string *)tmp->content)->value, tmp_env);
 			if (i == 1)
-				i = handle_already_exists(((t_string *)tmp->content)->value, \
-										tmp_env);
+				i = handle_exists(((t_string *)tmp->content)->value, tmp_env);
 			else if (i == 0)
 				i = handle_new_var(((t_string *)tmp->content)->value, &tmp_env);
 		}

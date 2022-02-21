@@ -51,6 +51,7 @@ TEST_SRC += child_utils.c
 TEST_SRC += parent_utils.c
 TEST_SRC += access_methods.c
 TEST_SRC += access_utils.c
+TEST_SRC += wait_utils.c
 TEST_SRC += ms_env.c
 TEST_SRC += print_things.c
 TEST_SRC += prompt.c

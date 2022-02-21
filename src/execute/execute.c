@@ -101,6 +101,8 @@ void	execute_loop(t_data *data)
 
 void	execute(t_data *data, t_program *program_list)
 {
+	if (data->must_continue == 0)
+		return ;
 	if (g_env == NULL)
 		initialize_ms_env(&g_env);
 	data->og_fd[0] = dup(STDIN_FILENO);

@@ -38,8 +38,9 @@ int	wait_child(void)
 	if (result == -1 && errno)
 		perror("heredoc");
 	if (WIFEXITED(wstatus))
-		if (WEXITSTATUS(wstatus) == 0)
-			return (1);
+		return (WEXITSTATUS(wstatus));
+	else if (WIFSIGNALED(wstatus))
+		return (WTERMSIG(wstatus) + 128);
 	return (0);
 }
 

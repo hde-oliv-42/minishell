@@ -102,5 +102,8 @@ void	child_send_heredoc(
 	write(piper[1], redirection->contents, size);
 	close_pipe(piper, data);
 	destroy_pipeline(data->program_list);
-	quit_minishell(data);
+	free(data->cwd);
+	rl_clear_history();
+	ft_dfree(g_env);
+	exit(0);
 }

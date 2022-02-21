@@ -17,8 +17,7 @@
 
 void	ignore(int signum)
 {
-	if (signum == SIGINT)
-		ft_putchar_fd('\n', 1);
+	(void)signum;
 }
 
 void	ignore_signals(void)

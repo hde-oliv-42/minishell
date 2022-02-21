@@ -6,7 +6,7 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 20:43:30 by psergio-          #+#    #+#             */
-/*   Updated: 2022/02/11 16:32:24 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/21 19:28:18 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include "parsing/parsing.h"
 # include "tokenizer/tokenizer.h"
 # include <stdlib.h>
-# include <stdlib.h>
+
+# define VAR_DELIMITERS "\"'$ =@(*)#"
 
 struct s_piece {
 	int		len;
@@ -38,5 +39,10 @@ t_list	*expand_asterisk(void);
 
 t_token	**expand_tokens(t_token **token_array);
 void	expand_program(t_program *program, t_data *data);
+
+int		skip_dollar(t_list **piece_list, char chr);
+char	*get_last_status(t_data *data);
+int		get_env_variable(
+			t_list **piece_list, const char *str, int *size, t_data *data);
 
 #endif

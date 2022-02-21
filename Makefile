@@ -63,6 +63,7 @@ TEST_SRC += expand.c
 TEST_SRC += pieces.c
 TEST_SRC += expand_tokens.c
 TEST_SRC += expand_asterisk.c
+TEST_SRC += expand_env_variables.c
 TEST_SRC += heredoc.c
 TEST_SRC += heredoc_subprocess.c
 

@@ -31,6 +31,7 @@ TEST_SRC += env.c
 TEST_SRC += ms_exit.c
 TEST_SRC += builtin_utils.c
 TEST_SRC += parse.c
+TEST_SRC += string.c
 TEST_SRC += subshell.c
 TEST_SRC += destroy.c
 TEST_SRC += redirection.c

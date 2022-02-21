@@ -6,13 +6,12 @@
 /*   By: psergio- <psergio->                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 19:38:43 by psergio-          #+#    #+#             */
-/*   Updated: 2022/01/25 13:22:56 by psergio-         ###   ########.fr       */
+/*   Updated: 2022/02/21 19:20:23 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parsing/parsing.h"
-#include "tokenizer/tokenizer.h"
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -24,18 +23,6 @@ static int	is_end_of_program(t_token *token)
 		|| token->type == TK_AND
 		|| token->type == TK_OR
 	);
-}
-
-t_string	*new_string(t_token *word)
-{
-	t_string	*string;
-
-	string = ft_calloc(1, sizeof(t_string));
-	if (string == NULL)
-		return (NULL);
-	string->value = ft_strdup(word->value);
-	string->should_expand = word->should_expand;
-	return (string);
 }
 
 static int	handle_word(t_program *program, t_token **tokens, int *cursor)

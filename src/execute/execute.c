@@ -111,6 +111,9 @@ void	execute(t_data *data, t_program *program_list)
 	ignore_signals();
 	handle_wait(data);
 	close_pipe(data->og_fd, data);
-	*(data->wstatus) = data->last_program->ret;
+	if (!data->last_program)
+		*(data->wstatus) = data->program->ret;
+	else
+		*(data->wstatus) = data->last_program->ret;
 	handle_signals();
 }

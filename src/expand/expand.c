@@ -73,7 +73,7 @@ char	*expand_word(char *word, t_data *data)
 	expander.word = word;
 	size = -1;
 	inside_quote = '\0';
-	while (word[++size])
+	while (expander.word[++size])
 	{
 		try_get_piece(&expander, &inside_quote, &size, data);
 	}

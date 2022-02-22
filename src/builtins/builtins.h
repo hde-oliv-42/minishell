@@ -19,7 +19,7 @@
 # include "parsing/parsing.h"
 # include "execute/execute.h"
 
-int		cd(t_program *program, char **ms_env);
+int		cd(t_program *program, char ***ms_env);
 int		pwd(void);
 int		env(char **ms_env);
 int		echo(t_program *program);

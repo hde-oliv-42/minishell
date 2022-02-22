@@ -7,7 +7,7 @@ INCLUDE = -I src -I $(LIBFT_DIR)
 HEADERS = builtins.h parsing.h
 
 RM = rm -rf
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3 $(INCLUDE)
 LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 

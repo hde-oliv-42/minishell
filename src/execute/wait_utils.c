@@ -28,13 +28,10 @@ static char	*get_signal_description(int signum)
 	[SIGHUP] = "Hangup",
 	[SIGQUIT] = "Quit",
 	[SIGKILL] = "Killed",
-	[SIGPIPE] = "Broken pipe",
 	[SIGALRM] = "Alarm clock",
 	};
 
 	description = descriptions[signum];
-	if (description == NULL)
-		description = "";
 	return (description);
 }
 
@@ -47,11 +44,14 @@ static void	handle_child_death(int wait_pid, int status, t_data *data)
 	{
 		signum = WTERMSIG(status);
 		description = get_signal_description(WTERMSIG(status));
-		ft_printf("%s", description);
 		if (signum == SIGINT)
 			data->must_continue = 0;
+		if (description)
+			ft_printf("%s", description);
 		if (WCOREDUMP(status))
-			ft_printf(" (core dumped)\n");
+			ft_printf(" (core dumped)");
+		if (description == NULL)
+			ft_printf("\n");
 		set_status_code(wait_pid, signum + 128, data);
 	}
 	else

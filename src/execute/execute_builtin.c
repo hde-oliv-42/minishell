@@ -39,7 +39,7 @@ int	is_builtin(t_data *data)
 	return (0);
 }
 
-static void	capeta(t_data *data, int id)
+static void	execute_one_builtin(t_data *data, int id)
 {
 	if (id == 1)
 		data->program->ret = echo(data->program);
@@ -76,7 +76,7 @@ static void	execution_core(t_data *data, int id)
 	check_if_must_open_stdout(data, 0);
 	open_all_input_files(data);
 	open_all_output_files(data);
-	capeta(data, id);
+	execute_one_builtin(data, id);
 	restore_fd(data);
 }
 

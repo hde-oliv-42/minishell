@@ -54,7 +54,8 @@ static void	handle_asterisk(t_token_expander *expander)
 	else
 		expander->head = token_list;
 	expander->current_token = ft_lstlast(token_list);
-	expander->current_token->next = next_element;
+	if (expander->current_token)
+		expander->current_token->next = next_element;
 }
 
 t_list	*token_array_to_list(t_token **token_array)

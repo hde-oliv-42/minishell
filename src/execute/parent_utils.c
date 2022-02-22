@@ -44,6 +44,7 @@ void	set_status_code(int wait_pid, int status, t_data *data)
 		}
 		program = program->next;
 	}
+	*data->wstatus = status;
 }
 
 void	handle_child(t_data *data)

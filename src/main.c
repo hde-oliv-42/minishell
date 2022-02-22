@@ -47,6 +47,8 @@ t_program	*get_program_pipeline(t_data *data)
 
 	prompt = generate_prompt(data);
 	line = readline(prompt);
+	if (errno == ENOTTY)
+		errno = 0;
 	free(prompt);
 	if (line == NULL)
 		quit_minishell(data);

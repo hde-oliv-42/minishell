@@ -37,6 +37,7 @@ void	execute_one_command(t_data *data)
 	char	*program_name;
 	char	**argv;
 
+	check_pipe_relations(data);
 	close_pipe(data->og_fd, data);
 	if (data->program->type == SUBSHELL)
 		return (handle_subshell(data));
@@ -50,7 +51,6 @@ void	execute_one_command(t_data *data)
 	{
 		reset_child_signals();
 		argv = generate_argv_array(data->program);
-		check_pipe_relations(data);
 		execve(path, argv, g_env);
 		flush_minishell(data);
 	}

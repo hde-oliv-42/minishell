@@ -16,6 +16,7 @@
 #include "libft.h"
 #include "signals/signals.h"
 #include "structures.h"
+#include <readline/readline.h>
 
 char	**g_env = NULL;
 
@@ -25,6 +26,8 @@ static void	handle_command_not_found(char *program_name, t_data *data)
 	*(data->wstatus) = 1;
 	destroy_pipeline(data->program_list);
 	ft_dfree(g_env);
+	free(data->cwd);
+	rl_clear_history();
 	exit(127);
 }
 

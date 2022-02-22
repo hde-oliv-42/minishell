@@ -54,6 +54,7 @@ char	*search_env(char *key)
 			return (ft_substr(g_env[i], equal_sign - g_env[i] + 1,
 					ft_strlen(g_env[i])));
 		}
+		free(current_key);
 		i++;
 	}
 	return (NULL);

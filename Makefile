@@ -7,7 +7,7 @@ INCLUDE = -I src -I $(LIBFT_DIR)
 HEADERS = builtins.h parsing.h
 
 RM = rm -rf
-CC = cc
+CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g3 $(INCLUDE)
 LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 
@@ -67,7 +67,6 @@ SRC += expand_asterisk.c
 SRC += expand_env_variables.c
 SRC += heredoc.c
 SRC += heredoc_subprocess.c
-
 
 TEST_FILES = ./tests/buitins/pwd.test.c 
 

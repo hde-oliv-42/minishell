@@ -78,7 +78,7 @@ char	*get_heredoc(char *delimiter, t_list	**lines_list)
 		if (newstr == NULL || str_equals(delimiter, newstr))
 		{
 			if (newstr == NULL)
-				ft_dprintf(2, "unexpected end-of-file, expeceted '%s'\n",
+				ft_dprintf(2, "unexpected end-of-file, expected '%s'\n",
 					delimiter);
 			full_text = finish_heredoc(*lines_list);
 			ft_lstclear(lines_list, free);

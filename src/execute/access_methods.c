@@ -35,6 +35,7 @@ int	is_executable(char *path)
 
 char	*find_path(char *name, char **ms_env)
 {
+	char	*bin_path;
 	char	*path_string;
 	char	**path_array;
 
@@ -44,5 +45,7 @@ char	*find_path(char *name, char **ms_env)
 		return (NULL);
 	if (create_path_array(path_string, &path_array))
 		return (NULL);
-	return (loop_path_array(name, path_array));
+	bin_path = loop_path_array(name, path_array);
+	free_path_array(path_array);
+	return (bin_path);
 }

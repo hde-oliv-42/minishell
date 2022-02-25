@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "ft_printf/libftprintf.h"
 
 int	create_path_array(char *path_string, char ***path_array)
 {
@@ -73,7 +74,6 @@ static int	is_relative(char *name)
 char	*loop_path_array(char *name, char **path_array)
 {
 	int		i;
-	char	*tmp;
 	char	*tmp2;
 
 	i = is_relative(name);
@@ -84,16 +84,10 @@ char	*loop_path_array(char *name, char **path_array)
 	i = 0;
 	while (path_array[i])
 	{
-		tmp = ft_strjoin(path_array[i++], "/");
-		tmp2 = ft_strjoin(tmp, name);
-		free(tmp);
+		ft_asprintf(&tmp2, "%s/%s", path_array[i++], name);
 		if (!access(tmp2, F_OK))
-		{
-			free_path_array(path_array);
 			return (tmp2);
-		}
 		free(tmp2);
 	}
-	free_path_array(path_array);
 	return (NULL);
 }

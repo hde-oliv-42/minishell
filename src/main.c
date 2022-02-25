@@ -12,6 +12,7 @@
 
 #include "expand/expand.h"
 #include "heredoc/heredoc.h"
+#include "structures.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -38,12 +39,10 @@ int	quit_minishell(t_data *data)
 	exit(0);
 }
 
-t_program	*get_program_pipeline(t_data *data)
+char	*get_line(t_data *data)
 {
 	char		*line;
 	char		*prompt;
-	t_token		**tokens;
-	t_program	*programs;
 
 	prompt = generate_prompt(data);
 	line = readline(prompt);
@@ -53,8 +52,23 @@ t_program	*get_program_pipeline(t_data *data)
 	if (line == NULL)
 		quit_minishell(data);
 	if (ft_strlen(line) == 0)
+	{
+		free(line);
 		return (NULL);
+	}
 	add_history(line);
+	return (line);
+}
+
+t_program	*get_program_pipeline(t_data *data)
+{
+	char		*line;
+	t_token		**tokens;
+	t_program	*programs;
+
+	line = get_line(data);
+	if (line == NULL)
+		return (NULL);
 	tokens = tokenize(line);
 	free(line);
 	if (tokens == NULL)

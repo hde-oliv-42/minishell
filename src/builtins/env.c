@@ -11,13 +11,52 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "parsing/parsing.h"
+#include "structures.h"
+#include <readline/readline.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
-int	env(char **ms_env)
+static int	quit_env(t_data *data)
+{
+	free(data->cwd);
+	destroy_pipeline(data->program_list);
+	rl_clear_history();
+	ft_dfree(g_env);
+	exit(0);
+}
+
+static void	print_env(void)
 {
 	int	i;
 
 	i = 0;
-	while (ms_env[i])
-		printf("%s\n", ms_env[i++]);
+	while (g_env[i])
+		printf("%s\n", g_env[i++]);
+}
+
+int	env(t_program *program, t_data *data)
+{
+	int	pid;
+
+	if (program->next_relation == PIPE)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			print_env();
+			quit_env(data);
+		}
+		program->pid = pid;
+		data->program_count++;
+	}
+	else
+		print_env();
 	return (0);
 }

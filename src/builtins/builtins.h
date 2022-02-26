@@ -21,9 +21,9 @@
 
 int		cd(t_program *program, char ***ms_env);
 int		pwd(void);
-int		env(char **ms_env);
+int		env(t_program *program, t_data *data);
 int		echo(t_program *program);
-int		export(t_program *program, char ***ms_env);
+int		export(t_program *program, t_data *data);
 int		unset(t_program *program, char ***ms_env);
 int		ms_exit(t_program *program, t_data *data);
 

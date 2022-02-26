@@ -96,7 +96,7 @@ void	check_export_error(t_list *tmp, char *equals_ptr)
 		export_error(((t_string *)tmp->content)->value, ERRID);
 }
 
-int	export(t_program *program, char ***ms_env)
+int	export(t_program *program, t_data *data)
 {
 	char	*equals_ptr;
 	char	**tmp_env;
@@ -104,9 +104,9 @@ int	export(t_program *program, char ***ms_env)
 	int		i;
 
 	tmp = program->params;
-	duplicate_env(*ms_env, &tmp_env);
+	duplicate_env(g_env, &tmp_env);
 	if (ft_lstsize(tmp) == 0)
-		return (env(*ms_env));
+		return (env(program, data));
 	i = 0;
 	while (tmp && !i)
 	{
@@ -122,5 +122,5 @@ int	export(t_program *program, char ***ms_env)
 		}
 		tmp = tmp->next;
 	}
-	return (swap_env(ms_env, tmp_env, i));
+	return (swap_env(&g_env, tmp_env, i));
 }

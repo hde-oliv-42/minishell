@@ -44,7 +44,7 @@ static void	execute_one_builtin(t_data *data, int id)
 	if (id == 1)
 		data->program->ret = echo(data->program);
 	else if (id == 2)
-		data->program->ret = env(g_env);
+		data->program->ret = env(data->program, data);
 	else if (id == 3)
 		data->program->ret = pwd();
 	else if (id == 4)
@@ -52,7 +52,7 @@ static void	execute_one_builtin(t_data *data, int id)
 	else if (id == 5)
 		data->program->ret = cd(data->program, &g_env);
 	else if (id == 6)
-		data->program->ret = export(data->program, &g_env);
+		data->program->ret = export(data->program, data);
 	else if (id == 7)
 		data->program->ret = ms_exit(data->program, data);
 	else

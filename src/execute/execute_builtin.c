@@ -94,7 +94,7 @@ int	execute_builtin(t_data *data, int id)
 		data->program = data->program->next;
 		return (ret);
 	}
-	else if (id < 4)
+	else if (id < 4 || id == 6)
 		execution_core(data, id);
 	else if (data->last_program && data->last_program->next_relation != PIPE)
 		execution_core(data, id);

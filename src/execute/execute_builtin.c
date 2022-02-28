@@ -69,6 +69,11 @@ void	restore_fd(t_data *data)
 
 static void	execution_core(t_data *data, int id)
 {
+	if (data->last_program && data->last_program->next_relation == PIPE)
+	{
+		close(data->last_program->next_pipe[0]);
+		data->last_program->next_pipe[0] = 0;
+	}
 	if (data->program->next_relation == PIPE)
 		if (pipe(data->program->next_pipe))
 			flush_minishell(data);

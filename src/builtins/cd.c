@@ -37,7 +37,7 @@ static int	get_var(char **ms_env, char **ret, char *var, int var_siz)
 	return (1);
 }
 
-static void	store_oldpwd(t_program *program, char **oldpwd, char ***ms_env)
+static void	store_oldpwd(t_program *program, char **oldpwd, t_data *data)
 {
 	t_string	*str;
 
@@ -46,23 +46,23 @@ static void	store_oldpwd(t_program *program, char **oldpwd, char ***ms_env)
 		str = ft_calloc(1, sizeof(t_string));
 		str->value = ft_strjoin("OLDPWD=", *oldpwd);
 		ft_lstadd_back(&program->params, ft_lstnew(str));
-		export(program, ms_env);
+		export(program, data);
 		free(*oldpwd);
 		return ;
 	}
 	free(((t_string *)program->params->content)->value);
 	((t_string *)program->params->content)->value = ft_strjoin("OLDPWD=", \
 															*oldpwd);
-	export(program, ms_env);
+	export(program, data);
 	free(*oldpwd);
 }
 
-static int	handle_home(t_program *program, char **pwd, char ***ms_env)
+static int	handle_home(t_program *program, char **pwd, t_data *data)
 {
 	char	*home;
 
 	home = NULL;
-	if (get_var(*ms_env, &home, "HOME=", 5) != -1)
+	if (get_var(g_env, &home, "HOME=", 5) != -1)
 	{
 		if (home == NULL)
 		{
@@ -71,7 +71,7 @@ static int	handle_home(t_program *program, char **pwd, char ***ms_env)
 		}
 		if (!chdir(home))
 		{
-			store_oldpwd(program, pwd, ms_env);
+			store_oldpwd(program, pwd, data);
 			free(home);
 			return (0);
 		}
@@ -81,12 +81,12 @@ static int	handle_home(t_program *program, char **pwd, char ***ms_env)
 	return (1);
 }
 
-static int	handle_dash(t_program *program, char **pwd, char ***ms_env)
+static int	handle_dash(t_program *program, char **pwd, t_data *data)
 {
 	char	*oldpwd;
 
 	oldpwd = NULL;
-	if (get_var(*ms_env, &oldpwd, "OLDPWD=", 7) != -1)
+	if (get_var(g_env, &oldpwd, "OLDPWD=", 7) != -1)
 	{
 		if (oldpwd == NULL)
 		{
@@ -96,7 +96,7 @@ static int	handle_dash(t_program *program, char **pwd, char ***ms_env)
 		printf("%s\n", oldpwd);
 		if (!chdir(oldpwd))
 		{
-			store_oldpwd(program, pwd, ms_env);
+			store_oldpwd(program, pwd, data);
 			free(oldpwd);
 			return (0);
 		}
@@ -106,7 +106,7 @@ static int	handle_dash(t_program *program, char **pwd, char ***ms_env)
 	return (1);
 }
 
-int	cd(t_program *program, char ***ms_env)
+int	cd(t_program *program, t_data *data)
 {
 	int		i;
 	char	*dir;
@@ -117,15 +117,15 @@ int	cd(t_program *program, char ***ms_env)
 	if (i > 1)
 		ft_dprintf(2, "minishell: cd: too many arguments\n");
 	else if (i == 0)
-		return (handle_home(program, &oldpwd, ms_env));
+		return (handle_home(program, &oldpwd, data));
 	else if (!ft_strncmp(((t_string *)program->params->content)->value, "-", 2))
-		return (handle_dash(program, &oldpwd, ms_env));
+		return (handle_dash(program, &oldpwd, data));
 	else
 	{
 		dir = ((t_string *)program->params->content)->value;
 		if (!chdir(dir))
 		{
-			store_oldpwd(program, &oldpwd, ms_env);
+			store_oldpwd(program, &oldpwd, data);
 			return (0);
 		}
 	}

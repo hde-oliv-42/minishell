@@ -18,8 +18,9 @@
 # include "libft.h"
 # include "parsing/parsing.h"
 # include "execute/execute.h"
+# include "structures.h"
 
-int		cd(t_program *program, char ***ms_env);
+int		cd(t_program *program, t_data *data);
 int		pwd(void);
 int		env(t_program *program, t_data *data);
 int		echo(t_program *program);

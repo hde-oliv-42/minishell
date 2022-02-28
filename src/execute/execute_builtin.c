@@ -50,7 +50,7 @@ static void	execute_one_builtin(t_data *data, int id)
 	else if (id == 4)
 		data->program->ret = unset(data->program, &g_env);
 	else if (id == 5)
-		data->program->ret = cd(data->program, &g_env);
+		data->program->ret = cd(data->program, data);
 	else if (id == 6)
 		data->program->ret = export(data->program, data);
 	else if (id == 7)

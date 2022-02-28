@@ -50,7 +50,7 @@ static void	handle_child_death(int wait_pid, int status, t_data *data)
 			ft_printf("%s", description);
 		if (WCOREDUMP(status))
 			ft_printf(" (core dumped)");
-		if (description == NULL)
+		if (description != NULL)
 			ft_printf("\n");
 		set_status_code(wait_pid, signum + 128, data);
 	}

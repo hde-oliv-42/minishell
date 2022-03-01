@@ -67,6 +67,7 @@ static int	handle_home(t_program *program, char **pwd, t_data *data)
 		if (home == NULL)
 		{
 			ft_dprintf(2, "minishell: cd: HOME not set\n");
+			free(*pwd);
 			return (1);
 		}
 		if (!chdir(home))
@@ -91,6 +92,7 @@ static int	handle_dash(t_program *program, char **pwd, t_data *data)
 		if (oldpwd == NULL)
 		{
 			ft_dprintf(2, "minishell: cd: OLDPWD not set\n");
+			free(*pwd);
 			return (1);
 		}
 		printf("%s\n", oldpwd);

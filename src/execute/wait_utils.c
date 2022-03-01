@@ -85,7 +85,7 @@ void	handle_conditional_wait(t_data *data)
 
 	while (1)
 	{
-		wait_result = wait(&status);
+		wait_result = waitpid(data->program->pid, &status, 0);
 		if (wait_result == -1 && errno == EINTR)
 		{
 			errno = 0;

@@ -50,6 +50,7 @@ int	env(t_program *program, t_data *data)
 		pid = fork();
 		if (pid == 0)
 		{
+			close(program->next_pipe[0]);
 			print_env();
 			quit_env(data);
 		}

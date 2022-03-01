@@ -51,7 +51,6 @@ void	handle_subshell(t_data *data)
 	tmp.wstatus = data->wstatus;
 	tmp.must_continue = 1;
 	tmp.program_list = programs;
-	close(data->program->next_pipe[0]);
 	execute(&tmp, programs);
 	destroy_pipeline(programs);
 	destroy_pipeline(data->program_list);

@@ -11,56 +11,32 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "libft.h"
 #include "parsing/parsing.h"
-
-static int	handle_n_option(t_list *tmp, int i)
-{
-	char	*str;
-
-	if (i == 1)
-		return (0);
-	tmp = tmp->next;
-	while (tmp->next)
-	{
-		str = ((t_string *)tmp->content)->value;
-		printf("%s ", str);
-		tmp = tmp->next;
-	}
-	str = ((t_string *)tmp->content)->value;
-	printf("%s", str);
-	return (0);
-}
-
-static int	handle_no_option(t_list *tmp)
-{
-	char	*str;
-
-	while (tmp->next)
-	{
-		str = ((t_string *)tmp->content)->value;
-		printf("%s ", str);
-		tmp = tmp->next;
-	}
-	str = ((t_string *)tmp->content)->value;
-	printf("%s\n", str);
-	return (0);
-}
+#include "structures.h"
 
 int	echo(t_program *program)
 {
-	int		i;
-	t_list	*tmp;
+	int			printnl;
+	char		*str;
+	t_list		*tmp;
 
-	i = ft_lstsize(program->params);
 	tmp = program->params;
-	if (i == 0)
+	printnl = 1;
+	while (tmp && str_equals(((t_string *)tmp->content)->value, "-n"))
 	{
-		printf("\n");
-		return (0);
+		printnl = 0;
+		tmp = tmp->next;
 	}
-	else if (!ft_strncmp(((t_string *)tmp->content)->value, "-n", 3))
-		return (handle_n_option(tmp, i));
-	else
-		return (handle_no_option(tmp));
-	return (1);
+	while (tmp)
+	{
+		str = ((t_string *)tmp->content)->value;
+		printf("%s", str);
+		if (tmp->next)
+			printf(" ");
+		tmp = tmp->next;
+	}
+	if (printnl)
+		printf("\n");
+	return (0);
 }

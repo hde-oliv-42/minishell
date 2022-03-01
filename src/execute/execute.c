@@ -20,15 +20,18 @@
 
 char	**g_env = NULL;
 
-static void	handle_command_not_found(char *program_name, t_data *data)
+static void	handle_command_not_found(char *program_name, t_data *data, int null_program)
 {
-	command_not_found(program_name);
+	if (!null_program)
+		command_not_found(program_name);
 	*(data->wstatus) = 1;
 	destroy_pipeline(data->program_list);
 	ft_dfree(g_env);
 	free(data->cwd);
 	rl_clear_history();
-	exit(127);
+	if (!null_program)
+		exit(127);
+	exit(0);
 }
 
 void	execute_one_command(t_data *data)
@@ -41,10 +44,12 @@ void	execute_one_command(t_data *data)
 	close_pipe(data->og_fd, data);
 	if (data->program->type == SUBSHELL)
 		return (handle_subshell(data));
+	if (!data->program->name)
+		return (handle_command_not_found("NULL", data, 1));
 	program_name = ((t_string *)data->program->name)->value;
 	path = find_path(program_name, g_env);
 	if (path == NULL)
-		handle_command_not_found(program_name, data);
+		handle_command_not_found(program_name, data, 0);
 	else if (!is_executable(path))
 		flush_minishell(data);
 	else

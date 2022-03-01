@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+#include "ft_printf/libftprintf.h"
+
+int	unmatched_quote(char token)
+{
+	ft_dprintf(2, "unmatched %c.\n", token);
+	return (0);
+}
 
 static int	is_quote(char c)
 {
@@ -43,7 +50,7 @@ t_token	*get_word(char *line, int *cursor)
 			next_quote = NULL;
 			next_quote = get_next_quote(line, i);
 			if (next_quote == NULL)
-				return (unexpected_token("unclosed quote"), NULL);
+				return (unmatched_quote(line[i]), NULL);
 			i = next_quote - line + 1;
 		}
 		else

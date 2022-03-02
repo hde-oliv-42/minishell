@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug/debug.h"
 #include "expand/expand.h"
 #include "libft.h"
 #include "tokenizer/tokenizer.h"

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug/debug.h"
 #include "execute/execute.h"
 #include "parsing/parsing.h"
 #include "signals/signals.h"

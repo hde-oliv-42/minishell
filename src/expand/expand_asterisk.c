@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug/debug.h"
 #include "expand.h"
 #include "libft.h"
 #include <dirent.h>

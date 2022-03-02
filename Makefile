@@ -19,8 +19,7 @@ vpath %.c src 						\
 	src/prompt 						\
 	src/signals 					\
 	src/execute						\
-	src/expand						\
-	src/debug
+	src/expand
 
 SRC =  main.c
 SRC += pwd.c
@@ -55,7 +54,6 @@ SRC += access_methods.c
 SRC += access_utils.c
 SRC += wait_utils.c
 SRC += ms_env.c
-SRC += print_things.c
 SRC += prompt.c
 SRC += signal_handlers.c
 SRC += signal_ignorers.c

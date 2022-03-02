@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "debug/debug.h"
 #include "expand/expand.h"
 #include "libft.h"
 #include "signals/signals.h"
@@ -32,7 +31,6 @@
 #include <sys/wait.h>
 #include <execute/execute.h>
 #include <signals/signals.h>
-#include <debug/debug.h>
 
 void	handle_subshell(t_data *data)
 {

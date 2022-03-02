@@ -28,7 +28,6 @@
 #include <sys/wait.h>
 #include <execute/execute.h>
 #include <signals/signals.h>
-#include <debug/debug.h>
 
 int	quit_minishell(t_data *data)
 {

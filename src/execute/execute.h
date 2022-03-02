@@ -20,7 +20,6 @@
 # include <errno.h>
 # include "libft.h"
 # include "parsing/parsing.h"
-# include "debug/debug.h"
 # include "ft_printf/libftprintf.h"
 
 extern char	**g_env;

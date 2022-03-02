@@ -64,13 +64,13 @@ void	execute_one_command(t_data *data)
 static void	handle_parent(t_data *data, int id)
 {
 	data->program->pid = id;
+	if (data->last_program && data->last_program->next_relation == PIPE)
+		close_pipe(data->last_program->next_pipe, data);
 	if (data->program->next_relation == AND || \
 		data->program->next_relation == OR)
 		handle_conditional_wait(data);
 	else
 		data->program_count++;
-	if (data->last_program && data->last_program->next_relation == PIPE)
-		close_pipe(data->last_program->next_pipe, data);
 	if (data->must_continue == 0)
 	{
 		data->last_program = data->program;

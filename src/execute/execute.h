@@ -64,6 +64,7 @@ void	open_all_input_files(t_data *data);
 int		check_conditional_error(t_data *data);
 void	set_status_code(int wait_pid, int status, t_data *data);
 void	handle_child(t_data *data);
+void	cancel_all_pipe_commands(t_data *data);
 
 // Wait utils
 void	handle_wait(t_data *data);

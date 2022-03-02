@@ -90,17 +90,16 @@ void	execute_loop(t_data *data)
 	while (data->must_continue && data->program)
 	{
 		expand_program(data->program, data);
+		if (check_conditional_error(data))
+		{
+			cancel_all_pipe_commands(data);
+			continue ;
+		}
 		if (execute_builtin(data, is_builtin(data)) != -1)
 			continue ;
 		if (data->program->next_relation == PIPE)
 			if (pipe(data->program->next_pipe))
 				break ;
-		if (check_conditional_error(data))
-		{
-			data->last_program = data->program;
-			data->program = data->program->next;
-			continue ;
-		}
 		id = fork();
 		if (id == 0)
 			handle_child(data);

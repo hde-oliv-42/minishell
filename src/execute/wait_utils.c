@@ -13,6 +13,7 @@
 #include "debug/debug.h"
 #include "execute.h"
 #include "structures.h"
+#include <asm-generic/errno-base.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -76,6 +77,8 @@ void	handle_wait(t_data *data)
 		else
 			handle_child_death(wait_result, status, data);
 	}
+	if (errno == EINTR)
+		errno = 0;
 }
 
 void	handle_conditional_wait(t_data *data)
@@ -97,4 +100,6 @@ void	handle_conditional_wait(t_data *data)
 			handle_child_death(wait_result, status, data);
 		break ;
 	}
+	if (errno == EINTR)
+		errno = 0;
 }

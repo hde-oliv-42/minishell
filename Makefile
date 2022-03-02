@@ -8,7 +8,7 @@ HEADERS = builtins.h parsing.h
 
 RM = rm -rf
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -O3 $(INCLUDE)
+CFLAGS = -Wall -Werror -Wextra $(INCLUDE)
 LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 
 vpath %.c src 						\

@@ -18,14 +18,15 @@
 
 void	cancel_all_pipe_commands(t_data *data)
 {
-	while (data->program && \
-		(data->program->next_relation == PIPE || \
-		data->last_program->next_relation == PIPE))
+	while (data->program && data->program->next_relation == PIPE)
 	{
 		data->program->ret = data->last_program->ret;
 		data->last_program = data->program;
 		data->program = data->program->next;
 	}
+	data->program->ret = data->last_program->ret;
+	data->last_program = data->program;
+	data->program = data->program->next;
 }
 
 int	check_conditional_error(t_data *data)
@@ -34,9 +35,9 @@ int	check_conditional_error(t_data *data)
 		data->last_program->next_relation == AND && \
 		data->wstatus != 0)
 		return (1);
-	else if (data->last_program \
-			&& data->last_program->next_relation == OR \
-			&& data->wstatus == 0)
+	else if (data->last_program && \
+			data->last_program->next_relation == OR && \
+			data->wstatus == 0)
 		return (1);
 	return (0);
 }

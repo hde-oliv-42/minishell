@@ -97,7 +97,11 @@ void	execute_loop(t_data *data)
 			if (pipe(data->program->next_pipe))
 				break ;
 		if (check_conditional_error(data))
-			break ;
+		{
+			data->last_program = data->program;
+			data->program = data->program->next;
+			continue ;
+		}
 		id = fork();
 		if (id == 0)
 			handle_child(data);

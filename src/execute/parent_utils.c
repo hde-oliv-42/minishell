@@ -28,7 +28,6 @@ void	cancel_all_pipe_commands(t_data *data)
 	}
 }
 
-
 int	check_conditional_error(t_data *data)
 {
 	if (data->last_program && \

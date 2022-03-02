@@ -58,5 +58,5 @@ void	handle_subshell(t_data *data)
 	tmp.program_list = NULL;
 	free(data->cwd);
 	ft_dfree(g_env);
-	exit(*(tmp.wstatus));
+	exit(tmp.wstatus);
 }

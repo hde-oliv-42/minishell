@@ -59,14 +59,14 @@ static char	*format_prompt(char *user, char *directory, t_data *data)
 
 	arrow_color = GREEN;
 	padding = "";
-	if (*data->wstatus)
+	if (data->wstatus)
 	{
 		arrow_color = RED;
 		padding = " ";
 	}
 	result = ft_asprintf(&prompt,
 			YELLOW "%s" BOLD BLUE " %s" RED " %.d" "%s%s>>> " RESET,
-			user, directory, *data->wstatus, padding, arrow_color);
+			user, directory, data->wstatus, padding, arrow_color);
 	if (result == -1)
 		return (ft_strdup("[error generating prompt] > "));
 	return (prompt);

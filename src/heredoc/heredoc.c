@@ -39,7 +39,7 @@ static int	parent_receive_heredoc(
 	}
 	else
 	{
-		*data->wstatus = should_stop;
+		data->wstatus = should_stop;
 		data->must_continue = 0;
 	}
 	handle_signals();

@@ -103,11 +103,8 @@ int	loop_prompt(t_data *data)
 int	main(void)
 {
 	t_data	data;
-	int		wstatus;
 
 	ft_bzero(&data, sizeof(t_data));
-	wstatus = 0;
 	initialize_ms_env(&g_env);
-	data.wstatus = &wstatus;
 	return (loop_prompt(&data));
 }

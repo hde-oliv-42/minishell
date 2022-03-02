@@ -25,7 +25,7 @@ static void	handle_command_not_found(char *program_name, t_data *data,
 {
 	if (!null_program)
 		command_not_found(program_name);
-	*(data->wstatus) = 1;
+	data->wstatus = 1;
 	destroy_pipeline(data->program_list);
 	ft_dfree(g_env);
 	free(data->cwd);
@@ -130,8 +130,8 @@ void	execute(t_data *data, t_program *program_list)
 	handle_wait(data);
 	close_pipe(data->og_fd, data);
 	if (!data->last_program)
-		*(data->wstatus) = data->program->ret;
+		data->wstatus = data->program->ret;
 	else
-		*(data->wstatus) = data->last_program->ret;
+		data->wstatus = data->last_program->ret;
 	handle_signals();
 }

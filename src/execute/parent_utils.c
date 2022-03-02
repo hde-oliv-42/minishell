@@ -21,11 +21,11 @@ int	check_conditional_error(t_data *data)
 {
 	if (data->last_program && \
 		data->last_program->next_relation == AND && \
-		*data->wstatus != 0)
+		data->wstatus != 0)
 		return (1);
 	else if (data->last_program \
 			&& data->last_program->next_relation == OR \
-			&& *data->wstatus == 0)
+			&& data->wstatus == 0)
 		return (1);
 	return (0);
 }
@@ -44,7 +44,7 @@ void	set_status_code(int wait_pid, int status, t_data *data)
 		}
 		program = program->next;
 	}
-	*data->wstatus = status;
+	data->wstatus = status;
 }
 
 void	handle_child(t_data *data)

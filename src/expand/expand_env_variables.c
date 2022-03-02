@@ -36,7 +36,7 @@ char	*get_last_status(t_data *data)
 {
 	char	*status_str;
 
-	status_str = ft_itoa(*data->wstatus);
+	status_str = ft_itoa(data->wstatus);
 	if (status_str == NULL)
 	{
 		perror("error getting last status");

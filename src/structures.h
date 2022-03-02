@@ -68,7 +68,7 @@ typedef struct s_data
 	t_program	*program;
 	t_program	*last_program;
 	int			program_count;
-	int			*wstatus;
+	int			wstatus;
 	char		*cwd;
 	int			must_continue;
 	int			og_fd[2];

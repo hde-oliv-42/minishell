@@ -13,3 +13,4 @@ test.sh
 outfile
 rd.supp
 env.txt
+src/debug/

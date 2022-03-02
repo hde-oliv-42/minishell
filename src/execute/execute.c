@@ -20,7 +20,8 @@
 
 char	**g_env = NULL;
 
-static void	handle_command_not_found(char *program_name, t_data *data, int null_program)
+static void	handle_command_not_found(char *program_name, t_data *data,
+	int null_program)
 {
 	if (!null_program)
 		command_not_found(program_name);

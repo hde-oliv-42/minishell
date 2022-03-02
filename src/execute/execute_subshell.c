@@ -48,6 +48,7 @@ void	handle_subshell(t_data *data)
 	if (programs == NULL)
 		flush_minishell(data);
 	destroy_token_array(tokens);
+	ft_bzero(&tmp, sizeof(t_data));
 	tmp.wstatus = data->wstatus;
 	tmp.must_continue = 1;
 	tmp.program_list = programs;

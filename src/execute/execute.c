@@ -123,10 +123,10 @@ void	execute(t_data *data, t_program *program_list)
 	data->program = program_list;
 	data->last_program = NULL;
 	data->program_count = 0;
+	ignore_signals();
 	execute_loop(data);
 	if (errno)
 		perror("execute");
-	ignore_signals();
 	handle_wait(data);
 	close_pipe(data->og_fd, data);
 	if (!data->last_program)

@@ -19,7 +19,7 @@ int	skip_dollar(t_list **piece_list, char chr)
 	t_piece	*piece;
 	char	*value;
 
-	delimiters = "$ =@(*)#";
+	delimiters = "$ =@(*)#:/";
 	value = malloc(3);
 	value[0] = '$';
 	if (ft_strchr(delimiters, chr))

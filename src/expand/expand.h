@@ -20,7 +20,7 @@
 # include "tokenizer/tokenizer.h"
 # include <stdlib.h>
 
-# define VAR_DELIMITERS "\"'$ =@(*)#"
+# define VAR_DELIMITERS "\"'$ =@(*)#:/"
 
 struct s_piece {
 	int		len;

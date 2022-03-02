@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "ft_printf/libftprintf.h"
 #include "parsing/parsing.h"
 #include <unistd.h>
 
@@ -68,14 +69,19 @@ void	open_all_output_files(t_data *data)
 }
 
 // TODO: Check if this works later
-static void	handle_heredoc(t_list **files_in, t_redirection *file_in)
+static void	handle_heredoc(
+	t_data *data, t_list **files_in, t_redirection *file_in)
 {
 	int		fd[2];
 
 	*files_in = (*files_in)->next;
-	pipe(fd);
+	if (pipe(fd) == -1)
+	{
+		perror("heredoc");
+		flush_minishell(data);
+	}
 	dup2(fd[0], STDIN_FILENO);
-	write(fd[1], file_in->contents, ft_strlen(file_in->contents));
+	ft_dprintf(fd[1], "%s", file_in->contents);
 	close(fd[0]);
 	close(fd[1]);
 }
@@ -91,7 +97,7 @@ void	open_all_input_files(t_data *data)
 	{
 		file_in = files_in->content;
 		if (file_in->type == RD_HERE_DOC)
-			handle_heredoc(&files_in, file_in);
+			handle_heredoc(data, &files_in, file_in);
 		else
 		{
 			in_fd = open(file_in->file_name, file_in->type);

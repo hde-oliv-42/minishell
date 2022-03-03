@@ -49,6 +49,8 @@ static char	*finish_heredoc(t_list *lines)
 	char	*tmp;
 
 	tmp = lines->content;
+	if (tmp == NULL)
+		return (ft_strdup(""));
 	full_text = ft_strjoin(tmp, "\n");
 	lines = lines->next;
 	while (lines && lines->next)

@@ -38,11 +38,17 @@ char	*find_path(char *name, char **ms_env)
 	char	*bin_path;
 	char	*path_string;
 	char	**path_array;
+	int		i;
 
 	path_string = NULL;
 	fetch_path_string(ms_env, &path_string);
 	if (path_string == NULL)
+	{
+		i = is_relative(name);
+		if (i == 1)
+			return (ft_strdup(name));
 		return (NULL);
+	}
 	if (create_path_array(path_string, &path_array))
 		return (NULL);
 	bin_path = loop_path_array(name, path_array);

@@ -54,7 +54,7 @@ void	fetch_path_string(char **ms_env, char **path_string)
 	}
 }
 
-static int	is_relative(char *name)
+int	is_relative(char *name)
 {
 	if (name[0] == '.' || (ft_strchr(&(name[1]), '/') && name[0] != '/' ))
 	{

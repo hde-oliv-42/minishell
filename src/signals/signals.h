@@ -21,5 +21,6 @@ void	reset_signals(void);
 void	handle_signals(void);
 void	ignore_signals(void);
 void	set_heredoc_signals(t_data *data, t_list **string_list);
+void	sigint_handler(int signum, t_data *out_data);
 
 #endif

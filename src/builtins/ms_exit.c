@@ -53,7 +53,7 @@ int	ms_exit(t_program *program, t_data *data)
 	if (i > 1)
 		ft_dprintf(2, "minishell: exit: too many arguments\n");
 	else if (i == 0)
-		free_and_exit(data, 0);
+		free_and_exit(data, data->wstatus);
 	else if (!is_number(((t_string *)program->params->content)->value))
 	{
 		ft_dprintf(2, "minishell: exit: numeric argument required\n");

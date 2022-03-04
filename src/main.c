@@ -35,7 +35,7 @@ int	quit_minishell(t_data *data)
 	rl_clear_history();
 	ft_dfree(g_env);
 	ft_dprintf(2, "exit\n");
-	exit(0);
+	exit(data->wstatus);
 }
 
 char	*get_line(t_data *data)
@@ -104,5 +104,6 @@ int	main(void)
 
 	ft_bzero(&data, sizeof(t_data));
 	initialize_ms_env(&g_env);
+	sigint_handler(-1, &data);
 	return (loop_prompt(&data));
 }

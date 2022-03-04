@@ -17,26 +17,38 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include "ft_printf/libftprintf.h"
+#include "prompt/prompt.h"
+#include "structures.h"
 
-static void	handler(int signum)
+void	sigint_handler(int signum, t_data *out_data)
 {
-	ft_putchar_fd('\n', 1);
+	static t_data	*data;
+
+	if (signum == -1)
+	{
+		data = out_data;
+		return ;
+	}
+	else
+		data->wstatus = 130;
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	ft_putchar_fd('\n', 0);
 	rl_redisplay();
-	(void)signum;
 }
 
 void	handle_signals(void)
 {
 	struct sigaction		sa;
 	struct sigaction		sa_quit;
+	void					*handler;
 
 	sigemptyset(&sa.sa_mask);
 	sigemptyset(&sa_quit.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaddset(&sa_quit.sa_mask, SIGQUIT);
 	sa.sa_flags = SA_RESTART;
+	handler = sigint_handler;
 	sa.sa_handler = handler;
 	sa_quit.sa_flags = SA_RESTART;
 	sa_quit.sa_handler = SIG_IGN;

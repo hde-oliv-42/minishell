@@ -68,7 +68,6 @@ void	open_all_output_files(t_data *data)
 	}
 }
 
-// TODO: Check if this works later
 static void	handle_heredoc(
 	t_data *data, t_list **files_in, t_redirection *file_in)
 {

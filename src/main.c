@@ -45,8 +45,7 @@ char	*get_line(t_data *data)
 
 	prompt = generate_prompt(data);
 	line = readline(prompt);
-	if (errno == ENOTTY)
-		errno = 0;
+	errno = 0;
 	free(prompt);
 	if (line == NULL)
 		quit_minishell(data);

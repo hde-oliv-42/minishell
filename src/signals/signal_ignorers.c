@@ -25,9 +25,9 @@ void	ignore_signals(void)
 	struct sigaction	sa;
 	struct sigaction	sa_quit;
 
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = ignore;
-	sa_quit.sa_flags = 0;
+	sa_quit.sa_flags = SA_RESTART;
 	sa_quit.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);

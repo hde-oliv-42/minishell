@@ -104,6 +104,9 @@ static int	handle_dash(t_program *program, char **pwd, t_data *data)
 		free(*pwd);
 		free(oldpwd);
 	}
+	if (errno)
+		perror("cd");
+	errno = 0;
 	return (1);
 }
 

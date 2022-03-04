@@ -109,15 +109,13 @@ static int	handle_dash(t_program *program, char **pwd, t_data *data)
 
 int	cd(t_program *program, t_data *data)
 {
-	int		i;
 	char	*dir;
 	char	*oldpwd;
 
-	i = ft_lstsize(program->params);
-	oldpwd = getcwd(NULL, 0);
-	if (i > 1)
+	oldpwd = ft_strdup(data->cwd);
+	if (ft_lstsize(program->params) > 1)
 		ft_dprintf(2, "minishell: cd: too many arguments\n");
-	else if (i == 0)
+	else if (ft_lstsize(program->params) == 0)
 		return (handle_home(program, &oldpwd, data));
 	else if (!ft_strncmp(((t_string *)program->params->content)->value, "-", 2))
 		return (handle_dash(program, &oldpwd, data));
@@ -129,6 +127,9 @@ int	cd(t_program *program, t_data *data)
 			store_oldpwd(program, &oldpwd, data);
 			return (0);
 		}
+		if (errno)
+			perror("cd");
+		errno = 0;
 	}
 	free(oldpwd);
 	return (1);

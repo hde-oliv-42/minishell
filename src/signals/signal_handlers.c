@@ -36,9 +36,9 @@ void	handle_signals(void)
 	sigemptyset(&sa_quit.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaddset(&sa_quit.sa_mask, SIGQUIT);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = handler;
-	sa_quit.sa_flags = 0;
+	sa_quit.sa_flags = SA_RESTART;
 	sa_quit.sa_handler = SIG_IGN;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		ft_dprintf(2, "error handling signal SIGINT\n");
@@ -67,7 +67,7 @@ void	reset_child_signals(void)
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaddset(&sa.sa_mask, SIGQUIT);
 	sa.sa_handler = SIG_DFL;
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_INTERRUPT;
 	if (sigaction(SIGINT, &sa, NULL) < 0)
 		ft_dprintf(2, "failed to reset the handler for SIGINT\n");
 	if (sigaction(SIGQUIT, &sa, NULL) < 0)

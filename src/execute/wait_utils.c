@@ -68,8 +68,8 @@ void	handle_wait(t_data *data)
 	while (size)
 	{
 		wait_result = wait(&status);
-		if (wait_result == -1 && errno == EINTR)
-			continue ;
+		// if (wait_result == -1 && errno == EINTR)
+		// 	continue ;
 		size--;
 		if (WIFEXITED(status))
 			set_status_code(wait_result, WEXITSTATUS(status), data);
@@ -88,11 +88,11 @@ void	handle_conditional_wait(t_data *data)
 	while (1)
 	{
 		wait_result = waitpid(data->program->pid, &status, 0);
-		if (wait_result == -1 && errno == EINTR)
-		{
-			errno = 0;
-			continue ;
-		}
+		// if (wait_result == -1 && errno == EINTR)
+		// {
+		// 	errno = 0;
+		// 	continue ;
+		// }
 		if (WIFEXITED(status))
 			set_status_code(wait_result, WEXITSTATUS(status), data);
 		else

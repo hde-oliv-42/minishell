@@ -77,6 +77,8 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
 
+bonus: all
+
 $(LIBFT):
 	make -j6 -C $(LIBFT_DIR)
 

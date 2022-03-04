@@ -43,13 +43,13 @@ int	wait_child(void)
 	return (0);
 }
 
-static char	*finish_heredoc(t_list *lines)
+static char	*finish_heredoc(t_list *lines, char *delimiter)
 {
 	char	*full_text;
 	char	*tmp;
 
 	tmp = lines->content;
-	if (tmp == NULL)
+	if (tmp == NULL || str_equals(tmp, delimiter))
 		return (ft_strdup(""));
 	full_text = ft_strjoin(tmp, "\n");
 	lines = lines->next;
@@ -81,7 +81,7 @@ char	*get_heredoc(char *delimiter, t_list	**lines_list)
 			if (newstr == NULL)
 				ft_dprintf(2, "unexpected end-of-file, expected '%s'\n",
 					delimiter);
-			full_text = finish_heredoc(*lines_list);
+			full_text = finish_heredoc(*lines_list, delimiter);
 			ft_lstclear(lines_list, free);
 			break ;
 		}

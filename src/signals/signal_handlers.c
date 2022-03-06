@@ -23,6 +23,7 @@
 void	sigint_handler(int signum, t_data *out_data)
 {
 	static t_data	*data;
+	char			*prompt;
 
 	if (signum == -1)
 	{
@@ -33,7 +34,9 @@ void	sigint_handler(int signum, t_data *out_data)
 		data->wstatus = 130;
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	ft_putchar_fd('\n', 0);
+	ft_putchar_fd('\n', 1);
+	prompt = generate_prompt(data);
+	rl_set_prompt(prompt);
 	rl_redisplay();
 }
 

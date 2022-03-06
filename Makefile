@@ -8,7 +8,7 @@ HEADERS = builtins.h parsing.h
 
 RM = rm -rf
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra $(INCLUDE)
+CFLAGS = -Wall -Werror -Wextra -g3 $(INCLUDE)
 LFLAGS = -lreadline -L $(LIBFT_DIR) -lft
 
 vpath %.c src 						\
@@ -53,6 +53,7 @@ SRC += parent_utils.c
 SRC += access_methods.c
 SRC += access_utils.c
 SRC += wait_utils.c
+SRC += close_fd.c
 SRC += ms_env.c
 SRC += prompt.c
 SRC += signal_handlers.c

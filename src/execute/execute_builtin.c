@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/21 14:04:39 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/03/06 14:54:57 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	execution_core(t_data *data, int id)
 {
 	if (data->last_program && data->last_program->next_relation == PIPE)
 	{
-		close(data->last_program->next_pipe[0]);
+		close_fd(data->last_program->next_pipe[0]);
 		data->last_program->next_pipe[0] = 0;
 	}
 	if (data->program->next_relation == PIPE)
@@ -99,12 +99,7 @@ int	execute_builtin(t_data *data, int id)
 		data->program = data->program->next;
 		return (ret);
 	}
-	else if (id < 4 || id == 6)
-		execution_core(data, id);
-	else if (data->last_program && data->last_program->next_relation != PIPE)
-		execution_core(data, id);
-	else if (data->program->next_relation != PIPE && !data->last_program)
-		execution_core(data, id);
+	execution_core(data, id);
 	ret = data->program->ret;
 	data->last_program = data->program;
 	data->program = data->program->next;

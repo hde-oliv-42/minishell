@@ -6,7 +6,7 @@
 /*   By: hde-oliv <hde-oliv@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 19:42:14 by hde-oliv          #+#    #+#             */
-/*   Updated: 2022/02/21 14:04:49 by hde-oliv         ###   ########.fr       */
+/*   Updated: 2022/03/06 14:28:15 by psergio-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,7 @@ void	handle_conditional_wait(t_data *data);
 
 // Execute subshell
 void	handle_subshell(t_data *data);
+
+int		close_fd(int fd);
 
 #endif

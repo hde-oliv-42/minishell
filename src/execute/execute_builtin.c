@@ -108,5 +108,6 @@ int	execute_builtin(t_data *data, int id)
 	ret = data->program->ret;
 	data->last_program = data->program;
 	data->program = data->program->next;
+	data->wstatus = ret;
 	return (ret);
 }
